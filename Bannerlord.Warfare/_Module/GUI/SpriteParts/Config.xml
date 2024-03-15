@@ -1,0 +1,14 @@
+<Config>
+    <SpriteCategory Name="ui_warfare_fonts">
+        <PackAllSpritesToUniqueTextures/>
+        <SingleChannel/>
+        <AlwaysLoad/>
+        <EdgeSize Value="0" />
+    </SpriteCategory>
+    <SpriteCategory Name="ui_warfare_rename">
+        <AlwaysLoad/>
+    </SpriteCategory>
+    <SpriteCategory Name="ui_warfare_split">
+        <AlwaysLoad/>
+    </SpriteCategory>
+</Config>

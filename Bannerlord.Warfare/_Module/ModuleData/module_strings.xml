@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<strings>
+	<string id="str_mercenary_name" text="{}{LEADER}'s {SUFFIX}" />
+	<string id="str_military" text="{=nfMFmDGwKf}Military" />
+	<string id="str_mercenaries" text="{=LYNyf5B1JF}Mercenaries" />
+	<string id="str_warning_not_enough_parties" text="{=QuIDvx2sTf}Army does not have enough member parties." />
+	<string id="str_manage_army_explanation" text="{=zMGaTGyR}Manage this army" />
+	<string id="str_cannot_manage_army_while_mercenary" text="{=DOm6wr2eaH}You cannot manage contracts as a mercenary" />
+	<string id="str_cannot_manage_army_while_in_event" text="{=mGWrSJLE}You cannot manage an army while it's in a map event." />
+	<string id="str_manage_army_restricted" text="{=lUyxAp4fS5}You cannot manage an army unless you are the faction leader or an army member." />
+	<string id="str_disband" text="{=xXSFaGW8}Disband" />
+	<string id="str_hire" text="{=YC0PeyeN6b}Hire" />
+	<string id="str_extend" text="{=7Id19Dwx}Extend" />
+	<string id="str_kingdom_hire_mercenary_explanation" text="{=2CbfALwAds}Sign Contract" />
+	<string id="str_kingdom_extend_mercenary_explanation" text="{=NhIpemI2}Extend Contract" />
+	<string id="str_fire" text="{=df5WgKtlbe}Fire" />
+	<string id="str_kingdom_fire_mercenary_explanation" text="{=21wfq1qG5i}Terminate contract" />
+	<string id="str_kingdom_no_mercenary_selected" text="{=MQmvOm8vtT}No Mercenary Selected" />
+	<string id="str_add_cohesion_to_army" text="{=uEXvgrsQ}Add +{BOOSTAMOUNT} cohesion to this army" />
+	<string id="str_change_army_leader" text="{=uhxCnG4n}Change Army Leader" />
+	<string id="str_change_army_leader_inquiry" text="{=TOC7RWdV}Are you sure you want to change this armies leader? It will cost you {COST} influence." />
+	<string id="str_change_army_leader_inquiry_warning" text="{=wPSl2v80}{newline}{newline}WARNING: You will not be added to the new army." />
+	<string id="str_split_army" text="{=8MvD4u4J}Split Army" />
+	<string id="str_split_army_inquiry" text="{=tyZxyL8d}Are you sure you want to split this army? It will cost you between {MIN_COST} and {MAX_COST} influence." />
+	<string id="str_split_army_inquiry_warning" text="{=n7wMx7op}{newline}{newline}WARNING: Your army will lose the selected leader if they're a member and any member parties you select. You will remain the leader of the old army." />
+	<string id="str_kingdom_disband_player_army" text="{=kqeA8rjL}Are you sure you want to disband your army?" />
+	<string id="str_kingdom_disband_npc_army" text="{=619gtcXb}Are you sure you want to disband this army? This will result in relation loss." />
+	<string id="str_action_disabled_reason_army_mission" text="{=FdzsOvDq}This action is disabled while in a mission." />
+	<string id="str_action_disabled_reason_army_siege" text="{=DvO4aGre}You can not perform this action while the army is in a siege." />
+	<string id="str_action_disabled_reason_army_in_event" text="{=aXPDpkAR} You can not perform this action while the army is in a map event." />
+</strings>
