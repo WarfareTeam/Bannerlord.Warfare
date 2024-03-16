@@ -495,10 +495,6 @@ namespace Warfare.ViewModels.Military
 
         private bool GetCanHireCurrentMercenaryWithReason(out TextObject disabledReason)
         {
-            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
-            {
-                return false;
-            }
 
             if (CurrentSelectedMercenary.Clan.IsUnderMercenaryService)
             {
@@ -512,16 +508,17 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
+            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
+            {
+                return false;
+            }
+
             disabledReason = TextObject.Empty;
             return true;
         }
 
         private bool GetCanExtendCurrentMercenaryWithReason(out TextObject disabledReason)
         {
-            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
-            {
-                return false;
-            }
 
             if (!CurrentSelectedMercenary.Clan.IsUnderMercenaryService || CurrentSelectedMercenary.Clan.Kingdom != Clan.PlayerClan.Kingdom)
             {
@@ -547,16 +544,17 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
+            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
+            {
+                return false;
+            }
+
             disabledReason = TextObject.Empty;
             return true;
         }
 
         private bool GetCanFireCurrentMercenaryWithReason(out TextObject disabledReason)
         {
-            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
-            {
-                return false;
-            }
 
             Contract contract = _behavior.FindContract(CurrentSelectedMercenary.Clan);
             if (contract == null)
@@ -596,6 +594,11 @@ namespace Warfare.ViewModels.Military
                     disabledReason = GameTexts.FindText("str_action_disabled_reason_raid");
                     return false;
                 }
+            }
+
+            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
+            {
+                return false;
             }
 
             disabledReason = TextObject.Empty;
