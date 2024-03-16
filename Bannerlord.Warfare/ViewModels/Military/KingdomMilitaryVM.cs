@@ -131,7 +131,11 @@ namespace Warfare.ViewModels.Military
 
         private int _minimumArmyCost;
 
+        private string _minimumArmyCostLabel;
+
         private int _totalArmyCost;
+
+        private string _totalArmyCostLabel;
 
         private int _disbandCost;
 
@@ -309,6 +313,8 @@ namespace Warfare.ViewModels.Military
                     TotalArmyCost *= 2;
                     DisbandCost = Campaign.Current.Models.DiplomacyModel.GetInfluenceCostOfDisbandingArmy();
                 }
+                MinimumArmyCostLabel = MinimumArmyCost.ToString();
+                TotalArmyCostLabel = TotalArmyCost.ToString();
                 CanChangeCurrentArmyLeader = GetCanChangeCurrentArmyLeaderWithReason(out var disabledReason);
                 ChangeLeaderHint.HintText = disabledReason;
                 CanSplitCurrentArmy = GetCanSplitCurrentArmyWithReason(out disabledReason);
@@ -1292,6 +1298,23 @@ namespace Warfare.ViewModels.Military
         }
 
         [DataSourceProperty]
+        public string MinimumArmyCostLabel
+        {
+            get
+            {
+                return _minimumArmyCostLabel;
+            }
+            set
+            {
+                if (value != _minimumArmyCostLabel)
+                {
+                    _minimumArmyCostLabel = value;
+                    OnPropertyChangedWithValue(value, "MinimumArmyCostLabel");
+                }
+            }
+        }
+
+        [DataSourceProperty]
         public int TotalArmyCost
         {
             get
@@ -1304,6 +1327,23 @@ namespace Warfare.ViewModels.Military
                 {
                     _totalArmyCost = value;
                     OnPropertyChangedWithValue(value, "TotalArmyCost");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public string TotalArmyCostLabel
+        {
+            get
+            {
+                return _totalArmyCostLabel;
+            }
+            set
+            {
+                if (value != _totalArmyCostLabel)
+                {
+                    _totalArmyCostLabel = value;
+                    OnPropertyChangedWithValue(value, "TotalArmyCostLabel");
                 }
             }
         }
