@@ -147,6 +147,8 @@ namespace Warfare.Behaviors
 
         public void RecruitTroops(Clan clan, bool newGame = false)
         {
+            //Crash within 5 years in simulation, only when simming too fast?
+            IEnumerable<CharacterObject> mercenaryObjects = CharacterObject.FindAll(c => c.Occupation == Occupation.Mercenary);
             if (clan == null || clan.IsEliminated || !clan.IsMinorFaction || clan == Clan.PlayerClan)
             {
                 return;
@@ -163,7 +165,7 @@ namespace Warfare.Behaviors
                 Hero hero = heroes.First();
                 if (newGame || MBRandom.RandomFloat < 0.6f) //(closestSettlement != null && MBRandom.RandomFloat < 0.6f + (closestSettlement.Town.Prosperity < 3000f ? 3f : closestSettlement.Town.Prosperity < 6000f ? 2f : 1f / 9f)))
                 {
-                    hero.PartyBelongedTo.AddElementToMercenaryRoster();
+                    hero.PartyBelongedTo.AddElementToMemberRoster(mercenaryObjects.GetRandomElementInefficiently(), 1);
                 }
             }
         }
