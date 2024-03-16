@@ -18,7 +18,7 @@
 	<string id="str_kingdom_no_mercenary_selected" text="{=MQmvOm8vtT}No Mercenary Selected" />
 	<string id="str_add_cohesion_to_army" text="{=uEXvgrsQ}Add +{BOOSTAMOUNT} cohesion to this army" />
 	<string id="str_change_army_leader" text="{=uhxCnG4n}Change Army Leader" />
-	<string id="str_change_army_leader_inquiry" text="{=TOC7RWdV}Are you sure you want to change this armies leader? It will cost you {COST} influence." />
+	<string id="str_change_army_leader_inquiry" text="{=TOC7RWdV}Are you sure you want to change this armies leader? It will cost you {INFLUENCE_COST} influence." />
 	<string id="str_change_army_leader_inquiry_warning" text="{=wPSl2v80}{newline}{newline}WARNING: You will not be added to the new army." />
 	<string id="str_split_army" text="{=8MvD4u4J}Split Army" />
 	<string id="str_split_army_inquiry" text="{=tyZxyL8d}Are you sure you want to split this army? It will cost you between {MIN_COST} and {MAX_COST} influence." />
@@ -28,4 +28,20 @@
 	<string id="str_action_disabled_reason_army_mission" text="{=FdzsOvDq}This action is disabled while in a mission." />
 	<string id="str_action_disabled_reason_army_siege" text="{=DvO4aGre}You can not perform this action while the army is in a siege." />
 	<string id="str_action_disabled_reason_army_in_event" text="{=aXPDpkAR} You can not perform this action while the army is in a map event." />
+	<string id="str_cannot_hire_mercenary_contracted" text="{=lFWDKhaG} Mercenaries are already under contract." />
+	<string id="str_action_disabled_mercenary_contracted" text="{=ciBBsXak} Mercenaries are contracted by another kingdom." />
+	<string id="str_cannot_extend_mercenary_max_time" text="{=t30VD50U} Can only extend contracts with less than one season remaining." />
+	<string id="str_cannot_extend_mercenary_in_event" text="{=3rl5kKcO} You cannot hire mercenaries while they're in a map event." />
+	<string id="str_cannot_fire_mercenary_not_contracted" text="{=mfKEPzhj} Mercenaries are not under contract." />
+	<string id="str_cannot_fire_mercenary_not_ruler" text="{=pts0L1WR} Only rulers can terminate mercenary contracts." />
+	<string id="str_action_disabled_reason_own_contract" text="{=fOPN5GCF} You cannot manage your own contract." />
+	<string id="str_action_disabled_reason_in_event" text="{=nDwqp7GZ} You cannot manage contracts while a target clan party is in a map event." />
+	<string id="str_action_hire_current_mercenary" text="{=zrhr4rDA} Are you sure you want to {EXTEND} contract with this mercenary? This will result in a non-refundable up-front cost." />
+	<string id="str_action_fire_current_mercenary" text="{=eZlBbp5f} Are you sure you want to terminate the contract with this mercenary? You will not receive a refund." />
+	<string id="str_ineligible_army_leader_too_young" text="{=HAo6iIda}{HERO.NAME} is too young to lead an army." />
+	<string id="str_ineligible_army_leader_already_leading" text="{=kNW1qYSi}{HERO.NAME} is already leading another army." />
+	<string id="str_ineligible_army_leader_in_prison" text="{=hv1ARuaU}{HERO.NAME} is in prison right now." />
+	<string id="str_ineligible_army_leader_unavailable" text="{=nMmYZ3xi}{HERO.NAME} is not available right now." />
+	<string id="str_ineligible_army_leader_empty_army" text="{=pwuEqegC}Army leader is the only member of the army right now." />
+	<string id="str_faction_member_ineligible_under_attack" text="{=L9nn40qu}{HERO.NAME}{.o} location is under attack right now." />
 </strings>
