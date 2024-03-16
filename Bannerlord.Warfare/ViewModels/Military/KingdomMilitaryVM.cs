@@ -502,13 +502,13 @@ namespace Warfare.ViewModels.Military
 
             if (CurrentSelectedMercenary.Clan.IsUnderMercenaryService)
             {
-                disabledReason = new TextObject("Mercenaries are already under contract");
+                disabledReason = GameTexts.FindText("str_cannot_hire_mercenary_contracted");
                 return false;
             }
 
             if (Hero.MainHero.Gold < HireCost)
             {
-                disabledReason = new TextObject("You don't have enough gold");
+                disabledReason = GameTexts.FindText("str_decision_not_enough_gold");
                 return false;
             }
 
@@ -525,25 +525,25 @@ namespace Warfare.ViewModels.Military
 
             if (!CurrentSelectedMercenary.Clan.IsUnderMercenaryService || CurrentSelectedMercenary.Clan.Kingdom != Clan.PlayerClan.Kingdom)
             {
-                disabledReason = new TextObject("Mercenaries are contracted by another kingdom");
+                disabledReason = GameTexts.FindText("str_action_disabled_mercenary_contracted");
                 return false;
             }
 
             if (Hero.MainHero.Gold < HireCost)
             {
-                disabledReason = new TextObject("You don't have enough gold.");
+                disabledReason = GameTexts.FindText("str_decision_not_enough_gold");
                 return false;
             }
 
             if (!_behavior.CanExtendContract(CurrentSelectedMercenary.Clan, _kingdom))
             {
-                disabledReason = new TextObject("Can only extend contracts with less than one season remaining");
+                disabledReason = GameTexts.FindText("str_cannot_extend_mercenary_max_time");
                 return false;
             }
 
             if (CurrentSelectedMercenary.Clan.WarPartyComponents.Find((w) => w.MobileParty.MapEvent != null) != null)
             {
-                disabledReason = new TextObject("You cannot hire mercenaries while they're in a map event.");
+                disabledReason = GameTexts.FindText("str_cannot_extend_mercenary_in_event");
                 return false;
             }
 
@@ -561,19 +561,19 @@ namespace Warfare.ViewModels.Military
             Contract contract = _behavior.FindContract(CurrentSelectedMercenary.Clan);
             if (contract == null)
             {
-                disabledReason = new TextObject("Mercenaries are not under contract");
+                disabledReason = GameTexts.FindText("str_cannot_fire_mercenary_not_contracted");
                 return false;
             }
 
             if (contract.Employer != _kingdom)
             {
-                disabledReason = new TextObject("Mercenaries are contracted by another kingdom");
+                disabledReason = GameTexts.FindText("str_action_disabled_mercenary_contracted");
                 return false;
             }
 
             if (!Hero.MainHero.IsFactionLeader)
             {
-                disabledReason = new TextObject("Only rulers can terminate mercenary contracts");
+                disabledReason = GameTexts.FindText("str_cannot_fire_mercenary_not_ruler");
                 return false;
             }
             if (Hero.MainHero.IsPrisoner)
@@ -607,7 +607,7 @@ namespace Warfare.ViewModels.Military
             Clan clan = CurrentSelectedMercenary.Clan;
             if (clan == Clan.PlayerClan)
             {
-                disabledReason = new TextObject("You cannot manage your own contract");
+                disabledReason = GameTexts.FindText("str_action_disabled_reason_own_contract");
                 return false;
             }
 
@@ -620,7 +620,7 @@ namespace Warfare.ViewModels.Military
             IEnumerable<Hero> partyLeaders = clan.Lords.Where((h) => h.IsPartyLeader);
             if (!partyLeaders.Where((h) => h.PartyBelongedTo.MapEvent != null).IsEmpty())
             {
-                disabledReason = new TextObject("You cannot manage contracts while a target clan party is in a map event");
+                disabledReason = GameTexts.FindText("str_action_disabled_reason_in_event");
                 return false;
             }
 
@@ -632,7 +632,7 @@ namespace Warfare.ViewModels.Military
 
             if (GameStateManager.Current?.GameStates.Any((x) => x.IsMission) ?? false)
             {
-                disabledReason = new TextObject("{=FdzsOvDq}This action is disabled while in a mission");
+                disabledReason = GameTexts.FindText("str_action_disabled_reason_army_mission");
                 return false;
             }
 
@@ -659,7 +659,7 @@ namespace Warfare.ViewModels.Military
         {
             if (Hero.MainHero.Gold >= HireCost)
             {
-                TextObject text = new TextObject("{=zrhr4rDA}Are you sure you want to {SHOULD_EXTEND} contract with this mercenary? This will result in a high lump sum cost. It is non refundable!").SetTextVariable("SHOULD_EXTEND", !ShouldExtendCurrentMercenary ? "sign a" : "extend your");
+                TextObject text = GameTexts.FindText("str_action_hire_current_mercenary").SetTextVariable("EXTEND", !ShouldExtendCurrentMercenary ? "sign" : "extend");
                 InformationManager.ShowInquiry(new InquiryData(GameTexts.FindText("str_kingdom_hire_mercenary_explanation").ToString(), text.ToString(), isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), HireCurrentMercenary, null));
             }
         }
@@ -680,7 +680,8 @@ namespace Warfare.ViewModels.Military
         {
             if (Hero.MainHero.IsFactionLeader)
             {
-                InformationManager.ShowInquiry(new InquiryData("Terminate Contract", new TextObject("{=zrhr4rDA}Are you sure you want to terminate the contract with this mercenary? You will not be refunded your invested gold!").ToString(), isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), FireCurrentMercenary, null));
+                TextObject text = GameTexts.FindText("str_action_fire_current_mercenary");
+                InformationManager.ShowInquiry(new InquiryData("Terminate Contract", text.ToString(), isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), FireCurrentMercenary, null));
             }
         }
 
@@ -699,12 +700,12 @@ namespace Warfare.ViewModels.Military
         {
             if (CurrentSelectedArmy != null)
             {
-                string inquiryText = GameTexts.FindText("str_change_army_leader_inquiry").SetTextVariable("COST", TotalArmyCost).ToString();
+                string inquiryText = GameTexts.FindText("str_change_army_leader_inquiry").SetTextVariable("INFLUENCE_COST", TotalArmyCost).ToString();
                 if (CurrentSelectedArmy.Army.LeaderParty == MobileParty.MainParty)
                 {
                     inquiryText += GameTexts.FindText("str_change_army_leader_inquiry_warning").ToString();
                 }
-                InformationManager.ShowInquiry(new InquiryData(GameTexts.FindText("str_change_army_leader").ToString(), inquiryText, isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), OpenChangeLeaderPopup, null));
+                InformationManager.ShowInquiry(new InquiryData(GameTexts.FindText("str_change_army_leader").ToString(), inquiryText.ToString(), isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), OpenChangeLeaderPopup, null));
             }
         }
 
@@ -764,7 +765,7 @@ namespace Warfare.ViewModels.Military
         {
             if (hero.Age < Campaign.Current.Models.AgeModel.HeroComesOfAge)
             {
-                explanation = new TextObject("{=HAo6iIda}{HERO.NAME} is not eligible.");
+                explanation = GameTexts.FindText("str_ineligible_army_leader_too_young");
                 explanation.SetCharacterProperties("HERO", hero.CharacterObject);
                 return false;
             }
@@ -772,36 +773,36 @@ namespace Warfare.ViewModels.Military
             {
                 if (hero.PartyBelongedTo.Army.LeaderParty.LeaderHero == hero)
                 {
-                    explanation = new TextObject("{=kNW1qYSi}{HERO.NAME} is already leading another army.");
+                    explanation = GameTexts.FindText("str_ineligible_army_leader_already_leading");
                     explanation.SetCharacterProperties("HERO", hero.CharacterObject);
                     return false;
                 }
             }
             if (hero.IsPrisoner)
             {
-                explanation = new TextObject("{=hv1ARuaU}{HERO.NAME} is in prison right now.");
+                explanation = GameTexts.FindText("str_ineligible_army_leader_in_prison");
                 explanation.SetCharacterProperties("HERO", hero.CharacterObject);
                 return false;
             }
             if (hero.IsFugitive || hero.IsDisabled)
             {
-                explanation = new TextObject("{=nMmYZ3xi}{HERO.NAME} is not available right now.");
+                explanation = GameTexts.FindText("str_ineligible_army_leader_unavailable");
                 explanation.SetCharacterProperties("HERO", hero.CharacterObject);
                 return false;
             }
             if (targetArmy.Parties.Count == 1 && targetArmy.LeaderParty.LeaderHero != null)
             {
-                explanation = new TextObject("{=pwuEqegC}Army leader is the only member of the army right now.");
+                explanation = GameTexts.FindText("str_ineligible_army_leader_empty_army");
                 return false;
             }
             if (targetArmy.LeaderParty.MapEvent != null)
             {
-                explanation = new TextObject("{=yC52EBCb}Target army is currently in a battle right now.");
+                explanation = GameTexts.FindText("str_action_disabled_reason_army_in_event");
                 return false;
             }
             if (hero.CurrentSettlement != null && (hero.CurrentSettlement.IsUnderSiege || hero.CurrentSettlement.IsUnderRaid))
             {
-                explanation = new TextObject("{=L9nn40qu}{HERO.NAME}{.o} location is under attack right now.");
+                explanation = GameTexts.FindText("str_faction_member_ineligible_under_attack");
                 explanation.SetCharacterProperties("HERO", hero.CharacterObject);
                 return false;
             }

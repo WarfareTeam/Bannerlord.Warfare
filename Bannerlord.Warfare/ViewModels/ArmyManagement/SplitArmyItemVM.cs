@@ -2,6 +2,7 @@
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ComponentInterfaces;
+using TaleWorlds.CampaignSystem.Extensions;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Siege;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
@@ -152,7 +153,8 @@ namespace Warfare.ViewModels.ArmyManagement
             }
             if (Party.Army != null && Party.Army.LeaderParty == Party.LeaderHero.PartyBelongedTo)
             {
-                explanation = new TextObject("{=aROohsat}Already leading another army.");
+                explanation = GameTexts.FindText("str_ineligible_army_leader_already_leading");
+                explanation.SetCharacterProperties("HERO", Party.LeaderHero.CharacterObject);
                 return false;
             }
             if (Party.MapEvent != null || Party.SiegeEvent != null)

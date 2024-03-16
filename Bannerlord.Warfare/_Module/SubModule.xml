@@ -17,8 +17,8 @@
 	</DependedModules>
     <SubModules>
         <SubModule>
-            <Name value="Warfare"/>
-            <DLLName value="Warfare.dll"/>
+            <Name value="Bannerlord.Warfare"/>
+            <DLLName value="Bannerlord.Warfare.dll"/>
             <SubModuleClassType value="Warfare.SubModule"/>
             <Tags />
         </SubModule>
@@ -29,3 +29,4 @@
         </XmlNode>
     </Xmls>
 </Module>
+
