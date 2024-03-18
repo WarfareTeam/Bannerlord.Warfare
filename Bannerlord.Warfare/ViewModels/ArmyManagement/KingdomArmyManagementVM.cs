@@ -155,11 +155,11 @@ namespace Warfare.ViewModels.ArmyManagement
             DoneHint = new();
             TutorialNotification = new();
             CanAffordInfluenceCost = true;
-            Army = VMHelper.Military.CurrentSelectedArmy.Army;
+            Army = VMHelper.Military!.CurrentSelectedArmy.Army;
             PlayerHasArmy = Army != null;
             foreach (MobileParty item in MobileParty.All)
             {
-                if (item.LeaderHero != null && item.MapFaction == Hero.MainHero.MapFaction && item.LeaderHero != Army.LeaderParty.LeaderHero && item.LeaderHero != Hero.MainHero && !item.IsCaravan)
+                if (item.LeaderHero != null && item.MapFaction == Hero.MainHero.MapFaction && item.LeaderHero != Army.LeaderParty.LeaderHero && !item.IsCaravan)
                 {
                     PartyList.Add(new ArmyManagementItemVM(OnAddToCart, OnRemove, OnFocus, item));
                 }
