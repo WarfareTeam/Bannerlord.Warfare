@@ -8,7 +8,6 @@ using SandBox.GauntletUI;
 using SandBox.View.Map;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
-using TaleWorlds.CampaignSystem.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.Encounters;
 using TaleWorlds.CampaignSystem.Extensions;
 using TaleWorlds.CampaignSystem.MapEvents;
@@ -273,7 +272,7 @@ namespace Warfare.ViewModels.Military
             }
         }
 
-        private void OnArmySelection(KingdomArmyItemVM item)
+        internal void OnArmySelection(KingdomArmyItemVM item)
         {
             if (CurrentSelectedArmy != item)
             {
