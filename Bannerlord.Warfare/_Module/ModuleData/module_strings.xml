@@ -5,7 +5,7 @@
 	<string id="str_mercenaries" text="{=LYNyf5B1JF}Mercenaries" />
 	<string id="str_warning_not_enough_parties" text="{=QuIDvx2sTf}Army does not have enough member parties." />
 	<string id="str_manage_army_explanation" text="{=zMGaTGyR}Manage this army" />
-	<string id="str_cannot_manage_army_while_mercenary" text="{=DOm6wr2eaH}You cannot manage contracts as a mercenary" />
+	<string id="str_cannot_manage_army_while_mercenary" text="{=DOm6wr2eaH}You cannot manage armies as a mercenary" />
 	<string id="str_cannot_manage_army_while_in_event" text="{=mGWrSJLE}You cannot manage an army while it's in a map event." />
 	<string id="str_manage_army_restricted" text="{=lUyxAp4fS5}You cannot manage an army unless you are the faction leader or an army member." />
 	<string id="str_disband" text="{=xXSFaGW8}Disband" />
@@ -16,9 +16,9 @@
 	<string id="str_fire" text="{=df5WgKtlbe}Fire" />
 	<string id="str_kingdom_fire_mercenary_explanation" text="{=21wfq1qG5i}Terminate contract" />
 	<string id="str_kingdom_no_mercenary_selected" text="{=MQmvOm8vtT}No Mercenary Selected" />
-	<string id="str_add_cohesion_to_army" text="{=uEXvgrsQ}Add +{BOOSTAMOUNT} cohesion to this army" />
+	<string id="str_add_cohesion_to_army" text="{=uEXvgrsQ}Add +{BOOSTAMOUNT} cohesion to this army." />
 	<string id="str_change_army_leader" text="{=uhxCnG4n}Change Army Leader" />
-	<string id="str_change_army_leader_inquiry" text="{=TOC7RWdV}Are you sure you want to change this armies leader? It will cost you {INFLUENCE_COST} influence." />
+	<string id="str_change_army_leader_inquiry" text="{=TOC7RWdV}Are you sure you want to change this armies leader?" />
 	<string id="str_change_army_leader_inquiry_warning" text="{=wPSl2v80}{newline}{newline}WARNING: You will not be added to the new army." />
 	<string id="str_split_army" text="{=8MvD4u4J}Split Army" />
 	<string id="str_split_army_inquiry" text="{=tyZxyL8d}Are you sure you want to split this army? It will cost you between {MIN_COST} and {MAX_COST} influence." />
