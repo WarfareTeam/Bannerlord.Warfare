@@ -24,7 +24,6 @@ using TaleWorlds.Localization;
 using TaleWorlds.ScreenSystem;
 
 using Bannerlord.UIExtenderEx.Attributes;
-
 using Warfare.Behaviors;
 using Warfare.Contracts;
 using Warfare.Extensions;
@@ -302,7 +301,7 @@ namespace Warfare.ViewModels.Military
                 }
                 CurrentSelectedArmy = item;
                 NotificationCount = _viewDataTracker.NumOfKingdomArmyNotifications;
-                IEnumerable<int> memberPartyInfluenceCosts = from p in CurrentSelectedArmy.Army.Parties where !p.IsMainParty && p != item.Army.LeaderParty select Campaign.Current.Models.ArmyManagementCalculationModel.CalculatePartyInfluenceCost(MobileParty.MainParty, p);
+                IEnumerable<int> memberPartyInfluenceCosts = from p in CurrentSelectedArmy.Army.Parties where !p.IsMainParty select Campaign.Current.Models.ArmyManagementCalculationModel.CalculatePartyInfluenceCost(MobileParty.MainParty, p);
                 MinimumArmyCost = memberPartyInfluenceCosts.OrderBy(x => x).FirstOrDefault();
                 TotalArmyCost = memberPartyInfluenceCosts.Sum();
                 DisbandCost = 0;
@@ -388,12 +387,6 @@ namespace Warfare.ViewModels.Military
             if (Clan.PlayerClan.Influence < DisbandCost)
             {
                 disabledReason = GameTexts.FindText("str_warning_you_dont_have_enough_influence");
-                return false;
-            }
-
-            if (!CurrentSelectedArmy.IsMainArmy && CurrentSelectedArmy.Army.Parties.Contains(MobileParty.MainParty))
-            {
-                disabledReason = GameTexts.FindText("str_cannot_disband_army_while_in_that_army");
                 return false;
             }
 
@@ -708,7 +701,7 @@ namespace Warfare.ViewModels.Military
         {
             if (CurrentSelectedArmy != null)
             {
-                string inquiryText = GameTexts.FindText("str_change_army_leader_inquiry").SetTextVariable("INFLUENCE_COST", TotalArmyCost).ToString();
+                string inquiryText = GameTexts.FindText("str_change_army_leader_inquiry").ToString();
                 if (CurrentSelectedArmy.Army.LeaderParty == MobileParty.MainParty)
                 {
                     inquiryText += GameTexts.FindText("str_change_army_leader_inquiry_warning").ToString();
@@ -832,7 +825,7 @@ namespace Warfare.ViewModels.Military
                 newLeader.Clan.Kingdom.CreateArmy(newLeader, (from p in originalArmy.Parties where !p.IsMainParty select p).ToList(), newLeader.PartyBelongedTo.Army == null || newLeader.PartyBelongedTo.Army != originalArmy);
                 if (originalArmy.LeaderParty != MobileParty.MainParty && originalArmy.LeaderParty.ActualClan != newLeader.Clan)
                 {
-                    ChangeClanInfluenceAction.Apply(originalArmy.LeaderParty.ActualClan, TotalArmyCost / 2);
+                    ChangeClanInfluenceAction.Apply(originalArmy.LeaderParty.ActualClan, (TotalArmyCost - (Campaign.Current.Models.ArmyManagementCalculationModel.CalculatePartyInfluenceCost(MobileParty.MainParty, originalArmy.LeaderParty) * 2)) / 2);
                 }
                 originalArmy.GetType().GetMethod("DisperseInternal", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(originalArmy, new object[] { Army.ArmyDispersionReason.LeaderPartyRemoved });
                 RefreshArmyList();
