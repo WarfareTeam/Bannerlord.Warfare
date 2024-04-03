@@ -17,7 +17,7 @@ namespace Warfare.Models
 
         public override int CalculatePartyInfluenceCost(MobileParty armyLeaderParty, MobileParty party)
         {
-            if (party.ActualClan != null && !party.ActualClan.IsEliminated && party.ActualClan.IsMinorFaction && party != MobileParty.MainParty)
+            if (party.ActualClan != null && !party.ActualClan.IsEliminated && party.ActualClan.IsMinorFaction && party != MobileParty.MainParty && armyLeaderParty == armyLeaderParty.ActualClan.Kingdom.Leader.PartyBelongedTo)
             {
                 return 0;
             }
