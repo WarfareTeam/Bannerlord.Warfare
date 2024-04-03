@@ -20,6 +20,11 @@ namespace Warfare.Patches
         {
             if (owner.Army == null || settlement.MapFaction.Fiefs.Count() < 3 || (owner.Ai.DefaultBehavior == AiBehavior.BesiegeSettlement && owner.TargetSettlement == settlement) || !settlement.IsFortification)
             {
+                //Use vanilla logic
+                //if attacker has no army,
+                //if the target settlements faction has less than 3 fiefs,
+                //if attacker is already traveling to besiege this target,
+                //if the settlement is neither a town or castle
                 return true;
             }
             foreach (PartyAiAction action in aiActionQueue.ToList())

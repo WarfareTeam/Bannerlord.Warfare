@@ -52,19 +52,19 @@ namespace Warfare.Behaviors
                     {
                         continue;
                     }
-                    float hireableScore = hireableCount / 1200f;
-                    float strengthScore = wars.Select(x => x.Faction1 == kingdom ? x.Faction2.TotalStrength - x.Faction1.TotalStrength : x.Faction1.TotalStrength - x.Faction2.TotalStrength).Sum() * 0.00004f;
-                    float warScore = warCount * 0.0025f + wars.Where(y => y.Faction2 == kingdom).Count() * 0.0225f;
-                    float wealthScore = clan.Leader.Gold / 200_000_000f > 0.00001f ? clan.Leader.Gold / 200_000_000f : 0.00001f;
-                    float score = hireableScore + strengthScore + warScore + wealthScore;
+                    float hireableMercenariesScore = hireableCount / 1200f;
+                    float oppositionStrengthScore = wars.Select(x => x.Faction1 == kingdom ? x.Faction2.TotalStrength - x.Faction1.TotalStrength : x.Faction1.TotalStrength - x.Faction2.TotalStrength).Sum() * 0.00004f;
+                    float kingdomWarScore = warCount * 0.0025f + wars.Where(y => y.Faction2 == kingdom).Count() * 0.0225f;
+                    float clanWealthScore = clan.Leader.Gold / 200_000_000f > 0.00001f ? clan.Leader.Gold / 200_000_000f : 0.00001f;
+                    float clanHireMercenaryScore = hireableMercenariesScore + oppositionStrengthScore + kingdomWarScore + clanWealthScore;
                     Clan mercenary = hireables.ElementAt(MBRandom.RandomInt(hireableCount));
                     Contract contract = FindContract(mercenary);
                     if (contract != null)
                     {
                         float expirationScore = contract.Expiration.RemainingDaysFromNow / 4f;
-                        score /= expirationScore / 4f > 1f ? expirationScore / 4f : 1f;
+                        clanHireMercenaryScore /= expirationScore / 4f > 1f ? expirationScore / 4f : 1f;
                     }
-                    if (MBRandom.RandomFloat < score)
+                    if (MBRandom.RandomFloat < clanHireMercenaryScore)
                     {
                         GiveGoldAction.ApplyBetweenCharacters(clan.Leader, mercenary.Leader, mercenary.GetMercenaryWage(), true);
                         SignContract(mercenary, kingdom);

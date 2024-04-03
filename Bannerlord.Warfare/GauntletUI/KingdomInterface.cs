@@ -1,6 +1,6 @@
-﻿using SandBox.View.Map;
-using System;
+﻿using System;
 
+using SandBox.View.Map;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
@@ -18,10 +18,10 @@ namespace Warfare.GauntletUI
         private GauntletLayer _layer = default!;
         private ScreenBase _screenBase = default!;
         private ViewModel? _vm;
-        private SpriteCategory _category;
+        private SpriteCategory? _category;
         private CampaignTimeControlMode _timeControlModeBeforeArmyManagementOpened;
 
-        public void ShowInterface(Action onFinalize, Hero newLeader = null)
+        public void ShowInterface(Action onFinalize, Hero newLeader = null!)
         {
             SpriteData spriteData = UIResourceManager.SpriteData;
             TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
@@ -50,7 +50,7 @@ namespace Warfare.GauntletUI
                 _timeControlModeBeforeArmyManagementOpened = Campaign.Current.TimeControlMode;
                 Campaign.Current.TimeControlMode = CampaignTimeControlMode.Stop;
                 Campaign.Current.SetTimeControlModeLock(true);
-                MapScreen mapScreen = ScreenManager.TopScreen as MapScreen;
+                MapScreen mapScreen = (ScreenManager.TopScreen as MapScreen)!;
                 if (mapScreen != null)
                 {
                     mapScreen.SetIsInArmyManagement(true);
@@ -85,11 +85,11 @@ namespace Warfare.GauntletUI
             ScreenManager.TryLoseFocus(_layer);
             _screenBase.RemoveLayer(_layer);
             _layer = null!;
-            _vm.OnFinalize();
+            _vm!.OnFinalize();
             _vm = null;
-            _category.Unload();
+            _category!.Unload();
             _screenBase = null!;
-            MapScreen mapScreen = ScreenManager.TopScreen as MapScreen;
+            MapScreen mapScreen = (ScreenManager.TopScreen as MapScreen)!;
             if (mapScreen != null)
             {
                 mapScreen.SetIsInArmyManagement(false);
@@ -110,7 +110,7 @@ namespace Warfare.GauntletUI
         {
             get
             {
-                return _vm;
+                return _vm!;
             }
         }
     }
