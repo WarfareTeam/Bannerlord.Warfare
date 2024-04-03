@@ -5,7 +5,10 @@ using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.ComponentInterfaces;
+using TaleWorlds.CampaignSystem.Extensions;
 using TaleWorlds.CampaignSystem.GameComponents;
+using TaleWorlds.CampaignSystem.Party;
+using TaleWorlds.CampaignSystem.Party.PartyComponents;
 using TaleWorlds.CampaignSystem.ViewModelCollection.ArmyManagement;
 using TaleWorlds.Core;
 
@@ -66,8 +69,16 @@ namespace Warfare.Behaviors
                     }
                     if (MBRandom.RandomFloat < clanHireMercenaryScore)
                     {
-                        GiveGoldAction.ApplyBetweenCharacters(clan.Leader, mercenary.Leader, mercenary.GetMercenaryWage(), true);
                         SignContract(mercenary, kingdom);
+                        if (clan.Leader.PartyBelongedTo.Army != null)
+                        {
+                            foreach (WarPartyComponent party in mercenary.WarPartyComponents)
+                            {
+                                party.MobileParty.Army = clan.Leader.PartyBelongedTo.Army;
+                                SetPartyAiAction.GetActionForEscortingParty(party.MobileParty, clan.Leader.PartyBelongedTo.Army.LeaderParty);
+                            }
+                        }
+                        GiveGoldAction.ApplyBetweenCharacters(clan.Leader, mercenary.Leader, mercenary.GetMercenaryWage(), true);
                     }
                 }
             }
