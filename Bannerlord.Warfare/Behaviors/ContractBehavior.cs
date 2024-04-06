@@ -70,12 +70,15 @@ namespace Warfare.Behaviors
                     if (MBRandom.RandomFloat < clanHireMercenaryScore)
                     {
                         SignContract(mercenary, kingdom);
-                        if (clan.Leader.PartyBelongedTo.Army != null)
+                        if (clan.Leader != null && clan.Leader.PartyBelongedTo != null && clan.Leader.PartyBelongedTo.Army != null)
                         {
                             foreach (WarPartyComponent party in mercenary.WarPartyComponents)
                             {
-                                party.MobileParty.Army = clan.Leader.PartyBelongedTo.Army;
-                                SetPartyAiAction.GetActionForEscortingParty(party.MobileParty, clan.Leader.PartyBelongedTo.Army.LeaderParty);
+                                if (party.MobileParty != null && party.MobileParty.IsActive && party.MobileParty.MapEvent == null && party.MobileParty.SiegeEvent == null)
+                                {
+                                    party.MobileParty.Army = clan.Leader.PartyBelongedTo.Army;
+                                    SetPartyAiAction.GetActionForEscortingParty(party.MobileParty, clan.Leader.PartyBelongedTo.Army.LeaderParty);
+                                }
                             }
                         }
                         GiveGoldAction.ApplyBetweenCharacters(clan.Leader, mercenary.Leader, mercenary.GetMercenaryWage(), true);
