@@ -50,7 +50,10 @@ TODO:
 FIXED:
 •Mercenaries are too cheap, making wars easy in an established kingdom. Possible fixes could be adding a higher cost for contracting (2.5x?) or an additional cost to call to army. Fixed by allowing only a kingdom leader to call mercenaries to their army without an influence cost. Gold costs were not changed.
 
---Prisoners Overhaul
+Prisoners Overhaul
 TODO:
 •Prisoners should disperse back to enemy lord(s) when escaped, set free or ransomed.
 •Army & Party leaders should be able to surrender during battle and their party members would automatically rejoin them when dispersed from prison. INFO: This would be separate from OrderWOPower's Surrender Tweaks in that the surrendering would happen DURING a battle, once the other side comes to a realization they cannot win.
+
+Miscellaneous
+•Includes two commands to check remaining party food (/campaign.party_food [HeroName]) and hero gold (/campaign.hero_gold [HeroName])
