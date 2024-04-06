@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bannerlord.Warfare;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -67,7 +68,8 @@ namespace Warfare.Behaviors
                         float expirationScore = contract.Expiration.RemainingDaysFromNow / 4f;
                         clanHireMercenaryScore /= expirationScore / 4f > 1f ? expirationScore / 4f : 1f;
                     }
-                    if (MBRandom.RandomFloat < clanHireMercenaryScore)
+                    float RandomFloat = MBRandom.RandomFloat;
+                    if (RandomFloat < clanHireMercenaryScore)
                     {
                         SignContract(mercenary, kingdom);
                         Hero armyLeader = (from x in clan.Heroes where x.PartyBelongedTo != null && x.PartyBelongedTo.Army != null orderby x.PartyBelongedTo.Army.TotalStrength descending select x).FirstOrDefault();
@@ -86,6 +88,10 @@ namespace Warfare.Behaviors
                             }
                         }
                         GiveGoldAction.ApplyBetweenCharacters(clan.Leader, mercenary.Leader, mercenary.GetMercenaryWage(), true);
+                    }
+                    if (Settings.Current.Logging)
+                    {
+                        SubModule.Log("Clan=" + clan.Name.ToString() + ", Mercenary=" + mercenary.Name.ToString() + ", RandomFloat=" + RandomFloat + ", clanHireMercenaryScore=" + clanHireMercenaryScore + ", hireableMercenariesScore=" + hireableMercenariesScore + ", oppositionStrengthScore=" + oppositionStrengthScore + ", kingdomWarScore=" + kingdomWarScore + ", clanWealthScore=" + clanWealthScore);
                     }
                 }
             }
