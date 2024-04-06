@@ -39,7 +39,7 @@ namespace Warfare
             return "Party is not found for hero: " + hero.Name.ToString();
         }
 
-        [CommandLineFunctionality.CommandLineArgumentFunction("party_gold", "campaign")]
+        [CommandLineFunctionality.CommandLineArgumentFunction("hero_gold", "campaign")]
         internal static string CheckPartyGold(List<string> strings)
         {
             if (!CampaignCheats.CheckCheatUsage(ref CampaignCheats.ErrorType))
@@ -48,7 +48,7 @@ namespace Warfare
             }
             if (!CampaignCheats.CheckParameters(strings, 1) || CampaignCheats.CheckHelp(strings))
             {
-                return "Format is \"campaign.party_gold [HeroName]\".";
+                return "Format is \"campaign.hero_gold [HeroName]\".";
             }
             Hero hero = CampaignCheats.GetHero(strings[0]);
             if (hero == null)
@@ -63,7 +63,6 @@ namespace Warfare
             {
                 if (string.Equals(hero.PartyBelongedTo.Name.ToString(), party.Name.ToString(), StringComparison.OrdinalIgnoreCase))
                 {
-
                     int gold = party.LeaderHero.Gold;
                     return party.Name.ToString() + " has " + gold + " gold remaining with " + party.TotalWage + " daily wages.";
                 }
