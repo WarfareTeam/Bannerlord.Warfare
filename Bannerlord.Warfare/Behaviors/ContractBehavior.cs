@@ -70,15 +70,19 @@ namespace Warfare.Behaviors
                     if (MBRandom.RandomFloat < clanHireMercenaryScore)
                     {
                         SignContract(mercenary, kingdom);
-                        if (clan.Leader != null && clan.Leader.PartyBelongedTo != null && clan.Leader.PartyBelongedTo.Army != null)
+                        Hero armyLeader = (from x in clan.Heroes where x.PartyBelongedTo != null && x.PartyBelongedTo.Army != null orderby x.PartyBelongedTo.Army.TotalStrength descending select x).FirstOrDefault();
+                        if (armyLeader != null)
                         {
                             foreach (WarPartyComponent party in mercenary.WarPartyComponents)
                             {
+                                int influenceToReimburse = 0;
                                 if (party.MobileParty != null && party.MobileParty.IsActive && party.MobileParty.MapEvent == null && party.MobileParty.SiegeEvent == null)
                                 {
-                                    party.MobileParty.Army = clan.Leader.PartyBelongedTo.Army;
-                                    SetPartyAiAction.GetActionForEscortingParty(party.MobileParty, clan.Leader.PartyBelongedTo.Army.LeaderParty);
+                                    party.MobileParty.Army = armyLeader.PartyBelongedTo.Army;
+                                    SetPartyAiAction.GetActionForEscortingParty(party.MobileParty, armyLeader.PartyBelongedTo.Army.LeaderParty);
+                                    influenceToReimburse += Campaign.Current.Models.ArmyManagementCalculationModel.CalculatePartyInfluenceCost(armyLeader.PartyBelongedTo, party.MobileParty);
                                 }
+                                ChangeClanInfluenceAction.Apply(clan, influenceToReimburse);
                             }
                         }
                         GiveGoldAction.ApplyBetweenCharacters(clan.Leader, mercenary.Leader, mercenary.GetMercenaryWage(), true);
