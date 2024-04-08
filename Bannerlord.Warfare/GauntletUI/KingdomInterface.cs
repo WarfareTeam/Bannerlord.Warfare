@@ -1,5 +1,6 @@
 ﻿using System;
 
+using SandBox.View.Map;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
@@ -17,15 +18,16 @@ namespace Warfare.GauntletUI
         private GauntletLayer _layer = default!;
         private ScreenBase _screenBase = default!;
         private ViewModel? _vm;
-        private SpriteCategory _category;
+        private SpriteCategory? _category;
+        private CampaignTimeControlMode _timeControlModeBeforeArmyManagementOpened;
 
-        public void ShowInterface(Action onFinalize, Hero newLeader = null)
+        public void ShowInterface(Action onFinalize, Hero newLeader = null!)
         {
             SpriteData spriteData = UIResourceManager.SpriteData;
             TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
             ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
             _category = spriteData.SpriteCategories["ui_armymanagement"];
-            _layer = new GauntletLayer(2);
+            _layer = new GauntletLayer(300);
             if (newLeader == null)
             {
                 ShowArmyManagementInterface(onFinalize);
@@ -43,6 +45,17 @@ namespace Warfare.GauntletUI
             _layer.IsFocusLayer = true;
             _screenBase.AddLayer(_layer);
             ScreenManager.TrySetFocus(_layer);
+            if (newLeader == null)
+            {
+                _timeControlModeBeforeArmyManagementOpened = Campaign.Current.TimeControlMode;
+                Campaign.Current.TimeControlMode = CampaignTimeControlMode.Stop;
+                Campaign.Current.SetTimeControlModeLock(true);
+                MapScreen mapScreen = (ScreenManager.TopScreen as MapScreen)!;
+                if (mapScreen != null)
+                {
+                    mapScreen.SetIsInArmyManagement(true);
+                }
+            }
         }
 
         public void ShowArmyManagementInterface(Action onFinalize)
@@ -72,10 +85,17 @@ namespace Warfare.GauntletUI
             ScreenManager.TryLoseFocus(_layer);
             _screenBase.RemoveLayer(_layer);
             _layer = null!;
-            _vm.OnFinalize();
+            _vm!.OnFinalize();
             _vm = null;
-            _category.Unload();
+            _category!.Unload();
             _screenBase = null!;
+            MapScreen mapScreen = (ScreenManager.TopScreen as MapScreen)!;
+            if (mapScreen != null)
+            {
+                mapScreen.SetIsInArmyManagement(false);
+            }
+            Campaign.Current.SetTimeControlModeLock(false);
+            Campaign.Current.TimeControlMode = _timeControlModeBeforeArmyManagementOpened;
         }
 
         public GauntletLayer Layer
@@ -90,7 +110,7 @@ namespace Warfare.GauntletUI
         {
             get
             {
-                return _vm;
+                return _vm!;
             }
         }
     }

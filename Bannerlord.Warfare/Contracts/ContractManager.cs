@@ -43,7 +43,7 @@ namespace Warfare.Contracts
                     p.MobileParty.Ai.SetMoveModeHold();
                 }
             }
-            _contracts.Add(new Contract(employer, mercenary, CampaignTime.Now + CampaignTime.DaysFromNow(CampaignTime.DaysInSeason)));
+            _contracts.Add(new Contract(employer, mercenary, CampaignTime.DaysFromNow(CampaignTime.DaysInSeason)));
         }
 
         public void RemoveContract(Clan mercenary)

@@ -8,7 +8,6 @@ using SandBox.GauntletUI;
 using SandBox.View.Map;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
-using TaleWorlds.CampaignSystem.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.Encounters;
 using TaleWorlds.CampaignSystem.Extensions;
 using TaleWorlds.CampaignSystem.MapEvents;
@@ -25,7 +24,6 @@ using TaleWorlds.Localization;
 using TaleWorlds.ScreenSystem;
 
 using Bannerlord.UIExtenderEx.Attributes;
-
 using Warfare.Behaviors;
 using Warfare.Contracts;
 using Warfare.Extensions;
@@ -131,7 +129,11 @@ namespace Warfare.ViewModels.Military
 
         private int _minimumArmyCost;
 
+        private string _minimumArmyCostLabel;
+
         private int _totalArmyCost;
+
+        private string _totalArmyCostLabel;
 
         private int _disbandCost;
 
@@ -269,7 +271,7 @@ namespace Warfare.ViewModels.Military
             }
         }
 
-        private void OnArmySelection(KingdomArmyItemVM item)
+        internal void OnArmySelection(KingdomArmyItemVM item)
         {
             if (CurrentSelectedArmy != item)
             {
@@ -299,7 +301,7 @@ namespace Warfare.ViewModels.Military
                 }
                 CurrentSelectedArmy = item;
                 NotificationCount = _viewDataTracker.NumOfKingdomArmyNotifications;
-                IEnumerable<int> memberPartyInfluenceCosts = from p in CurrentSelectedArmy.Army.Parties where !p.IsMainParty && p != item.Army.LeaderParty select Campaign.Current.Models.ArmyManagementCalculationModel.CalculatePartyInfluenceCost(MobileParty.MainParty, p);
+                IEnumerable<int> memberPartyInfluenceCosts = from p in CurrentSelectedArmy.Army.Parties where !p.IsMainParty select Campaign.Current.Models.ArmyManagementCalculationModel.CalculatePartyInfluenceCost(MobileParty.MainParty, p);
                 MinimumArmyCost = memberPartyInfluenceCosts.OrderBy(x => x).FirstOrDefault();
                 TotalArmyCost = memberPartyInfluenceCosts.Sum();
                 DisbandCost = 0;
@@ -309,6 +311,8 @@ namespace Warfare.ViewModels.Military
                     TotalArmyCost *= 2;
                     DisbandCost = Campaign.Current.Models.DiplomacyModel.GetInfluenceCostOfDisbandingArmy();
                 }
+                MinimumArmyCostLabel = MinimumArmyCost.ToString();
+                TotalArmyCostLabel = TotalArmyCost.ToString();
                 CanChangeCurrentArmyLeader = GetCanChangeCurrentArmyLeaderWithReason(out var disabledReason);
                 ChangeLeaderHint.HintText = disabledReason;
                 CanSplitCurrentArmy = GetCanSplitCurrentArmyWithReason(out disabledReason);
@@ -383,12 +387,6 @@ namespace Warfare.ViewModels.Military
             if (Clan.PlayerClan.Influence < DisbandCost)
             {
                 disabledReason = GameTexts.FindText("str_warning_you_dont_have_enough_influence");
-                return false;
-            }
-
-            if (!CurrentSelectedArmy.IsMainArmy && CurrentSelectedArmy.Army.Parties.Contains(MobileParty.MainParty))
-            {
-                disabledReason = GameTexts.FindText("str_cannot_disband_army_while_in_that_army");
                 return false;
             }
 
@@ -495,10 +493,6 @@ namespace Warfare.ViewModels.Military
 
         private bool GetCanHireCurrentMercenaryWithReason(out TextObject disabledReason)
         {
-            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
-            {
-                return false;
-            }
 
             if (CurrentSelectedMercenary.Clan.IsUnderMercenaryService)
             {
@@ -512,16 +506,17 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
+            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
+            {
+                return false;
+            }
+
             disabledReason = TextObject.Empty;
             return true;
         }
 
         private bool GetCanExtendCurrentMercenaryWithReason(out TextObject disabledReason)
         {
-            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
-            {
-                return false;
-            }
 
             if (!CurrentSelectedMercenary.Clan.IsUnderMercenaryService || CurrentSelectedMercenary.Clan.Kingdom != Clan.PlayerClan.Kingdom)
             {
@@ -547,16 +542,17 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
+            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
+            {
+                return false;
+            }
+
             disabledReason = TextObject.Empty;
             return true;
         }
 
         private bool GetCanFireCurrentMercenaryWithReason(out TextObject disabledReason)
         {
-            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
-            {
-                return false;
-            }
 
             Contract contract = _behavior.FindContract(CurrentSelectedMercenary.Clan);
             if (contract == null)
@@ -596,6 +592,11 @@ namespace Warfare.ViewModels.Military
                     disabledReason = GameTexts.FindText("str_action_disabled_reason_raid");
                     return false;
                 }
+            }
+
+            if (!GetMercenaryActionIsEnabledWithReason(out disabledReason))
+            {
+                return false;
             }
 
             disabledReason = TextObject.Empty;
@@ -700,7 +701,7 @@ namespace Warfare.ViewModels.Military
         {
             if (CurrentSelectedArmy != null)
             {
-                string inquiryText = GameTexts.FindText("str_change_army_leader_inquiry").SetTextVariable("INFLUENCE_COST", TotalArmyCost).ToString();
+                string inquiryText = GameTexts.FindText("str_change_army_leader_inquiry").ToString();
                 if (CurrentSelectedArmy.Army.LeaderParty == MobileParty.MainParty)
                 {
                     inquiryText += GameTexts.FindText("str_change_army_leader_inquiry_warning").ToString();
@@ -824,7 +825,7 @@ namespace Warfare.ViewModels.Military
                 newLeader.Clan.Kingdom.CreateArmy(newLeader, (from p in originalArmy.Parties where !p.IsMainParty select p).ToList(), newLeader.PartyBelongedTo.Army == null || newLeader.PartyBelongedTo.Army != originalArmy);
                 if (originalArmy.LeaderParty != MobileParty.MainParty && originalArmy.LeaderParty.ActualClan != newLeader.Clan)
                 {
-                    ChangeClanInfluenceAction.Apply(originalArmy.LeaderParty.ActualClan, TotalArmyCost / 2);
+                    ChangeClanInfluenceAction.Apply(originalArmy.LeaderParty.ActualClan, (TotalArmyCost - (Campaign.Current.Models.ArmyManagementCalculationModel.CalculatePartyInfluenceCost(MobileParty.MainParty, originalArmy.LeaderParty) * 2)) / 2);
                 }
                 originalArmy.GetType().GetMethod("DisperseInternal", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(originalArmy, new object[] { Army.ArmyDispersionReason.LeaderPartyRemoved });
                 RefreshArmyList();
@@ -1289,6 +1290,23 @@ namespace Warfare.ViewModels.Military
         }
 
         [DataSourceProperty]
+        public string MinimumArmyCostLabel
+        {
+            get
+            {
+                return _minimumArmyCostLabel;
+            }
+            set
+            {
+                if (value != _minimumArmyCostLabel)
+                {
+                    _minimumArmyCostLabel = value;
+                    OnPropertyChangedWithValue(value, "MinimumArmyCostLabel");
+                }
+            }
+        }
+
+        [DataSourceProperty]
         public int TotalArmyCost
         {
             get
@@ -1301,6 +1319,23 @@ namespace Warfare.ViewModels.Military
                 {
                     _totalArmyCost = value;
                     OnPropertyChangedWithValue(value, "TotalArmyCost");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public string TotalArmyCostLabel
+        {
+            get
+            {
+                return _totalArmyCostLabel;
+            }
+            set
+            {
+                if (value != _totalArmyCostLabel)
+                {
+                    _totalArmyCostLabel = value;
+                    OnPropertyChangedWithValue(value, "TotalArmyCostLabel");
                 }
             }
         }

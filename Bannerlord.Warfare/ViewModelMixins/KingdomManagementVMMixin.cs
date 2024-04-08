@@ -25,7 +25,7 @@ namespace Warfare.ViewModelMixins
         [DataSourceMethod]
         public void ExecuteShowMilitary()
         {
-            ViewModel.GetType().GetMethod("SetSelectedCategory", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ViewModel, new object[] { 3 });
+            ViewModel!.GetType().GetMethod("SetSelectedCategory", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ViewModel, new object[] { 3 });
         }
 
         [DataSourceProperty]

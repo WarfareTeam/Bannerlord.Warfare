@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Bannerlord.Warfare;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.ComponentInterfaces;
+using TaleWorlds.CampaignSystem.Extensions;
 using TaleWorlds.CampaignSystem.GameComponents;
+using TaleWorlds.CampaignSystem.Party;
+using TaleWorlds.CampaignSystem.Party.PartyComponents;
 using TaleWorlds.CampaignSystem.ViewModelCollection.ArmyManagement;
 using TaleWorlds.Core;
 
@@ -52,22 +56,42 @@ namespace Warfare.Behaviors
                     {
                         continue;
                     }
-                    float hireableScore = hireableCount / 1200f;
-                    float strengthScore = wars.Select(x => x.Faction1 == kingdom ? x.Faction2.TotalStrength - x.Faction1.TotalStrength : x.Faction1.TotalStrength - x.Faction2.TotalStrength).Sum() * 0.00004f;
-                    float warScore = warCount * 0.0025f + wars.Where(y => y.Faction2 == kingdom).Count() * 0.0225f;
-                    float wealthScore = clan.Leader.Gold / 200_000_000f > 0.00001f ? clan.Leader.Gold / 200_000_000f : 0.00001f;
-                    float score = hireableScore + strengthScore + warScore + wealthScore;
+                    float hireableMercenariesScore = hireableCount / 1200f;
+                    float oppositionStrengthScore = wars.Select(x => x.Faction1 == kingdom ? x.Faction2.TotalStrength - x.Faction1.TotalStrength : x.Faction1.TotalStrength - x.Faction2.TotalStrength).Sum() * 0.00004f;
+                    float kingdomWarScore = warCount * 0.0025f + wars.Where(y => y.Faction2 == kingdom).Count() * 0.0225f;
+                    float clanWealthScore = clan.Leader.Gold / 200_000_000f > 0.00001f ? clan.Leader.Gold / 200_000_000f : 0.00001f;
+                    float clanHireMercenaryScore = hireableMercenariesScore + oppositionStrengthScore + kingdomWarScore + clanWealthScore;
                     Clan mercenary = hireables.ElementAt(MBRandom.RandomInt(hireableCount));
                     Contract contract = FindContract(mercenary);
                     if (contract != null)
                     {
                         float expirationScore = contract.Expiration.RemainingDaysFromNow / 4f;
-                        score /= expirationScore / 4f > 1f ? expirationScore / 4f : 1f;
+                        clanHireMercenaryScore /= expirationScore / 4f > 1f ? expirationScore / 4f : 1f;
                     }
-                    if (MBRandom.RandomFloat < score)
+                    float RandomFloat = MBRandom.RandomFloat;
+                    if (RandomFloat < clanHireMercenaryScore)
                     {
-                        GiveGoldAction.ApplyBetweenCharacters(clan.Leader, mercenary.Leader, mercenary.GetMercenaryWage(), true);
                         SignContract(mercenary, kingdom);
+                        Hero armyLeader = (from x in clan.Heroes where x.PartyBelongedTo != null && x.PartyBelongedTo.Army != null orderby x.PartyBelongedTo.Army.TotalStrength descending select x).FirstOrDefault();
+                        if (armyLeader != null)
+                        {
+                            foreach (WarPartyComponent party in mercenary.WarPartyComponents)
+                            {
+                                int influenceToReimburse = 0;
+                                if (party.MobileParty != null && party.MobileParty.IsActive && party.MobileParty.MapEvent == null && party.MobileParty.SiegeEvent == null)
+                                {
+                                    party.MobileParty.Army = armyLeader.PartyBelongedTo.Army;
+                                    SetPartyAiAction.GetActionForEscortingParty(party.MobileParty, armyLeader.PartyBelongedTo.Army.LeaderParty);
+                                    influenceToReimburse += Campaign.Current.Models.ArmyManagementCalculationModel.CalculatePartyInfluenceCost(armyLeader.PartyBelongedTo, party.MobileParty);
+                                }
+                                ChangeClanInfluenceAction.Apply(clan, influenceToReimburse);
+                            }
+                        }
+                        GiveGoldAction.ApplyBetweenCharacters(clan.Leader, mercenary.Leader, mercenary.GetMercenaryWage(), true);
+                    }
+                    if (Settings.Current.Logging)
+                    {
+                        SubModule.Log("Clan=" + clan.Name.ToString() + ", Mercenary=" + mercenary.Name.ToString() + ", RandomFloat=" + RandomFloat + ", clanHireMercenaryScore=" + clanHireMercenaryScore + ", hireableMercenariesScore=" + hireableMercenariesScore + ", oppositionStrengthScore=" + oppositionStrengthScore + ", kingdomWarScore=" + kingdomWarScore + ", clanWealthScore=" + clanWealthScore);
                     }
                 }
             }
