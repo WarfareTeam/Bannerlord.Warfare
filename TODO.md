@@ -6,6 +6,7 @@ General
 •Policies tab in the Kingdom UI should be renamed to Decisions. You could view policies as well as current battle strategy, and get an overview of your kingdoms historical performance in battles & wars.
 •Ability to war with clans individually in a kingdom, while the player is independent.
 •Ability for an NPC clan to become independent to form their own faction with certain conditions.
+•Backwards compatibility
 
 Battle Overhaul
 •Arrows should pierce through shields in certain conditions, with some damage dealt to the character and the possibility to stagger them.
