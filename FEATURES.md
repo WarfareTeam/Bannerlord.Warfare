@@ -29,4 +29,6 @@
 - Hiring clan immediately adds a hired mercenary into their army for no cost (one-time), even if they aren't the leader of said army.
 
 ## Miscellaneous
+- Basic MCM options
+- Basic localization support
 - Includes two commands to check remaining party food (/campaign.party_food [HeroName]) and hero gold (/campaign.hero_gold [HeroName])
