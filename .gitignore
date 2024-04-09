@@ -80,3 +80,7 @@ Bannerlord.Warfare/bin/x64/Debug/netstandard2.0/Bannerlord.Warfare.dll
 .vs/Bannerlord.Warfare/FileContentIndex/8a32de5e-a74a-4f86-a6d6-7827d11bbf4c.vsidx
 .vs/Bannerlord.Warfare/FileContentIndex/899c5ecc-f25b-4b61-b10c-8cce9fd8cbc0.vsidx
 .vs/Bannerlord.Warfare/FileContentIndex/8e6d5180-4fad-43ed-9df9-b6d861868b90.vsidx
+/.vs
+/src/.vs
+/src/Bannerlord.Warfare/bin
+/src/Bannerlord.Warfare/obj
