@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" type="string">
+	<tags>
+		<tag language="English" />
+	</tags>
+	<strings>
+		<string id="4T0zfjz0" text="Military" />
+		<string id="L3vpqJKB" text="Mercenaries" />
+		<string id="eFauEP8r" text="{LEADER}'s {SUFFIX}" />
+		<string id="dxkaEIqK" text="Band" />
+		<string id="eVDDsEed" text="Companions" />
+		<string id="BfSQxgPM" text="Company" />
+		<string id="h6b2NEHU" text="Followers" />
+		<string id="5E9aDuRC" text="Wanderers" />
+		<string id="vZrxepWp" text="Army does not have enough member parties." />
+		<string id="zMGaTGyR" text="Manage this army" />
+		<string id="YS8yB9oA" text="You cannot manage armies as a mercenary." />
+		<string id="mGWrSJLE" text="You cannot manage an army while it's in a map event." />
+		<string id="kBGlNylO" text="You cannot manage an army unless you are the faction leader or an army member." />
+		<string id="lzKbVSTG" text="Hire" />
+		<string id="7Id19Dwx" text="Extend" />
+		<string id="PKwBY8J1" text="Sign Contract" />
+		<string id="NhIpemI2" text="Extend Contract" />
+		<string id="sVqbgt98" text="Fire" />
+		<string id="efD1qfi2" text="Terminate contract" />
+		<string id="JknjvtkX" text="No Mercenary Selected" />
+		<string id="uhxCnG4n" text="Change Army Leader" />
+		<string id="TOC7RWdV" text="Are you sure you want to change this armies leader?" />
+		<string id="wPSl2v80" text="{newline}{newline}WARNING: You will not be added to the new army." />
+		<string id="8MvD4u4J" text="Split Army" />
+		<string id="tyZxyL8d" text="Are you sure you want to split this army? It will cost you between {MIN_COST} and {MAX_COST} influence." />
+		<string id="n7wMx7op" text="{newline}{newline}WARNING: Your army will lose the selected leader if they're a member and any member parties you select. You will remain the leader of the old army." />
+		<string id="kqeA8rjL" text="Are you sure you want to disband your army?" />
+		<string id="619gtcXb" text="Are you sure you want to disband this army? This will result in relation loss." />
+		<string id="FdzsOvDq" text="This action is disabled while in a mission." />
+		<string id="DvO4aGre" text="You can not perform this action while the army is in a siege." />
+		<string id="aXPDpkAR" text="You can not perform this action while the army is in a map event." />
+		<string id="lFWDKhaG" text="Mercenaries are already under contract." />
+		<string id="ciBBsXak" text="Mercenaries are contracted by another kingdom." />
+		<string id="t30VD50U" text="Can only extend contracts with less than one {LENGTH} remaining." />
+		<string id="VM3rkJqn" text="week" />
+		<string id="vwl3CMHE" text="season" />
+		<string id="HB9ZKpAW" text="year" />
+		<string id="3rl5kKcO" text="You cannot hire mercenaries while they're in a map event." />
+		<string id="mfKEPzhj" text="Mercenaries are not under contract." />
+		<string id="pts0L1WR" text="Only rulers can terminate mercenary contracts." />
+		<string id="fOPN5GCF" text="You cannot manage your own contract." />
+		<string id="nDwqp7GZ" text="You cannot manage contracts while a target clan party is in a map event." />
+		<string id="zrhr4rDA" text="Are you sure you want to {EXTEND} contract with this mercenary? This will result in a non-refundable up-front cost." />
+		<string id="eZlBbp5f" text="Are you sure you want to terminate the contract with this mercenary? You will not receive a refund." />
+		<string id="HAo6iIda" text="{HERO.NAME} is too young to lead an army." />
+		<string id="kNW1qYSi" text="{HERO.NAME} is already leading another army." />
+		<string id="hv1ARuaU" text="{HERO.NAME} is in prison right now." />
+		<string id="nMmYZ3xi" text="{HERO.NAME} is not available right now." />
+		<string id="pwuEqegC" text="Army leader is the only member of the army right now." />
+		<string id="L9nn40qu" text="{HERO.NAME}{.o} location is under attack right now." />
+		<string id="wpRXZsLv" text="You are under contract" />
+		<string id="8SYPcFKw" text="Under contract" />
+		<string id="xZbXWkys" text="Hired by your faction" />
+		<string id="dRs1KZ3P" text="Hired by you" />
+		<string id="J1G2EXsn" text="Contract Cost" />
+		<string id="AwmsTVoc" text="sign" />
+		<string id="NgtpnwlS" text="extend" />
+		<!--Settings-->
+		<string id="Wa3DouAN" text="Warfare" />
+		<string id="mzPAERnA" text="General" />
+		<string id="srjDu3DL" text="Mercenary Contract Type" />
+		<string id="jzipGOog" text="The mercenary contract length. Effects the contract cost as it is relative to daily wages. Default: Seasonal" />
+		<string id="EVEAh6Eg" text="Weekly" />
+		<string id="dIZZ55i0" text="Seasonal" />
+		<string id="pYZ9blgd" text="Annual" />
+		<string id="UVQI4HIo" text="Mercenary Contract Gold Cost Multiplier" />
+		<string id="xAl7nwNt" text="Multiplier for the costs when hiring a mercenary. The total contract cost is calculated by multiplying the total daily cost of mercenary party wages and the amount of days the mercenary will be contracted for. WARNING: If they aren't paid enough to at least cover troop wages, they may not properly feed their troops as well as having other side effects. Default: 1.25" />
+		<string id="TMZ4jBjZ" text="Faction Leaders Can Call Mercenary To Army Without Influence" />
+		<string id="642MdHQq" text="Allows the faction leader to call mercenaries to their army without an influence cost. Default: Enabled" />
+		<string id="MlXBzNfg" text="Influence Cost To Call Mercenary To Army" />
+		<string id="yLoVOwXi" text="The influence cost to call a mercenary party to an army. Default: 1.0" />
+		<string id="IcF3bsNX" text="Enable Cohesion Change" />
+		<string id="PKL1vtQN" text="Allows cohesion to be depleted over time. Default: Enabled" />
+		<string id="RvMefSHA" text="Daily Cohesion Change Multiplier" />
+		<string id="I30BnKHt" text="The multiplier to the vanilla daily change in cohesion for armies. Default: 1.0" />
+		<string id="hqpPZFf2" text="Minimum Wars To Hire Mercenaries" />
+		<string id="JIHCDNcu" text="The minimum amount of wars for AI clans to hire mercenaries. Default: 1" />
+		<string id="krUuhA7I" text="Other" />
+		<string id="MUSHsQr8" text="Logging" />
+		<string id="Wa3DouAN" text="Enables logs for testing and reporting purposes. Default: Disabled" />
+	</strings>
+</base>
