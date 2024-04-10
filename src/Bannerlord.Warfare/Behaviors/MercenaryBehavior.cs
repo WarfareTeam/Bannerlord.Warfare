@@ -161,7 +161,7 @@ namespace Warfare.Behaviors
             int limit = newGame ? clan.GetRosterLimit() - clan.GetRosterSize() : MathF.Min(clan.GetRosterLimit() - clan.GetRosterSize(), 10 + (int)Campaign.Current.CampaignStartTime.ElapsedSeasonsUntilNow);
             for (int i = 0; i < limit; i++)
             {
-                IEnumerable<Hero> heroes = clan.WarPartyComponents.Where(x => x.Leader != null && x.Leader.IsActive && x.Leader.IsPartyLeader && x.MobileParty != null && x.MobileParty.IsActive && x.MobileParty.MapEvent == null && x.MobileParty.SiegeEvent == null).OrderBy(x => x.Party.NumberOfAllMembers).Select(x => x.Leader);
+                IEnumerable<Hero> heroes = clan.WarPartyComponents.Where(x => (newGame || (x.Leader != null && x.Leader.IsActive && x.Leader.IsPartyLeader && x.MobileParty != null)) && x.MobileParty.IsActive && x.MobileParty.MapEvent == null && x.MobileParty.SiegeEvent == null).OrderBy(x => x.Party.NumberOfAllMembers).Select(x => x.Leader);
                 if (heroes.Count() < 1)
                 {
                     queue.Add(clan);
