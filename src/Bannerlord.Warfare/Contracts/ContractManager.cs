@@ -35,7 +35,7 @@ namespace Warfare.Contracts
             CampaignTime expiration = CampaignTime.DaysFromNow(days);
             if (contract != null)
             {
-                contract.Expiration += expiration;
+                contract.Expiration += CampaignTime.Days(days);
                 return;
             }
             ChangeKingdomAction.ApplyByJoinFactionAsMercenary(mercenary, employer, 0, true);

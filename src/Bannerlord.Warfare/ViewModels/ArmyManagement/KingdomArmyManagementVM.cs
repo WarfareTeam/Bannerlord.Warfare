@@ -565,12 +565,12 @@ namespace Warfare.ViewModels.ArmyManagement
         {
             if (CanDisbandArmy)
             {
-                string inquiryText = "{=619gtcXb}Are you sure you want to disband this army? This will result in relation loss.";
+                TextObject inquiryText = new TextObject("{=619gtcXb}Are you sure you want to disband this army? This will result in relation loss.");
                 if (Army.LeaderParty == MobileParty.MainParty)
                 {
-                    inquiryText = "{=kqeA8rjL}Are you sure you want to disband your army?";
+                    inquiryText = new TextObject("{=kqeA8rjL}Are you sure you want to disband your army?");
                 }
-                InformationManager.ShowInquiry(new InquiryData(GameTexts.FindText("str_disband_army").ToString(), inquiryText, isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), delegate
+                InformationManager.ShowInquiry(new InquiryData(GameTexts.FindText("str_disband_army").ToString(), inquiryText.ToString(), isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), delegate
                 {
                     DisbandArmy();
                 }, null));
