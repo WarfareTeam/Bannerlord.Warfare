@@ -9,6 +9,7 @@
 - Ability to war with clans individually in a kingdom, while the player is independent.
 - Ability for an NPC clan to become independent to form their own faction with certain conditions.
 - Backwards compatibility
+- MCM Options: Armies besiege AI, Additional mercenary clans
 
 ## Battle Overhaul
 - Arrows should pierce through shields in certain conditions, with some damage dealt to the character and the possibility to stagger them.
