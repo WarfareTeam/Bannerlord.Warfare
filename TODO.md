@@ -1,5 +1,8 @@
 # To do
 
+## Issues
+- When adding into an existing game, mercenaries part of a kingdom already won't have a correlating contract, causing crashing.
+
 ## General
 - Campaign time should slowly pass during player battles, allowing the possibility of reinforcements.
 - There should be no limit to the number of companions, only a maximum amount you can take into battle.
