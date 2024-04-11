@@ -6,6 +6,7 @@
 	<strings>
 		<string id="4T0zfjz0" text="Military" />
 		<string id="L3vpqJKB" text="Mercenaries" />
+		<string id="baZKI4zX" text="AI" />
 		<string id="eFauEP8r" text="{LEADER}'s {SUFFIX}" />
 		<string id="dxkaEIqK" text="Band" />
 		<string id="eVDDsEed" text="Companions" />
@@ -63,7 +64,6 @@
 		<string id="NgtpnwlS" text="extend" />
 		<!--Settings-->
 		<string id="Wa3DouAN" text="Warfare" />
-		<string id="mzPAERnA" text="General" />
 		<string id="srjDu3DL" text="Mercenary Contract Type" />
 		<string id="jzipGOog" text="The mercenary contract length. Effects the contract cost as it is relative to daily wages. Default: Seasonal" />
 		<string id="EVEAh6Eg" text="Weekly" />
@@ -81,6 +81,14 @@
 		<string id="I30BnKHt" text="The multiplier to the vanilla daily change in cohesion for armies. Default: 1.0" />
 		<string id="hqpPZFf2" text="Minimum Wars To Hire Mercenaries" />
 		<string id="JIHCDNcu" text="The minimum amount of wars for AI clans to hire mercenaries. Default: 1" />
+		<string id="rjjUIti9" text="Spawn Additional Mercenaries" />
+		<string id="qTfVx8hh" text="Spawns more mercenaries when starting a new game than vanilla includes. This will make the world livelier and give more contract possiblities. The mod is balanced around this being enabled. Default: Enabled" />
+		<string id="pLTpHLi0" text="Modify Army Besiege AI" />
+		<string id="V2B0f9AM" text="Modifies the army besieging AI to prevent AI armies from moving to siege a settlement already being besieged by another army. This minimizes the chance of a player siege being taken over by an AI. There will tend to be multiple war fronts / theaters with this enabled. Default: Enabled" />
+		<string id="9vo8PxtF" text="Minimum Fiefs To Modify Army Besiege AI" />
+		<string id="KAnYH0W2" text="Modifies the army besieging AI only if the target faction has at least the specified number of fiefs. This has no effect if 'Modify Army Besiege AI' is Disabled. Default: 3" />
+		<string id="hQ6ROvxB" text="Time To Prevent Army Besiege AI (Hours)" />
+		<string id="OGME2Ekq" text="Sets the amount of time in hours that the AI will be prevented from attempting to besiege a settlement being besieged by another army. This has no effect if 'Modify Army Besiege AI' is Disabled. Default: 24" />
 		<string id="krUuhA7I" text="Other" />
 		<string id="MUSHsQr8" text="Logging" />
 		<string id="Wa3DouAN" text="Enables logs for testing and reporting purposes. Default: Disabled" />

@@ -14,8 +14,15 @@ namespace Warfare.Extensions
             return (int)(clan.WarPartyComponents.Sum(x => x.MobileParty.TotalWage * Settings.Current.MercenaryContractGoldCostMultiplier) * days);
         }
 
-        internal static int GetRosterSize(this Clan clan) => clan.WarPartyComponents.Select(x => x.Party.NumberOfAllMembers).Sum();
+        internal static int GetRosterSize(this Clan clan)
+        {
+            return clan.WarPartyComponents.Select(x => x.Party.NumberOfAllMembers).Sum();
+        }
 
-        internal static int GetRosterLimit(this Clan clan) => (int)(clan.WarPartyComponents.Select(x => Campaign.Current.Models.PartySizeLimitModel.GetPartyMemberSizeLimit(x.Party).ResultNumber).Sum() + Campaign.Current.CampaignStartTime.ElapsedWeeksUntilNow);
+        internal static int GetRosterLimit(this Clan clan)
+        {
+            float elapsedWeeksUntilNow = Campaign.Current.CampaignStartTime.ElapsedWeeksUntilNow;
+            return (int)(clan.WarPartyComponents.Select(x => Campaign.Current.Models.PartySizeLimitModel.GetPartyMemberSizeLimit(x.Party).ResultNumber).Sum() + elapsedWeeksUntilNow);
+        }
     }
 }
