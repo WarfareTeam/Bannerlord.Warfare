@@ -1,14 +1,13 @@
 <Module>
 	<Id value="Bannerlord.Warfare"/>
 	<Name value="Warfare"/>
-	<Version value="v1.0.0"/>
+	<Version value="v1.0.1"
 	<DefaultModule value="false"/>
 	<ModuleCategory value="Singleplayer"/>
 	<Official value="false"/>
 	<DependedModules>
 		<DependedModule Id="Bannerlord.Harmony"/>
 		<DependedModule Id="Bannerlord.ButterLib"/>
-		<DependedModule Id="Bannerlord.MBOptionScreen"/>
 		<DependedModule Id="Bannerlord.UIExtenderEx"/>
 		<DependedModule Id="Native"/>
 		<DependedModule Id="SandBoxCore"/>

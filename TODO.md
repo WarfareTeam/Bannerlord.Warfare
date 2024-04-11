@@ -1,5 +1,8 @@
 # To do
 
+## Issues
+- When adding into an existing game, mercenaries part of a kingdom already won't have a correlating contract, causing crashing.
+
 ## General
 - Campaign time should slowly pass during player battles, allowing the possibility of reinforcements.
 - There should be no limit to the number of companions, only a maximum amount you can take into battle.
@@ -9,6 +12,7 @@
 - Ability to war with clans individually in a kingdom, while the player is independent.
 - Ability for an NPC clan to become independent to form their own faction with certain conditions.
 - Backwards compatibility
+- MCM Options: Armies besiege AI, Additional mercenary clans
 
 ## Battle Overhaul
 - Arrows should pierce through shields in certain conditions, with some damage dealt to the character and the possibility to stagger them.

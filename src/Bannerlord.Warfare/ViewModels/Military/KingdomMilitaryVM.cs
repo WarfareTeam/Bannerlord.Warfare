@@ -702,7 +702,7 @@ namespace Warfare.ViewModels.Military
         {
             if (Hero.MainHero.IsFactionLeader)
             {
-                InformationManager.ShowInquiry(new InquiryData("{=efD1qfi2}Terminate contract", "{=eZlBbp5f}Are you sure you want to terminate the contract with this mercenary? You will not receive a refund.", isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), FireCurrentMercenary, null));
+                InformationManager.ShowInquiry(new InquiryData(new TextObject("{=efD1qfi2}Terminate contract").ToString(), new TextObject("{=eZlBbp5f}Are you sure you want to terminate the contract with this mercenary? You will not receive a refund.").ToString(), isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), FireCurrentMercenary, null));
             }
         }
 
@@ -721,12 +721,12 @@ namespace Warfare.ViewModels.Military
         {
             if (CurrentSelectedArmy != null)
             {
-                string inquiryText = "{=TOC7RWdV}Are you sure you want to change this armies leader?";
+                string inquiryText = new TextObject("{=TOC7RWdV}Are you sure you want to change this armies leader?").ToString();
                 if (CurrentSelectedArmy.Army.LeaderParty == MobileParty.MainParty)
                 {
-                    inquiryText += "{=wPSl2v80}{newline}{newline}WARNING: You will not be added to the new army.";
+                    inquiryText += new TextObject("{=wPSl2v80}{newline}{newline}WARNING: You will not be added to the new army.").ToString();
                 }
-                InformationManager.ShowInquiry(new InquiryData("{=uhxCnG4n}Change Army Leader", inquiryText, isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), OpenChangeLeaderPopup, null));
+                InformationManager.ShowInquiry(new InquiryData(new TextObject("{=uhxCnG4n}Change Army Leader").ToString(), inquiryText, isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), OpenChangeLeaderPopup, null));
             }
         }
 
@@ -745,9 +745,9 @@ namespace Warfare.ViewModels.Military
                 string inquiryText = new TextObject("{=tyZxyL8d}Are you sure you want to split this army? It will cost you between {MIN_COST} and {MAX_COST} influence.").SetTextVariable("MIN_COST", MinimumArmyCost).SetTextVariable("MAX_COST", TotalArmyCost).ToString();
                 if (CurrentSelectedArmy.Army.LeaderParty == MobileParty.MainParty)
                 {
-                    inquiryText += "{=n7wMx7op}{newline}{newline}WARNING: Your army will lose the selected leader if they're a member and any member parties you select. You will remain the leader of the old army.";
+                    inquiryText += new TextObject("{=n7wMx7op}{newline}{newline}WARNING: Your army will lose the selected leader if they're a member and any member parties you select. You will remain the leader of the old army.").ToString();
                 }
-                InformationManager.ShowInquiry(new InquiryData("{=8MvD4u4J}Split Army", inquiryText, isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), OpenSplitArmyPopup, null));
+                InformationManager.ShowInquiry(new InquiryData(new TextObject("{=8MvD4u4J}Split Army").ToString(), inquiryText, isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), OpenSplitArmyPopup, null));
             }
         }
 
@@ -881,7 +881,13 @@ namespace Warfare.ViewModels.Military
         {
             if (CurrentSelectedArmy != null && Hero.MainHero.Clan.Influence >= DisbandCost)
             {
-                InformationManager.ShowInquiry(new InquiryData(GameTexts.FindText("str_disband_army").ToString(), CurrentSelectedArmy.IsMainArmy ? "{=kqeA8rjL}Are you sure you want to disband your army?" : "{=619gtcXb}Are you sure you want to disband this army? This will result in relation loss.", isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), DisbandCurrentArmy, null));
+                string text = new TextObject("{=619gtcXb}Are you sure you want to disband this army? This will result in relation loss.").ToString();
+                if (CurrentSelectedArmy.IsMainArmy)
+                {
+                    text = new TextObject("{=kqeA8rjL}Are you sure you want to disband your army?").ToString();
+
+                }
+                InformationManager.ShowInquiry(new InquiryData(GameTexts.FindText("str_disband_army").ToString(), text, isAffirmativeOptionShown: true, isNegativeOptionShown: true, GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), DisbandCurrentArmy, null));
             }
         }
 

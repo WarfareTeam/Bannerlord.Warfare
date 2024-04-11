@@ -71,28 +71,32 @@ namespace Warfare.Behaviors
                     clan.AddRenown(GetStartingRenown(clan));
                     RecruitTroops(clan, true);
                 }
-                IList<CharacterObject> template = clans.IsEmpty() || clans.GetRandomElementInefficiently() == null || clans.GetRandomElementInefficiently().MinorFactionCharacterTemplates == null || clans.GetRandomElementInefficiently().MinorFactionCharacterTemplates.IsEmpty() ? backupTemplate : clans.GetRandomElementInefficiently().MinorFactionCharacterTemplates;
-                for (int k = clans.Count(); k < 5; k++)
+                if (Settings.Current.SpawnAdditionalMercenaries)
                 {
-                    Clan clan = Clan.CreateClan("WF_" + Clan.All.Count);
-                    IEnumerable<Settlement> settlements = from x in Settlement.All where x.Culture == culture && x.IsFortification select x;
-                    Settlement settlement = settlements.IsEmpty() || settlements.FirstOrDefault() == null ? backupSettlement : settlements.FirstOrDefault();
-                    Vec2 centerPosition = MobilePartyHelper.FindReachablePointAroundPosition(settlement.GatePosition, 250f, 25f);
-                    clan.InitializeClan(clan.Name, clan.Name, culture, Banner.CreateRandomClanBanner(MBRandom.RandomInt()), centerPosition);
-                    clan.GetType().GetProperty("IsMinorFaction", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(clan, true);
-                    clan.GetType().GetField("_minorFactionCharacterTemplates", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(clan, template);
-                    HeroSpawnCampaignBehavior behavior = Campaign.Current.GetCampaignBehavior<HeroSpawnCampaignBehavior>();
-                    behavior.GetType().GetMethod("SpawnMinorFactionHeroes", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).Invoke(behavior, new object[] { clan, true });
-                    behavior.GetType().GetMethod("CheckAndAssignClanLeader", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).Invoke(behavior, new object[] { clan });
-                    ChangeClanName(clan);
-                    clan.UpdateHomeSettlement(null);
-                    clan.AddRenown(GetStartingRenown(clan));
-                    foreach (Hero hero in clan.Heroes)
+                    IList<CharacterObject> template = clans.IsEmpty() || clans.GetRandomElementInefficiently() == null || clans.GetRandomElementInefficiently().MinorFactionCharacterTemplates == null || clans.GetRandomElementInefficiently().MinorFactionCharacterTemplates.IsEmpty() ? backupTemplate : clans.GetRandomElementInefficiently().MinorFactionCharacterTemplates;
+                    for (int k = clans.Count(); k < 5; k++)
                     {
-                        GiveGoldAction.ApplyBetweenCharacters(null, hero, GetStartingGold());
-                        clan.CreateNewMobileParty(hero).Ai.SetMoveModeHold();
+                        Clan clan = Clan.CreateClan("WF_" + Clan.All.Count);
+                        IEnumerable<Settlement> settlements = from x in Settlement.All where x.Culture == culture && x.IsFortification select x;
+                        Settlement settlement = settlements.IsEmpty() || settlements.FirstOrDefault() == null ? backupSettlement : settlements.FirstOrDefault();
+                        Vec2 centerPosition = MobilePartyHelper.FindReachablePointAroundPosition(settlement.GatePosition, 250f, 25f);
+                        clan.InitializeClan(clan.Name, clan.Name, culture, Banner.CreateRandomClanBanner(MBRandom.RandomInt()), centerPosition);
+                        clan.GetType().GetProperty("IsMinorFaction", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(clan, true);
+                        clan.GetType().GetField("_minorFactionCharacterTemplates", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(clan, template);
+                        HeroSpawnCampaignBehavior behavior = Campaign.Current.GetCampaignBehavior<HeroSpawnCampaignBehavior>();
+                        behavior.GetType().GetMethod("SpawnMinorFactionHeroes", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).Invoke(behavior, new object[] { clan, true });
+                        behavior.GetType().GetMethod("CheckAndAssignClanLeader", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).Invoke(behavior, new object[] { clan });
+                        ChangeClanName(clan);
+                        clan.UpdateHomeSettlement(null);
+                        clan.AddRenown(GetStartingRenown(clan));
+                        foreach (Hero hero in clan.Heroes)
+                        {
+                            GiveGoldAction.ApplyBetweenCharacters(null, hero, GetStartingGold());
+                            clan.CreateNewMobileParty(hero).Ai.SetMoveModeHold();
+                        }
+                        RecruitTroops(clan, true);
                     }
-                    RecruitTroops(clan, true);
+
                 }
             }
         }

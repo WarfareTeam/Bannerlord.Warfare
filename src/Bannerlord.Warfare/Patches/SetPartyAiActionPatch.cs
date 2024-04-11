@@ -18,7 +18,11 @@ namespace Warfare.Patches
 
         public static bool Prefix(MobileParty owner, Settlement settlement)
         {
-            if (owner.Army == null || settlement.MapFaction.Fiefs.Count() < 3 || (owner.Ai.DefaultBehavior == AiBehavior.BesiegeSettlement && owner.TargetSettlement == settlement) || !settlement.IsFortification)
+            if (!Settings.Current.ModifyArmyBesiegeAI)
+            {
+                return true;
+            }
+            if (owner.Army == null || settlement.MapFaction.Fiefs.Count() < Settings.Current.ModifyArmyBesiegeAIMinimumFiefs || (owner.Ai.DefaultBehavior == AiBehavior.BesiegeSettlement && owner.TargetSettlement == settlement) || !settlement.IsFortification)
             {
                 //Use vanilla logic
                 //if attacker has no army,
@@ -43,7 +47,7 @@ namespace Warfare.Patches
             float score = owner.ActualClan.Kingdom.Armies.Where(x => x.ArmyOwner != owner.LeaderHero && (x.LeaderParty.SiegeEvent != null || (x.AIBehavior == Army.AIBehaviorFlags.TravellingToAssignment && x.ArmyType == Army.ArmyTypes.Besieger)) && (Settlement)x.AiBehaviorObject != null && (Settlement)x.AiBehaviorObject == settlement).Select(x => (x.TotalStrength - power) / 1000f).Sum();
             if (MBRandom.RandomFloat < score)
             {
-                aiActionQueue.Add(new PartyAiAction(owner.Army, settlement, CampaignTime.HoursFromNow(CampaignTime.HoursInDay)));
+                aiActionQueue.Add(new PartyAiAction(owner.Army, settlement, CampaignTime.HoursFromNow(Settings.Current.TimeToPreventArmyBesiegeAIHours)));
                 return false;
             }
             return true;
