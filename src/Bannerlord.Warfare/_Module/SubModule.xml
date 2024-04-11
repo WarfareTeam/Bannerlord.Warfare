@@ -1,7 +1,11 @@
 <Module>
 	<Id value="Bannerlord.Warfare"/>
 	<Name value="Warfare"/>
+<<<<<<< Updated upstream
 	<Version value="v1.0.1"
+=======
+	<Version value="v1.0.1"/>
+>>>>>>> Stashed changes
 	<DefaultModule value="false"/>
 	<ModuleCategory value="Singleplayer"/>
 	<Official value="false"/>
