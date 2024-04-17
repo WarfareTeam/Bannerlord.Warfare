@@ -3,7 +3,6 @@ using TaleWorlds.CampaignSystem.CampaignBehaviors.BarterBehaviors;
 using TaleWorlds.CampaignSystem.Party;
 
 using HarmonyLib;
-using System.Linq;
 using TaleWorlds.CampaignSystem;
 
 namespace Warfare.Patches
@@ -41,7 +40,7 @@ namespace Warfare.Patches
         public static bool Prefix(MobileParty mobileParty)
         {
             // Mercenary troop recruiting is handled in MercenaryBehavior with this mod.
-            return mobileParty == null || !mobileParty.IsActive || !mobileParty.IsLordParty || !mobileParty.ActualClan.IsMinorFaction || mobileParty == MobileParty.MainParty;
+            return mobileParty == null || !mobileParty.IsActive || !mobileParty.IsLordParty || !mobileParty.ActualClan.IsMinorFaction || mobileParty.ActualClan == Clan.PlayerClan;
         }
     }
 }
