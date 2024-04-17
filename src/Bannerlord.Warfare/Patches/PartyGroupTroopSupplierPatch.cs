@@ -59,17 +59,17 @@ namespace Bannerlord.Warfare.Patches
         public static int GetMaximumAgents()
         {
             int threshold = Settings.Current.MaximumBattlefieldAgents;
-            if (mountfootratio * troops > threshold)
+            int agents = (int)(mountfootratio * troops);
+            if (agents > threshold || agents == 0)
             {
                 return threshold;
             }
-            return (int)(mountfootratio * troops) - 1;
+            return agents - 1;
         }
 
         public static int GetMaximumTroops()
         {
-            int troops = GetMaximumAgents();
-            return (int)(troops / mountfootratio);
+            return (int)(GetMaximumAgents() / mountfootratio);
         }
     }
 }
