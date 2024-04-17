@@ -20,7 +20,7 @@ namespace Warfare
         {
             base.OnSubModuleLoad();
 
-            var extender = new UIExtender("bannerlord.warfare");
+            var extender = UIExtender.Create("bannerlord.warfare");
             extender.Register(typeof(SubModule).Assembly);
             extender.Enable();
 
@@ -30,9 +30,8 @@ namespace Warfare
 
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
-            if (gameStarterObject is CampaignGameStarter)
+            if (gameStarterObject is CampaignGameStarter starter)
             {
-                CampaignGameStarter starter = (CampaignGameStarter)gameStarterObject;
                 starter.AddBehavior(new ContractBehavior());
                 starter.AddBehavior(new MercenaryBehavior());
                 //starter.AddBehavior(new PrisonerBehavior());
