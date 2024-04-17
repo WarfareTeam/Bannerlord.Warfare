@@ -50,9 +50,9 @@ namespace Warfare
         [SettingPropertyGroup(ArmiesHeader)]
         public bool EnableModifyMaximumBattlefieldAgents { get; set; } = false;
 
-        [SettingPropertyInteger("{=uqq9P40V}Maximum Battlefield Agents", 200, 2000, Order = 1, RequireRestart = false, HintText = "{=gNUoN5Ia}Sets the maximum number of total agents on battles. NOTE: Setting this too high can result in crashes! It is recommended to test a field battle using lots of cavalary if you plan to set this higher than 1000. Overrides the Battle Size setting in the vanilla Performance settings section. Default: 1000")]
+        [SettingPropertyInteger("{=uqq9P40V}Maximum Battlefield Agents", 1000, 2000, Order = 1, RequireRestart = false, HintText = "{=gNUoN5Ia}Sets the maximum number of total agents on battles. NOTE: Setting this too high can result in crashes! It is recommended to test a field battle using lots of cavalary if you plan to set this higher than 1000. Overrides the Battle Size setting in the vanilla Performance settings section. Default: 1000")]
         [SettingPropertyGroup(ArmiesHeader)]
-        public int MaximumBattlefieldAgents { get; set; } = 500;
+        public int MaximumBattlefieldAgents { get; set; } = 1000;
 
         [SettingPropertyBool("{=pLTpHLi0}Modify Army Besiege AI", Order = 0, RequireRestart = false, HintText = "{=V2B0f9AM}Modifies the army besieging AI to prevent AI armies from moving to siege a settlement already being besieged by another army, based upon the power difference in besieged and besieger power. This minimizes the chance of a player siege being taken over by an AI. There will tend to be multiple war fronts / theaters with this enabled. Default: Enabled")]
         [SettingPropertyGroup(AIHeader)]
