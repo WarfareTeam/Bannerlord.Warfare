@@ -83,6 +83,10 @@
 		<string id="JIHCDNcu" text="The minimum amount of wars for AI clans to hire mercenaries. Default: 1" />
 		<string id="rjjUIti9" text="Spawn Additional Mercenaries" />
 		<string id="qTfVx8hh" text="Spawns more mercenaries when starting a new game than vanilla includes. This will make the world livelier and give more contract possiblities. The mod is balanced around this being enabled. Default: Enabled" />
+		<string id="SwU5nhKX" text="Enable Modify Maximum Battlefield Agents" />
+		<string id="hIbdHP2A" text="Allows the maximum battlefield agents modifier to be set using the mod, which overrides the vanilla setting which ranges from 200-1000. Default: Disabled" />
+		<string id="uqq9P40V" text="Maximum Battlefield Agents" />
+		<string id="gNUoN5Ia" text="Sets the maximum number of total agents on battles. NOTE: Setting this too high can result in crashes! It is recommended to test a field battle using lots of cavalary if you plan to set this higher than 1000. Overrides the Battle Size setting in the vanilla Performance settings section. Default: 500" />
 		<string id="pLTpHLi0" text="Modify Army Besiege AI" />
 		<string id="V2B0f9AM" text="Modifies the army besieging AI to prevent AI armies from moving to siege a settlement already being besieged by another army. This minimizes the chance of a player siege being taken over by an AI. There will tend to be multiple war fronts / theaters with this enabled. Default: Enabled" />
 		<string id="9vo8PxtF" text="Minimum Fiefs To Modify Army Besiege AI" />
