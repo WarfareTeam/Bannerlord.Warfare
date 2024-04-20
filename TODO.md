@@ -28,6 +28,8 @@
 - Factions should be less inclined to horde troops - especially in peacetime - in order to pay for mercenaries in wartime.
 - Mercenaries should not declare wars on factions over time, currently they do for unknown reasons but do not on game start as intended.
 - Slider for mercenary clan spawns on game start.
+- Ability to form a mercenary company.
+- Ability to join a mercenary company.
 
 ## Prisoners Overhaul
 - Prisoners should disperse back to enemy lord(s) when escaped, set free or ransomed.
