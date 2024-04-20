@@ -27,6 +27,7 @@
 - Add remaining contract time to the Mercenary panel.
 - Factions should be less inclined to horde troops - especially in peacetime - in order to pay for mercenaries in wartime.
 - Mercenaries should not declare wars on factions over time, currently they do for unknown reasons but do not on game start as intended.
+- Slider for mercenary clan spawns on game start.
 
 ## Prisoners Overhaul
 - Prisoners should disperse back to enemy lord(s) when escaped, set free or ransomed.
