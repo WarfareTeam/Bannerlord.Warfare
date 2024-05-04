@@ -20,7 +20,7 @@
 ## Army Overhaul
 - Army map overlay needs hotkeys.
 - When the leader of an army is changed to the player while the player is a member of that army, the army map overlay breaks and fails to display the army members.
-- Parties not yet gathered in the army should not be put in a disorganized state when moved between armies, such as during a leader change or split.
+- ~~Parties not yet gathered in the army should not be put in a disorganized state when moved between armies, such as during a leader change or split.~~
 - Mercenaries should not be able to manage armies they are a part of, add members to it, etc.
 
 ## Mercenary Overhaul
