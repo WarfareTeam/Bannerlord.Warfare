@@ -105,7 +105,6 @@
 										</NavigatableListPanel>
 									</Children>
 								</ListPanel>
-                                <Widget SuggestedWidth="!Kingdom.Item.Tuple.Width" SuggestedHeight="!Kingdom.Item.Tuple.Height" />
                               </Children>
                             </ListPanel>
                           </Children>
@@ -243,8 +242,12 @@
 							  </Children>
 							</Widget>
 						  </Children>
-						</ListPanel>
-
+						<!--Remaining Contract Time Text-->
+						<Widget DataSource="{CurrentSelectedMercenary}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="20" IsVisible="@IsHired">
+						  <Children>
+							<RichTextWidget DataSource="{..}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="20" Brush="Kingdom.CurrentArmyValues.Text" IsDisabled="true" Text="@RemainingContractTimeLabel" />
+						  </Children>
+						</Widget>
 						<!--Parties-->
 						<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" UpdateChildrenStates="true" DoNotPassEventsToChildren="true" MarginRight="100" MarginLeft="70" >
 						  <Children>

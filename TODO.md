@@ -24,7 +24,7 @@
 - Mercenaries should not be able to manage armies they are a part of, add members to it, etc.
 
 ## Mercenary Overhaul
-- Add remaining contract time to the Mercenary panel.
+- ~~Add remaining contract time to the Mercenary panel.~~
 - Factions should be less inclined to horde troops - especially in peacetime - in order to pay for mercenaries in wartime.
 - Mercenaries should not declare wars on factions over time, currently they do for unknown reasons but do not on game start as intended.
 - Slider for mercenary clan spawns on game start.

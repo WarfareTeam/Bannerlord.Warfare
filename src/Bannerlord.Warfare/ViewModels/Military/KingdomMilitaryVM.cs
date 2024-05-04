@@ -26,7 +26,7 @@ using TaleWorlds.ScreenSystem;
 using Bannerlord.UIExtenderEx.Attributes;
 
 using Warfare.Behaviors;
-using Warfare.Contracts;
+using Warfare.Content.Contracts;
 using Warfare.Extensions;
 using Warfare.GauntletUI;
 using Warfare.ViewModels.ArmyManagement;
@@ -143,6 +143,8 @@ namespace Warfare.ViewModels.Military
         private int _hireCost;
 
         private string _hireCostLabel;
+
+        private string _remainingContractTimeLabel;
 
         public KingdomMilitaryVM()
         {
@@ -486,6 +488,57 @@ namespace Warfare.ViewModels.Military
                 GameTexts.SetVariable("LEFT", "{=J1G2EXsn}Contract Cost");
                 GameTexts.SetVariable("RIGHT", HireCost);
                 HireCostLabel = GameTexts.FindText("str_LEFT_colon_RIGHT_wSpaceAfterColon").ToString();
+                TextObject remainingContractTime = TextObject.Empty;
+                if (item.IsHired)
+                {
+                    remainingContractTime = new TextObject("{=!}{YEARS} {SEASONS} {DAYS} {HOURS}");
+                    CampaignTime expiration = _behavior.FindContract(item.Clan).Expiration;
+                    int years = (int)(expiration - CampaignTime.Now).ToYears;
+                    int seasons = (int)(expiration - CampaignTime.Now).ToSeasons - (CampaignTime.SeasonsInYear * years);
+                    int days = (int)(expiration - CampaignTime.Now).ToDays - (CampaignTime.DaysInYear * years) - (CampaignTime.DaysInSeason * seasons);
+                    int hours = (int)(expiration - CampaignTime.Now).ToHours - (CampaignTime.HoursInDay * CampaignTime.DaysInYear * years) - (CampaignTime.HoursInDay * CampaignTime.DaysInSeason * seasons) - (CampaignTime.HoursInDay * days);
+                    if (years > 0)
+                    {
+                        GameTexts.SetVariable("YEAR_IS_PLURAL", (years > 1) ? 1 : 0);
+                        GameTexts.SetVariable("YEAR", years);
+                        string yearsLabel = GameTexts.FindText("str_YEAR_years").ToString();
+                        if (seasons > 0 || days > 0 || hours > 0)
+                        {
+                            yearsLabel += ", ";
+                        }
+                        remainingContractTime.SetTextVariable("YEARS", yearsLabel);
+                    }
+                    if (seasons > 0)
+                    {
+                        GameTexts.SetVariable("SEASON_IS_PLURAL", (seasons > 1) ? 1 : 0);
+                        GameTexts.SetVariable("SEASON", seasons);
+                        string seasonsLabel = GameTexts.FindText("str_SEASON_seasons").ToString();
+                        if (days > 0 || hours > 0)
+                        {
+                            seasonsLabel += ", ";
+                        }
+                        remainingContractTime.SetTextVariable("SEASONS", seasonsLabel);
+                    }
+                    if (days > 0)
+                    {
+                        GameTexts.SetVariable("DAY_IS_PLURAL", (days > 1) ? 1 : 0);
+                        GameTexts.SetVariable("DAY", days);
+                        string daysLabel = GameTexts.FindText("str_DAY_days").ToString();
+                        if (hours > 0)
+                        {
+                            daysLabel += ", ";
+                        }
+                        remainingContractTime.SetTextVariable("DAYS", daysLabel);
+                    }
+                    if (hours > 0)
+                    {
+                        string hoursLabel = new TextObject("{=xg0izQ4X}{HOUR} {?HOUR_IS_PLURAL}hours{?}hour{\\?}").SetTextVariable("HOUR", hours).SetTextVariable("HOUR_IS_PLURAL", hours > 1 ? 1 : 0).ToString();//TODO: add string to language template
+                        remainingContractTime.SetTextVariable("HOURS", hoursLabel); 
+                    }
+                }
+                GameTexts.SetVariable("LEFT", "{=pc60DYCO}Remaining Contract Time");
+                GameTexts.SetVariable("RIGHT", remainingContractTime);
+                RemainingContractTimeLabel = GameTexts.FindText("str_LEFT_colon_RIGHT_wSpaceAfterColon").ToString();
                 CanExtendCurrentMercenary = GetCanExtendCurrentMercenaryWithReason(out disabledReason);
                 ExtendHint.HintText = disabledReason;
                 ShouldExtendCurrentMercenary = item.Clan.IsUnderMercenaryService && item.Clan.Kingdom == Clan.PlayerClan.Kingdom;
@@ -1684,6 +1737,22 @@ namespace Warfare.ViewModels.Military
                 {
                     _hireCostLabel = value;
                     OnPropertyChangedWithValue(value, "HireCostLabel");
+                }
+            }
+        }
+        [DataSourceProperty]
+        public string RemainingContractTimeLabel
+        {
+            get
+            {
+                return _remainingContractTimeLabel;
+            }
+            set
+            {
+                if (value != _remainingContractTimeLabel)
+                {
+                    _remainingContractTimeLabel = value;
+                    OnPropertyChangedWithValue(value, "RemainingContractTimeLabel");
                 }
             }
         }
