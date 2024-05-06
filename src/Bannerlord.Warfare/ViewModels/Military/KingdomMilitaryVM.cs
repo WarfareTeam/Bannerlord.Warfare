@@ -30,6 +30,9 @@ using Warfare.Content.Contracts;
 using Warfare.Extensions;
 using Warfare.GauntletUI;
 using Warfare.ViewModels.ArmyManagement;
+using TaleWorlds.LinQuick;
+using Warfare.Content.Knights;
+using TaleWorlds.CampaignSystem.ViewModelCollection.Quests;
 
 namespace Warfare.ViewModels.Military
 {
@@ -213,6 +216,10 @@ namespace Warfare.ViewModels.Military
                 if (_kingdomInterface.ViewModel is KingdomArmyManagementVM)
                 {
                     (_kingdomInterface.ViewModel as KingdomArmyManagementVM).OnFrameTick(_kingdomInterface.Layer);
+                }
+                else if (_kingdomInterface.ViewModel is KingdomKnightsVM)
+                {
+                    (_kingdomInterface.ViewModel as KingdomKnightsVM).OnFrameTick(_kingdomInterface.Layer);
                 }
                 else
                 {
@@ -491,8 +498,13 @@ namespace Warfare.ViewModels.Military
                 TextObject remainingContractTime = TextObject.Empty;
                 if (item.IsHired)
                 {
+                    Contract contract = _behavior.FindContract(item.Clan);
+                    if (contract == null)
+                    {
+                        contract = _behavior.SignContract(item.Clan);
+                    }
                     remainingContractTime = new TextObject("{=!}{YEARS} {SEASONS} {DAYS} {HOURS}");
-                    CampaignTime expiration = _behavior.FindContract(item.Clan).Expiration;
+                    CampaignTime expiration = contract.Expiration;
                     int years = (int)(expiration - CampaignTime.Now).ToYears;
                     int seasons = (int)(expiration - CampaignTime.Now).ToSeasons - (CampaignTime.SeasonsInYear * years);
                     int days = (int)(expiration - CampaignTime.Now).ToDays - (CampaignTime.DaysInYear * years) - (CampaignTime.DaysInSeason * seasons);
@@ -532,7 +544,7 @@ namespace Warfare.ViewModels.Military
                     }
                     if (hours > 0)
                     {
-                        string hoursLabel = new TextObject("{=xg0izQ4X}{HOUR} {?HOUR_IS_PLURAL}hours{?}hour{\\?}").SetTextVariable("HOUR", hours).SetTextVariable("HOUR_IS_PLURAL", hours > 1 ? 1 : 0).ToString();//TODO: add string to language template
+                        string hoursLabel = new TextObject("{=xg0izQ4X}{HOUR} {?HOUR_IS_PLURAL}hours{?}hour{\\?}").SetTextVariable("HOUR", hours).SetTextVariable("HOUR_IS_PLURAL", hours > 1 ? 1 : 0).ToString();
                         remainingContractTime.SetTextVariable("HOURS", hoursLabel); 
                     }
                 }
@@ -707,6 +719,12 @@ namespace Warfare.ViewModels.Military
 
             disabledReason = TextObject.Empty;
             return true;
+        }
+
+        [DataSourceMethod]
+        public void ExecuteShowKnights()
+        {
+            _kingdomInterface.ShowInterface(RefreshArmyList,  null!, _kingdom);
         }
 
         [DataSourceMethod]
