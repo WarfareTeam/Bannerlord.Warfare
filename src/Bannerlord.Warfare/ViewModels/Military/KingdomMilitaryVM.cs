@@ -31,7 +31,6 @@ using Warfare.Extensions;
 using Warfare.GauntletUI;
 using Warfare.ViewModels.ArmyManagement;
 using TaleWorlds.LinQuick;
-using Warfare.Content.Knights;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Quests;
 using TaleWorlds.CampaignSystem.CampaignBehaviors;
 
@@ -716,12 +715,6 @@ namespace Warfare.ViewModels.Military
 
             disabledReason = TextObject.Empty;
             return true;
-        }
-
-        [DataSourceMethod]
-        public void ExecuteShowKnights()
-        {
-            _kingdomInterface.ShowInterface(RefreshArmyList,  null!, _kingdom);
         }
 
         [DataSourceMethod]
