@@ -33,6 +33,7 @@ using Warfare.ViewModels.ArmyManagement;
 using TaleWorlds.LinQuick;
 using Warfare.Content.Knights;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Quests;
+using TaleWorlds.CampaignSystem.CampaignBehaviors;
 
 namespace Warfare.ViewModels.Military
 {
@@ -216,10 +217,6 @@ namespace Warfare.ViewModels.Military
                 if (_kingdomInterface.ViewModel is KingdomArmyManagementVM)
                 {
                     (_kingdomInterface.ViewModel as KingdomArmyManagementVM).OnFrameTick(_kingdomInterface.Layer);
-                }
-                else if (_kingdomInterface.ViewModel is KingdomKnightsVM)
-                {
-                    (_kingdomInterface.ViewModel as KingdomKnightsVM).OnFrameTick(_kingdomInterface.Layer);
                 }
                 else
                 {
