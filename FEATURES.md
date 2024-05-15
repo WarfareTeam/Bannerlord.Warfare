@@ -2,6 +2,8 @@
 
 ## General
 - Armies are less likely to travel to siege a settlement already being besieged - weighted by difference in besieger and besieged strength - and will instead try to fight or defend on their own fronts where possible.
+- Armies will be redirected to defend a faction settlement instead of besieging a settlement that overpowers them.
+- MCM configurable ability to modify maximum battlefield agents with a higher threshold than vanilla allows (max 2000 instead of 1000).
 
 ## Army Overhaul
 - You can manage member parties in an army on demand as the faction leader or as member of the respective army.
@@ -9,7 +11,7 @@
 - You can split an army via the button on the kingdom army page. It will split into two separate armies with your leader choice for the new army, and the original leader continuing to lead the original army. You choose the parties from the old army to place in the new army.
 - You can do both army leader changes and splits at the normal influence cost of calling each member to a new army as the faction or original army leader, or twice the cost otherwise. You cannot do this as a mercenary. Half of the influence will be given to the previous army leader as a refund, unless it is yourself or a member of your clan.
 - You can force armies you don't lead to disband even when you're in that army.
-- Whenever a party is moved between armies or removed from one, they will become disorganized. When changing leaders, this can be avoided only by changing to a leader already gathered in the army. It is unavoidable for a newly split army, but the army it split from will not be put in a disorganized state.
+- Whenever a party is moved between armies or removed from one, they will become disorganized. When changing leaders, this can be avoided only by changing to a leader already gathered in the army. It is unavoidable for a newly split army, but the army it split from will not be put in a disorganized state. Parties won't be disorganized during army relocation if it had not yet arrived at the old army.
 - If any of the new leaders don't have enough influence it will disband after the cohesion falls to zero, so prepare for this. You can add cohesion by joining the army temporarily or as the faction leader.
 - The player is not counted in calculations of influence, nor will they be added to any newly created armies automatically. You will need to join the army by finding it on the campaign map like vanilla.
 
@@ -27,8 +29,10 @@
 - Mercenaries do not go to war independently.
 - Hired mercenaries can be added to armies by the faction leader without influence cost.
 - Hiring clan immediately adds a hired mercenary into their army for no cost (one-time), even if they aren't the leader of said army.
+- Remaining contract time for a hired mercenary is displayed on the mercenary panel.
 
 ## Miscellaneous
 - Basic MCM options
 - Basic localization support
 - Includes two commands to check remaining party food (/campaign.party_food [HeroName]) and hero gold (/campaign.hero_gold [HeroName])
+- Backwards compatibility (from version v1.1.6 and newer)

@@ -1,7 +1,7 @@
 # To do
 
 ## Issues
-- When adding into an existing game, mercenaries part of a kingdom already won't have a correlating contract, causing crashing.
+- ~~When adding into an existing game, mercenaries part of a kingdom already won't have a correlating contract, causing crashing.~~
 
 ## General
 - Campaign time should slowly pass during player battles, allowing the possibility of reinforcements.
