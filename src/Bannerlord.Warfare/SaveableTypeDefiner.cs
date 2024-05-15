@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using Warfare.Contracts;
+using Warfare.Content.Contracts;
 
 namespace Warfare
 {

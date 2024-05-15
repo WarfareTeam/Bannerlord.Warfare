@@ -4,7 +4,7 @@ using HarmonyLib;
 
 using Warfare;
 
-namespace Bannerlord.Warfare.Patches
+namespace Warfare.Patches
 {
     [HarmonyPatch(typeof(MissionAgentSpawnLogic), "MaxNumberOfAgentsForMission", MethodType.Getter)]
     public class MaxNumberOfAgentsForMissionPatch
