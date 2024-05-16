@@ -74,7 +74,7 @@ namespace Warfare.Behaviors
                 if (Settings.Current.SpawnAdditionalMercenaries)
                 {
                     IList<CharacterObject> template = clans.IsEmpty() || clans.GetRandomElementInefficiently() == null || clans.GetRandomElementInefficiently().MinorFactionCharacterTemplates == null || clans.GetRandomElementInefficiently().MinorFactionCharacterTemplates.IsEmpty() ? backupTemplate : clans.GetRandomElementInefficiently().MinorFactionCharacterTemplates;
-                    for (int k = clans.Count(); k < 5; k++)
+                    for (int k = clans.Count(); k < Settings.Current.MercenaryClansPerCulture; k++)
                     {
                         Clan clan = Clan.CreateClan("WF_" + Clan.All.Count);
                         IEnumerable<Settlement> settlements = from x in Settlement.All where x.Culture == culture && x.IsFortification select x;
