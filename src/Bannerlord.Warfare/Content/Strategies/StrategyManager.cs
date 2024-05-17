@@ -17,7 +17,7 @@ namespace Warfare.Content.Strategies
         {
             foreach (Strategy strategy in _strategies.ToListQ())
             {
-                Hero hero = strategy.Subject;
+                Hero hero = strategy.Hero;
                 if (!hero.IsActive || hero.IsDead || hero.PartyBelongedTo == null || !hero.PartyBelongedTo.IsActive || !hero.PartyBelongedTo.IsLordParty || !hero.IsPartyLeader)
                 {
                     _strategies.Remove(strategy);
@@ -25,26 +25,42 @@ namespace Warfare.Content.Strategies
             }
         }
 
-        public int GetPriority(Hero subject)
+        public void AddStrategy(Hero hero, int priority)
         {
-            return FindStrategy(subject).Priority;
+            _strategies.Add(new Strategy(hero, priority));
         }
 
-        public void SetPriority(Hero subject, int priority)
+        public int GetPriority(Hero hero)
         {
-            FindStrategy(subject).Priority = priority;
+            Strategy strategy = FindStrategy(hero);
+            if (strategy != null)
+            {
+                return strategy.Priority;
+            }
+            return 0;
         }
 
-        public Strategy FindStrategy(Hero subject)
+        public void SetPriority(Hero hero, int priority)
+        {
+            Strategy strategy = FindStrategy(hero);
+            if (strategy != null)
+            {
+                strategy.Priority = priority;
+                return;
+            }
+            AddStrategy(hero, priority);
+        }
+
+        public Strategy FindStrategy(Hero hero)
         {
             foreach (Strategy strategy in _strategies)
             {
-                if (subject == strategy.Subject)
+                if (hero == strategy.Hero)
                 {
                     return strategy;
                 }
             }
-            Strategy strategy2 = new Strategy(subject, 0);
+            Strategy strategy2 = new Strategy(hero, 0);
             _strategies.Add(strategy2);
             return strategy2;
         }
