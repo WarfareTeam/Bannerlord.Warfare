@@ -31,6 +31,7 @@ using Warfare.Content.Contracts;
 using Warfare.Extensions;
 using Warfare.GauntletUI;
 using Warfare.ViewModels.ArmyManagement;
+using TaleWorlds.LinQuick;
 
 namespace Warfare.ViewModels.Military
 {
@@ -135,7 +136,7 @@ namespace Warfare.ViewModels.Military
 
         private bool _shouldExtendCurrentMercenary;
 
-        private bool _isStrategySelectionEnabled;
+        private bool _isSelectionEnabled;
 
         private int _minimumArmyCost;
 
@@ -342,7 +343,7 @@ namespace Warfare.ViewModels.Military
                     CanShowLocationOfCurrentArmy = CurrentSelectedArmy.Army.AiBehaviorObject is Settlement || CurrentSelectedArmy.Army.AiBehaviorObject is MobileParty;
                     CanManageCurrentArmy = GetCanManageCurrentArmyWithReason(out disabledReason);
                     ManageArmyHint.HintText = disabledReason;
-                    IsStrategySelectionEnabled = CurrentSelectedArmy.Army.ArmyOwner.MapFaction.IsKingdomFaction && CurrentSelectedArmy.Army.ArmyOwner.MapFaction.Leader == Hero.MainHero;
+                    IsSelectionEnabled = Hero.MainHero != CurrentSelectedArmy.Army.ArmyOwner && Hero.MainHero.MapFaction.IsKingdomFaction && Hero.MainHero.MapFaction.MapFaction.Leader == Hero.MainHero;
                 }
             }
             UpdateStrategySelection();
@@ -991,7 +992,10 @@ namespace Warfare.ViewModels.Military
         {
             if (Hero.MainHero.MapFaction.IsKingdomFaction && Hero.MainHero.MapFaction.Leader == Hero.MainHero && CurrentSelectedArmy != null)
             {
-                Campaign.Current.GetCampaignBehavior<StrategyBehavior>().SetPriority(CurrentSelectedArmy.Army.ArmyOwner, s.SelectedIndex);
+                if (s.SelectedIndex > 0)
+                {
+                    Campaign.Current.GetCampaignBehavior<StrategyBehavior>().SetPriority(CurrentSelectedArmy.Army.ArmyOwner, s.SelectedIndex);
+                }
             }
         }
 
@@ -1743,18 +1747,18 @@ namespace Warfare.ViewModels.Military
             }
         }
         [DataSourceProperty]
-        public bool IsStrategySelectionEnabled
+        public bool IsSelectionEnabled
         {
             get
             {
-                return _isStrategySelectionEnabled;
+                return _isSelectionEnabled;
             }
             set
             {
-                if (value != _isStrategySelectionEnabled)
+                if (value != _isSelectionEnabled)
                 {
-                    _isStrategySelectionEnabled = value;
-                    OnPropertyChangedWithValue(value, "IsStrategySelectionEnabled");
+                    _isSelectionEnabled = value;
+                    OnPropertyChangedWithValue(value, "IsSelectionEnabled");
                 }
             }
         }
