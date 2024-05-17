@@ -60,9 +60,7 @@ namespace Warfare.Content.Strategies
                     return strategy;
                 }
             }
-            Strategy strategy2 = new Strategy(hero, 0);
-            _strategies.Add(strategy2);
-            return strategy2;
+            return null!;
         }
     }
 }

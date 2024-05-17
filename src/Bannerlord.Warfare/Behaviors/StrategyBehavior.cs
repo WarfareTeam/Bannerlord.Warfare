@@ -14,11 +14,11 @@ namespace Warfare.Behaviors
         {
             CampaignEvents.HourlyTickEvent.AddNonSerializedListener(this, OnHourlyTick);
         }
-        public int GetPriority(Hero subject) => _strategyManager.GetPriority(subject);
+        public int GetPriority(Hero hero) => _strategyManager.GetPriority(hero);
 
-        public void SetPriority(Hero subject, int priority) => _strategyManager.SetPriority(subject, priority);
+        public void SetPriority(Hero hero, int priority) => _strategyManager.SetPriority(hero, priority);
 
-        public Strategy FindStrategy(Hero subject) => _strategyManager.FindStrategy(subject);
+        public Strategy FindStrategy(Hero hero) => _strategyManager.FindStrategy(hero);
 
         public void OnHourlyTick() => _strategyManager.CheckValidStrategies();
 

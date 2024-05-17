@@ -6,14 +6,14 @@ namespace Warfare.Content.Strategies
     internal class Strategy
     {
         [SaveableProperty(1)]
-        public Hero Subject { get; private set; }
+        public Hero Hero { get; private set; }
 
         [SaveableProperty(2)]
         public int Priority { get; set; }
 
-        public Strategy(Hero subject, int priority)
+        public Strategy(Hero hero, int priority)
         {
-            Subject = subject;
+            Hero = hero;
             Priority = priority;
         }
     }
