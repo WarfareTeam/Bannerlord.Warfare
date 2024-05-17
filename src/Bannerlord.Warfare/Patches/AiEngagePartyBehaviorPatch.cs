@@ -124,11 +124,11 @@ namespace Bannerlord.Warfare.Patches
                 if (mobileParty.MapFaction != null && mobileParty.MapFaction.IsKingdomFaction && mobileParty.MapFaction.Leader == Hero.MainHero)
                 {
                     StanceLink stanceWith = Hero.MainHero.MapFaction.GetStanceWith(mobileParty2.MapFaction);
-                    Strategy strategy = Campaign.Current.GetCampaignBehavior<StrategyBehavior>().FindStrategy(mobileParty.Owner);
                     if (stanceWith != null && stanceWith.BehaviorPriority == 1)
                     {
                         num26 *= 1.2f;
                     }
+                    Strategy strategy = Campaign.Current.GetCampaignBehavior<StrategyBehavior>().FindStrategy(mobileParty.Owner);
                     if (strategy != null && strategy.Priority == 1)
                     {
                         num26 *= 1.2f;
