@@ -277,44 +277,6 @@
                   </Children>
                 </ListPanel>
 				
-				<!-- Army Strategy Dropdown-->
-				<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Top" MarginLeft="85" MarginTop="45" IsVisible="@ShowArmies">
-				  <Children>
-
-					<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" IsVisible="@IsSelectionEnabled">
-					  <Children>
-						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop">
-						  <Children>
-							<TextWidget DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Kingdom.TitleMedium.Text" Brush.FontSize="24" ClipContents="false" Text="@StrategySelectionTitle" />
-							<DropdownWidget DataSource="{StrategySelection}" Id="DropdownParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginTop="2" ListPanel="SelectionList" Button="DropdownButton" CurrentSelectedIndex="@SelectedIndex" RichTextWidget="DropdownButton\SelectedTextWidget">
-							  <Children>
-								<ButtonWidget Id="DropdownButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="35" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Kingdom.Wars.BehaviorSelection">
-								  <Children>
-									<RichTextWidget Id="SelectedTextWidget" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" PositionYOffset="1" Brush="SPOptions.Dropdown.Center.Text"/>
-								  </Children>
-								</ButtonWidget>
-
-								<ListPanel Id="SelectionList" DataSource="{ItemList}" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="120" VerticalAlignment="Top" Sprite="BlankWhiteSquare_9" Color="#100404FF" IsVisible="false" StackLayout.LayoutMethod="VerticalBottomToTop" UpdateChildrenStates="true">
-								  <ItemTemplate>
-									<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="30" HorizontalAlignment="Center" VerticalAlignment="Bottom" ButtonType="Radio" UpdateChildrenStates="true">
-									  <Children>
-										<ImageWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="8" MarginRight="8" Brush="Standard.DropdownItem" />
-										<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.Dropdown.Item.Text" Text="@StringItem" />
-										<HintWidget DataSource="{Hint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="30" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
-									  </Children>
-									</ButtonWidget>
-								  </ItemTemplate>
-								</ListPanel>
-							  </Children>
-							</DropdownWidget>
-						  </Children>
-						</ListPanel>
-					  </Children>
-					</Widget>
-
-				  </Children>
-				</Widget>
-				
 				<!-- Army Buttons-->
                 <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="0" IsVisible="@ShowArmies">
                   <Children>
