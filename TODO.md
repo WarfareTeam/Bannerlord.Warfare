@@ -13,6 +13,7 @@
 - Ability for an NPC clan to become independent to form their own faction with certain conditions.
 - Backwards compatibility
 - MCM Options: Armies besiege AI, Additional mercenary clans
+- Seasonal warfare; Winter should be spent stockpiling and focusing on keeping the economy stable, and warfare should resume in the spring. Very aggressive rulers or commanders may still take the risk that comes with prosecuting a winter war.
 
 ## Battle Overhaul
 - Arrows should pierce through shields in certain conditions, with some damage dealt to the character and the possibility to stagger them.
