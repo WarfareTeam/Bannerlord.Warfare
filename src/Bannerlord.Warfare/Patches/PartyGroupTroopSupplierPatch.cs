@@ -7,7 +7,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using Warfare;
 
-namespace Bannerlord.Warfare.Patches
+namespace Warfare.Patches
 {
     [HarmonyPatch(typeof(PartyGroupTroopSupplier), MethodType.Constructor, new Type[]
     {

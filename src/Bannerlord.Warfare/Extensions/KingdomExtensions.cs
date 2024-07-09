@@ -50,8 +50,11 @@ namespace Warfare.Extensions
                     CampaignEventDispatcher.Instance.OnPartyJoinedArmy(party);
                     SetPartyAiAction.GetActionForEscortingParty(party, leader.PartyBelongedTo);
                 }
-                party.GetType().GetField("_disorganizedUntilTime", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(party, disorganize ? CampaignTime.HoursFromNow(Campaign.Current.Models.PartyImpairmentModel.GetDisorganizedStateDuration(party)) : CampaignTime.Now);
-                party.GetType().GetField("_isDisorganized", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(party, disorganize);
+                if (party.AttachedTo == party.Army.LeaderParty)
+                {
+                    party.GetType().GetField("_disorganizedUntilTime", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(party, disorganize ? CampaignTime.HoursFromNow(Campaign.Current.Models.PartyImpairmentModel.GetDisorganizedStateDuration(party)) : CampaignTime.Now);
+                    party.GetType().GetField("_isDisorganized", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(party, disorganize);
+                }
             }
             if (influence != leader.Clan.Influence)
             {

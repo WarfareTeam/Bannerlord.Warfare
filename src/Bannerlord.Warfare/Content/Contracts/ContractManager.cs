@@ -7,7 +7,7 @@ using TaleWorlds.CampaignSystem.Party.PartyComponents;
 
 using TaleWorlds.SaveSystem;
 
-namespace Warfare.Contracts
+namespace Warfare.Content.Contracts
 {
     internal sealed class ContractManager
     {
@@ -27,7 +27,7 @@ namespace Warfare.Contracts
             }
         }
 
-        public void SignContract(Clan mercenary, Kingdom employer)
+        public Contract SignContract(Clan mercenary, Kingdom employer)
         {
             Contract contract = FindContract(mercenary);
             int contractType = Settings.Current.MercenaryContractType.SelectedIndex;
@@ -36,7 +36,7 @@ namespace Warfare.Contracts
             if (contract != null)
             {
                 contract.Expiration += CampaignTime.Days(days);
-                return;
+                return contract;
             }
             ChangeKingdomAction.ApplyByJoinFactionAsMercenary(mercenary, employer, 0, true);
             foreach (WarPartyComponent p in mercenary.WarPartyComponents)
@@ -46,7 +46,9 @@ namespace Warfare.Contracts
                     p.MobileParty.Ai.SetMoveModeHold();
                 }
             }
-            _contracts.Add(new Contract(employer, mercenary, expiration));
+            contract = new Contract(employer, mercenary, expiration);
+            _contracts.Add(contract);
+            return contract;
         }
 
         public void RemoveContract(Clan mercenary)

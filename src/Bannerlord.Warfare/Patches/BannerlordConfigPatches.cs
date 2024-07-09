@@ -5,7 +5,7 @@ using System.Text;
 using TaleWorlds.MountAndBlade;
 using Warfare;
 
-namespace Bannerlord.Warfare.Patches
+namespace Warfare.Patches
 {
     [HarmonyPatch(typeof(BannerlordConfig), "GetRealBattleSize")]
     public class GetRealBattleSizePatch

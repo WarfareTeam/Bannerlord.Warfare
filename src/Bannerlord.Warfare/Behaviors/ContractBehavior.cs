@@ -6,7 +6,7 @@ using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.Party.PartyComponents;
 using TaleWorlds.Core;
 
-using Warfare.Contracts;
+using Warfare.Content.Contracts;
 using Warfare.Extensions;
 
 namespace Warfare.Behaviors
@@ -89,7 +89,7 @@ namespace Warfare.Behaviors
             }
         }
 
-        public void SignContract(Clan mercenary, Kingdom employer = null!) => _contractManager.SignContract(mercenary, employer);
+        public Contract SignContract(Clan mercenary, Kingdom employer = null!) => _contractManager.SignContract(mercenary, employer);
 
         public bool CanExtendContract(Clan mercenary, Kingdom employer) => _contractManager.CanExtendContract(mercenary, employer);
 

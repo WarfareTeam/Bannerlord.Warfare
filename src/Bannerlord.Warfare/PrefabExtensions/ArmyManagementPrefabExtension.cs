@@ -3,7 +3,7 @@
 using Bannerlord.UIExtenderEx.Attributes;
 using Bannerlord.UIExtenderEx.Prefabs2;
 
-namespace Bannerlord.Warfare.PrefabExtensions
+namespace Warfare.PrefabExtensions
 {
     [PrefabExtension("ArmyManagement", "descendant::ButtonWidget[@IsEnabled='@CanDisbandArmy']")]
     internal sealed class ArmyManagementPrefabExtension : PrefabExtensionInsertPatch

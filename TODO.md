@@ -1,7 +1,7 @@
 # To do
 
 ## Issues
-- When adding into an existing game, mercenaries part of a kingdom already won't have a correlating contract, causing crashing.
+- ~~When adding into an existing game, mercenaries part of a kingdom already won't have a correlating contract, causing crashing.~~
 
 ## General
 - Campaign time should slowly pass during player battles, allowing the possibility of reinforcements.
@@ -20,11 +20,11 @@
 ## Army Overhaul
 - Army map overlay needs hotkeys.
 - When the leader of an army is changed to the player while the player is a member of that army, the army map overlay breaks and fails to display the army members.
-- Parties not yet gathered in the army should not be put in a disorganized state when moved between armies, such as during a leader change or split.
+- ~~Parties not yet gathered in the army should not be put in a disorganized state when moved between armies, such as during a leader change or split.~~
 - Mercenaries should not be able to manage armies they are a part of, add members to it, etc.
 
 ## Mercenary Overhaul
-- Add remaining contract time to the Mercenary panel.
+- ~~Add remaining contract time to the Mercenary panel.~~
 - Factions should be less inclined to horde troops - especially in peacetime - in order to pay for mercenaries in wartime.
 - Mercenaries should not declare wars on factions over time, currently they do for unknown reasons but do not on game start as intended.
 - Slider for mercenary clan spawns on game start.

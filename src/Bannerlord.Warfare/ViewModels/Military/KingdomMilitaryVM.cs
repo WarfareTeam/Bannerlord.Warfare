@@ -19,6 +19,7 @@ using TaleWorlds.CampaignSystem.ViewModelCollection.KingdomManagement.Armies;
 using TaleWorlds.CampaignSystem.ViewModelCollection.KingdomManagement;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.Information;
+using TaleWorlds.Core.ViewModelCollection.Selector;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.ScreenSystem;
@@ -26,10 +27,11 @@ using TaleWorlds.ScreenSystem;
 using Bannerlord.UIExtenderEx.Attributes;
 
 using Warfare.Behaviors;
-using Warfare.Contracts;
+using Warfare.Content.Contracts;
 using Warfare.Extensions;
 using Warfare.GauntletUI;
 using Warfare.ViewModels.ArmyManagement;
+using TaleWorlds.LinQuick;
 
 namespace Warfare.ViewModels.Military
 {
@@ -68,6 +70,8 @@ namespace Warfare.ViewModels.Military
 
         private KingdomMercenaryItemVM _currentSelectedMercenary;
 
+        private SelectorVM<SelectorItemVM> _strategySelection;
+
         private string _noMercenarySelectedText;
 
         private string _militaryText;
@@ -97,6 +101,8 @@ namespace Warfare.ViewModels.Military
         private string _extendActionExplanationText;
 
         private string _fireActionExplanationText;
+
+        private string _strategySelectionTitle;
 
         private HintViewModel _changeLeaderHint;
 
@@ -130,6 +136,8 @@ namespace Warfare.ViewModels.Military
 
         private bool _shouldExtendCurrentMercenary;
 
+        private bool _isSelectionEnabled;
+
         private int _minimumArmyCost;
 
         private string _minimumArmyCostLabel;
@@ -143,6 +151,8 @@ namespace Warfare.ViewModels.Military
         private int _hireCost;
 
         private string _hireCostLabel;
+
+        private string _remainingContractTimeLabel;
 
         public KingdomMilitaryVM()
         {
@@ -165,6 +175,10 @@ namespace Warfare.ViewModels.Military
             FireHint = new();
             IsAcceptableItemSelected = false;
             IsAcceptableMercenarySelected = false;
+            StrategySelection = new SelectorVM<SelectorItemVM>(0, OnStrategySelectionChanged);
+            StrategySelection.AddItem(new SelectorItemVM(GameTexts.FindText("str_kingdom_war_strategy_balanced"), GameTexts.FindText("str_kingdom_war_strategy_balanced_desc")));
+            StrategySelection.AddItem(new SelectorItemVM(GameTexts.FindText("str_kingdom_war_strategy_defensive"), new TextObject("{=j2df0ifh}This army will be more inclined to take defensive actions against enemies such as responding to enemy raids and sieges.")));
+            StrategySelection.AddItem(new SelectorItemVM(GameTexts.FindText("str_kingdom_war_strategy_offensive"), new TextObject("{=fWgm6b6b}This army will be more inclined to take offensive actions against enemies such as raiding and besieging.")));
             RefreshArmyList();
             RefreshMercenaryList();
             RefreshValues();
@@ -174,6 +188,7 @@ namespace Warfare.ViewModels.Military
         public override void RefreshValues()
         {
             base.RefreshValues();
+            StrategySelectionTitle = GameTexts.FindText("str_kingdom_war_strategy").ToString();
             MilitaryText = new TextObject("{=4T0zfjz0}Military").ToString();
             ArmiesText = GameTexts.FindText("str_armies").ToString();
             MercenariesText = new TextObject("{=L3vpqJKB}Mercenaries").ToString();
@@ -328,8 +343,10 @@ namespace Warfare.ViewModels.Military
                     CanShowLocationOfCurrentArmy = CurrentSelectedArmy.Army.AiBehaviorObject is Settlement || CurrentSelectedArmy.Army.AiBehaviorObject is MobileParty;
                     CanManageCurrentArmy = GetCanManageCurrentArmyWithReason(out disabledReason);
                     ManageArmyHint.HintText = disabledReason;
+                    IsSelectionEnabled = Hero.MainHero != CurrentSelectedArmy.Army.ArmyOwner && Hero.MainHero.MapFaction.IsKingdomFaction && Hero.MainHero.MapFaction.MapFaction.Leader == Hero.MainHero;
                 }
             }
+            UpdateStrategySelection();
         }
 
         private bool GetCanChangeCurrentArmyLeaderWithReason(out TextObject disabledReason)
@@ -486,6 +503,62 @@ namespace Warfare.ViewModels.Military
                 GameTexts.SetVariable("LEFT", "{=J1G2EXsn}Contract Cost");
                 GameTexts.SetVariable("RIGHT", HireCost);
                 HireCostLabel = GameTexts.FindText("str_LEFT_colon_RIGHT_wSpaceAfterColon").ToString();
+                TextObject remainingContractTime = TextObject.Empty;
+                if (item.IsHired)
+                {
+                    Contract contract = _behavior.FindContract(item.Clan);
+                    if (contract == null)
+                    {
+                        contract = _behavior.SignContract(item.Clan);
+                    }
+                    remainingContractTime = new TextObject("{=!}{YEARS} {SEASONS} {DAYS} {HOURS}");
+                    CampaignTime expiration = contract.Expiration;
+                    int years = (int)(expiration - CampaignTime.Now).ToYears;
+                    int seasons = (int)(expiration - CampaignTime.Now).ToSeasons - (CampaignTime.SeasonsInYear * years);
+                    int days = (int)(expiration - CampaignTime.Now).ToDays - (CampaignTime.DaysInYear * years) - (CampaignTime.DaysInSeason * seasons);
+                    int hours = (int)(expiration - CampaignTime.Now).ToHours - (CampaignTime.HoursInDay * CampaignTime.DaysInYear * years) - (CampaignTime.HoursInDay * CampaignTime.DaysInSeason * seasons) - (CampaignTime.HoursInDay * days);
+                    if (years > 0)
+                    {
+                        GameTexts.SetVariable("YEAR_IS_PLURAL", (years > 1) ? 1 : 0);
+                        GameTexts.SetVariable("YEAR", years);
+                        string yearsLabel = GameTexts.FindText("str_YEAR_years").ToString();
+                        if (seasons > 0 || days > 0 || hours > 0)
+                        {
+                            yearsLabel += ", ";
+                        }
+                        remainingContractTime.SetTextVariable("YEARS", yearsLabel);
+                    }
+                    if (seasons > 0)
+                    {
+                        GameTexts.SetVariable("SEASON_IS_PLURAL", (seasons > 1) ? 1 : 0);
+                        GameTexts.SetVariable("SEASON", seasons);
+                        string seasonsLabel = GameTexts.FindText("str_SEASON_seasons").ToString();
+                        if (days > 0 || hours > 0)
+                        {
+                            seasonsLabel += ", ";
+                        }
+                        remainingContractTime.SetTextVariable("SEASONS", seasonsLabel);
+                    }
+                    if (days > 0)
+                    {
+                        GameTexts.SetVariable("DAY_IS_PLURAL", (days > 1) ? 1 : 0);
+                        GameTexts.SetVariable("DAY", days);
+                        string daysLabel = GameTexts.FindText("str_DAY_days").ToString();
+                        if (hours > 0)
+                        {
+                            daysLabel += ", ";
+                        }
+                        remainingContractTime.SetTextVariable("DAYS", daysLabel);
+                    }
+                    if (hours > 0)
+                    {
+                        string hoursLabel = new TextObject("{=xg0izQ4X}{HOUR} {?HOUR_IS_PLURAL}hours{?}hour{\\?}").SetTextVariable("HOUR", hours).SetTextVariable("HOUR_IS_PLURAL", hours > 1 ? 1 : 0).ToString();
+                        remainingContractTime.SetTextVariable("HOURS", hoursLabel); 
+                    }
+                }
+                GameTexts.SetVariable("LEFT", "{=pc60DYCO}Remaining Contract Time");
+                GameTexts.SetVariable("RIGHT", remainingContractTime);
+                RemainingContractTimeLabel = GameTexts.FindText("str_LEFT_colon_RIGHT_wSpaceAfterColon").ToString();
                 CanExtendCurrentMercenary = GetCanExtendCurrentMercenaryWithReason(out disabledReason);
                 ExtendHint.HintText = disabledReason;
                 ShouldExtendCurrentMercenary = item.Clan.IsUnderMercenaryService && item.Clan.Kingdom == Clan.PlayerClan.Kingdom;
@@ -904,6 +977,25 @@ namespace Warfare.ViewModels.Military
                     DisbandArmyAction.ApplyByLeaderPartyRemoved(CurrentSelectedArmy.Army);
                 }
                 RefreshArmyList();
+            }
+        }
+
+        private void UpdateStrategySelection()
+        {
+            if (Hero.MainHero.MapFaction.IsKingdomFaction && Hero.MainHero.MapFaction.Leader == Hero.MainHero && CurrentSelectedArmy != null)
+            {
+                StrategySelection.SelectedIndex = Campaign.Current.GetCampaignBehavior<StrategyBehavior>().GetPriority(CurrentSelectedArmy.Army.ArmyOwner);
+            }
+        }
+
+        private void OnStrategySelectionChanged(SelectorVM<SelectorItemVM> s)
+        {
+            if (Hero.MainHero.MapFaction.IsKingdomFaction && Hero.MainHero.MapFaction.Leader == Hero.MainHero && CurrentSelectedArmy != null)
+            {
+                if (s.SelectedIndex > 0)
+                {
+                    Campaign.Current.GetCampaignBehavior<StrategyBehavior>().SetPriority(CurrentSelectedArmy.Army.ArmyOwner, s.SelectedIndex);
+                }
             }
         }
 
@@ -1655,6 +1747,22 @@ namespace Warfare.ViewModels.Military
             }
         }
         [DataSourceProperty]
+        public bool IsSelectionEnabled
+        {
+            get
+            {
+                return _isSelectionEnabled;
+            }
+            set
+            {
+                if (value != _isSelectionEnabled)
+                {
+                    _isSelectionEnabled = value;
+                    OnPropertyChangedWithValue(value, "IsSelectionEnabled");
+                }
+            }
+        }
+        [DataSourceProperty]
         public int HireCost
         {
             get
@@ -1684,6 +1792,56 @@ namespace Warfare.ViewModels.Military
                 {
                     _hireCostLabel = value;
                     OnPropertyChangedWithValue(value, "HireCostLabel");
+                }
+            }
+        }
+        [DataSourceProperty]
+        public string RemainingContractTimeLabel
+        {
+            get
+            {
+                return _remainingContractTimeLabel;
+            }
+            set
+            {
+                if (value != _remainingContractTimeLabel)
+                {
+                    _remainingContractTimeLabel = value;
+                    OnPropertyChangedWithValue(value, "RemainingContractTimeLabel");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public string StrategySelectionTitle
+        {
+            get
+            {
+                return _strategySelectionTitle;
+            }
+            set
+            {
+                if (value != _strategySelectionTitle)
+                {
+                    _strategySelectionTitle = value;
+                    OnPropertyChangedWithValue(value, "StrategySelectionTitle");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public SelectorVM<SelectorItemVM> StrategySelection
+        {
+            get
+            {
+                return _strategySelection;
+            }
+            set
+            {
+                if (value != _strategySelection)
+                {
+                    _strategySelection = value;
+                    OnPropertyChangedWithValue(value, "StrategySelection");
                 }
             }
         }

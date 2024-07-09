@@ -62,6 +62,10 @@
 		<string id="J1G2EXsn" text="Contract Cost" />
 		<string id="AwmsTVoc" text="sign" />
 		<string id="NgtpnwlS" text="extend" />
+		<string id="pc60DYCO" text="Remaining Contract Time" />
+		<string id="xg0izQ4X" text="{=xg0izQ4X}{HOUR} {?HOUR_IS_PLURAL}hours{?}hour{\?}" />
+		<string id="j2df0ifh" text="This army will be more inclined to take defensive actions against enemies such as responding to enemy raids and sieges." />
+		<string id="fWgm6b6b" text="This army will be more inclined to take offensive actions against enemies such as raiding and besieging." />
 		<!--Settings-->
 		<string id="Wa3DouAN" text="Warfare" />
 		<string id="srjDu3DL" text="Mercenary Contract Type" />

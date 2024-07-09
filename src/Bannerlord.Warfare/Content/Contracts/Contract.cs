@@ -1,7 +1,7 @@
 ﻿using TaleWorlds.CampaignSystem;
 using TaleWorlds.SaveSystem;
 
-namespace Warfare.Contracts
+namespace Warfare.Content.Contracts
 {
     internal class Contract
     {
