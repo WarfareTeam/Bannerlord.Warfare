@@ -1,6 +1,4 @@
 <p align="center">
-	<img src="https://tokei.rs/b1/github/WarfareTeam/Bannerlord.Warfare"/>
- 	</br>
 	<a href="https://www.nexusmods.com/mountandblade2bannerlord/mods/6698" alt="NexusMods Bannerlord.Warfare">
 	<img src="https://img.shields.io/badge/NexusMods-Bannerlord.Warfare-yellow.svg" /></a>
 </p>
