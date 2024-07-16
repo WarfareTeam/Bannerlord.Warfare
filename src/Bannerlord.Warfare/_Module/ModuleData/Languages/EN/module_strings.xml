@@ -97,6 +97,19 @@
 		<string id="KAnYH0W2" text="Modifies the army besieging AI only if the target faction has at least the specified number of fiefs. This has no effect if 'Modify Army Besiege AI' is Disabled. Default: 3" />
 		<string id="hQ6ROvxB" text="Time To Prevent Army Besiege AI (Hours)" />
 		<string id="OGME2Ekq" text="Sets the amount of time in hours that the AI will be prevented from attempting to besiege a settlement being besieged by another army. This has no effect if 'Modify Army Besiege AI' is Disabled. Default: 24" />
+		<string id="e1CrjgN3" text="Strategy" />
+		<string id="WWq8ftLX" text="Defensive tendency for defensive Army Strategy" />
+		<string id="0iHIh4HO" text="Sets the defensive tendency for armies using the defensive strategy. Default: 110%" />
+		<string id="1raR5mTu" text="Offensive tendency for defensive Army Strategy" />
+		<string id="b8IWHpUU" text="Sets the offensive tendency for armies using the defensive strategy. Default: 65%" />
+		<string id="1UJ78ara" text="Chase tendency for defensive Army Strategy" />
+		<string id="q553aa8M" text="Sets the party chase tendency for armies using the offensive strategy. Default: 120%" />
+		<string id="h0LG1AKQ" text="Defensive tendency for offensive Army Strategy" />
+		<string id="QzPoBQWF" text="Sets the defensive tendency for armies using the offensive strategy. Default: 65%" />
+		<string id="fV3Kvnbu" text="Offensive tendency for offensive Army Strategy" />
+		<string id="Zs9y8UIJ" text="Sets the offensive tendency for armies using the offensive strategy. Default: 110%" />
+		<string id="dpUAnwfP" text="Chase tendency for offensive Army Strategy" />
+		<string id="zT85SDWT" text="Sets the party chase tendency for armies using the offensive strategy. Default: 80%" />
 		<string id="krUuhA7I" text="Other" />
 		<string id="MUSHsQr8" text="Logging" />
 		<string id="Wa3DouAN" text="Enables logs for testing and reporting purposes. Default: Disabled" />

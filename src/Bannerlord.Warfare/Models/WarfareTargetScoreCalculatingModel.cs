@@ -11,6 +11,7 @@ using TaleWorlds.Library;
 
 using Warfare.Behaviors;
 using Warfare.Content.Strategies;
+using Warfare;
 
 namespace Bannerlord.Warfare.Models
 {
@@ -403,16 +404,23 @@ namespace Bannerlord.Warfare.Models
                     {
                         if (missionType == Army.ArmyTypes.Besieger || missionType == Army.ArmyTypes.Raider)
                         {
-                            num41 *= 0.65f;
+                            num41 *= Settings.Current.OffensiveTendencyDefensiveStrategy;
                         }
                         else if (missionType == Army.ArmyTypes.Defender)
                         {
-                            num41 *= 1.1f;
+                            num41 *= Settings.Current.DefensiveTendencyDefensiveStrategy;
                         }
                     }
-                    else if (strategy.Priority == 2 && (missionType == Army.ArmyTypes.Besieger || missionType == Army.ArmyTypes.Raider))
+                    else if (strategy.Priority == 2)
                     {
-                        num41 *= 1.3f;
+                        if (missionType == Army.ArmyTypes.Besieger || missionType == Army.ArmyTypes.Raider)
+                        {
+                            num41 *= Settings.Current.OffensiveTendencyOffensiveStrategy;
+                        }
+                        else if (missionType == Army.ArmyTypes.Defender)
+                        {
+                            num41 *= Settings.Current.DefensiveTendencyOffensiveStrategy;
+                        }
                     }
                 }
                 if (stanceLink != null)

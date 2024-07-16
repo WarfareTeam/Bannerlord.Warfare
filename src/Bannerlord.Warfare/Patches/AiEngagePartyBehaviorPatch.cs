@@ -11,6 +11,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Library;
 using Warfare.Content.Strategies;
 using Warfare.Behaviors;
+using Warfare;
 
 namespace Bannerlord.Warfare.Patches
 {
@@ -126,12 +127,19 @@ namespace Bannerlord.Warfare.Patches
                     StanceLink stanceWith = Hero.MainHero.MapFaction.GetStanceWith(mobileParty2.MapFaction);
                     if (stanceWith != null && stanceWith.BehaviorPriority == 1)
                     {
-                        num26 *= 1.2f;
+                        num26 = 1.2f;
                     }
                     Strategy strategy = Campaign.Current.GetCampaignBehavior<StrategyBehavior>().FindStrategy(mobileParty.Owner);
-                    if (strategy != null && strategy.Priority == 1)
+                    if (strategy != null)
                     {
-                        num26 *= 1.2f;
+                        if (strategy.Priority == 1)
+                        {
+                            num26 *= Settings.Current.ChaseTendencyDefensiveStrategy;
+                        }
+                        else if (strategy.Priority == 2)
+                        {
+                            num26 *= Settings.Current.ChaseTendencyOffensiveStrategy;
+                        }
                     }
                 }
 
