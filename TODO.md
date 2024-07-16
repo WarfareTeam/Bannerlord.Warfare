@@ -14,6 +14,9 @@
 - Backwards compatibility
 - MCM Options: Armies besiege AI, Additional mercenary clans
 - Seasonal warfare; Winter should be spent stockpiling and focusing on keeping the economy stable, and warfare should resume in the spring. Very aggressive rulers or commanders may still take the risk that comes with prosecuting a winter war.
+- Automatic cohesion maintenance for individual armies, paid by player.
+- Fully replenish cohesion of all active armies in the kingdom from the map, paid by player.
+- Armies can deteriorate allowing room for nomads and other migrants to proliferate and take over regions ? Similar to the migration of the Visigoths / Huns around the fall of Rome
 
 ## Battle Overhaul
 - Arrows should pierce through shields in certain conditions, with some damage dealt to the character and the possibility to stagger them.
