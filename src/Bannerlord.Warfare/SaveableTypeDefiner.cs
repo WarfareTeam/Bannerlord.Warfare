@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using Warfare.Content.Contracts;
+using Warfare.Content.Strategies;
 
 namespace Warfare
 {
@@ -12,11 +13,16 @@ namespace Warfare
         {
             AddClassDefinition(typeof(Contract), 1);
             AddClassDefinition(typeof(ContractManager), 2);
+            //AddClassDefinition(typeof(Prisoner), 3);
+            //AddClassDefinition(typeof(PrisonerManager), 4);
+            AddClassDefinition(typeof(Strategy), 5);
+            AddClassDefinition(typeof(StrategyManager), 6);
         }
 
         protected override void DefineContainerDefinitions()
         {
             ConstructContainerDefinition(typeof(List<Contract>));
+            ConstructContainerDefinition(typeof(List<Strategy>));
         }
     }
 }

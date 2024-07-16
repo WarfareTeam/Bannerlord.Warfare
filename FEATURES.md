@@ -14,6 +14,7 @@
 - Whenever a party is moved between armies or removed from one, they will become disorganized. When changing leaders, this can be avoided only by changing to a leader already gathered in the army. It is unavoidable for a newly split army, but the army it split from will not be put in a disorganized state. Parties won't be disorganized during army relocation if it had not yet arrived at the old army.
 - If any of the new leaders don't have enough influence it will disband after the cohesion falls to zero, so prepare for this. You can add cohesion by joining the army temporarily or as the faction leader.
 - The player is not counted in calculations of influence, nor will they be added to any newly created armies automatically. You will need to join the army by finding it on the campaign map like vanilla.
+- Per-army war strategy options. Remembers the last option for an army leader when a new army is created. Stacks multiplicatively with the Per-war setting in the Diplomacy screen.
 
 ## Mercenary Overhaul
 - Armies tab in the Kingdom UI renamed to Military. Easily see mercenaries that are available, hired by your faction, or hired by another faction. You can also hire and fire mercenaries, view parties, troop counts & costs.
