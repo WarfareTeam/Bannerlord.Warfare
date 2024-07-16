@@ -14,6 +14,8 @@ namespace Warfare
         private const string ArmiesHeader = "{=inKr3PbA}Armies";
         private const string AIHeader = "{=baZKI4zX}AI";
         private const string ArmyAIHeader = ArmiesHeader + "/" + AIHeader;
+        private const string StrategyHeader = "{=e1CrjgN3}Strategy";
+        private const string ArmyStrategyHeader = ArmyAIHeader + "/" + StrategyHeader;
         private const string OtherHeader = "{=krUuhA7I}Other";
 
         public override string Id => "WarfareSettings";
@@ -72,6 +74,30 @@ namespace Warfare
         [SettingPropertyInteger("{=hQ6ROvxB}Time To Prevent Army Besiege AI (Hours)", 1, 168, Order = 2, RequireRestart = false, HintText = "{=OGME2Ekq}Sets the amount of time in hours that the AI will be prevented from attempting to besiege a settlement being besieged by another army. This has no effect if 'Modify Army Besiege AI' is Disabled. Default: 24")]
         [SettingPropertyGroup(ArmyAIHeader)]
         public int TimeToPreventArmyBesiegeAIHours { get; set; } = 24;
+
+        [SettingPropertyFloatingInteger("{=WWq8ftLX}Defensive tendency for defensive Army Strategy", 0.0f, 5.0f, "#0%", Order = 0, RequireRestart = false, HintText = "{=0iHIh4HO}Sets the defensive tendency for armies using the defensive strategy. Default: 110%")]
+        [SettingPropertyGroup(ArmyStrategyHeader)]
+        public float DefensiveTendencyDefensiveStrategy { get; set; } = 1.1f;
+
+        [SettingPropertyFloatingInteger("{=1raR5mTu}Offensive tendency for defensive Army Strategy", 0.0f, 5.0f, "#0%", Order = 1, RequireRestart = false, HintText = "{=b8IWHpUU}Sets the offensive tendency for armies using the defensive strategy. Default: 65%")]
+        [SettingPropertyGroup(ArmyStrategyHeader)]
+        public float OffensiveTendencyDefensiveStrategy { get; set; } = 0.65f;
+
+        [SettingPropertyFloatingInteger("{=1UJ78ara}Chase tendency for defensive Army Strategy", 0.0f, 5.0f, "#0%", Order = 2, RequireRestart = false, HintText = "{=q553aa8M}Sets the party chase tendency for armies using the offensive strategy. Default: 120%")]
+        [SettingPropertyGroup(ArmyStrategyHeader)]
+        public float ChaseTendencyDefensiveStrategy { get; set; } = 1.2f;
+
+        [SettingPropertyFloatingInteger("{=h0LG1AKQ}Defensive tendency for offensive Army Strategy", 0.0f, 5.0f, "#0%", Order = 3, RequireRestart = false, HintText = "{=QzPoBQWF}Sets the defensive tendency for armies using the offensive strategy. Default: 65%")]
+        [SettingPropertyGroup(ArmyStrategyHeader)]
+        public float DefensiveTendencyOffensiveStrategy { get; set; } = 0.65f;
+
+        [SettingPropertyFloatingInteger("{=fV3Kvnbu}Offensive tendency for offensive Army Strategy", 0.0f, 5.0f, "#0%", Order = 4, RequireRestart = false, HintText = "{=Zs9y8UIJ}Sets the offensive tendency for armies using the offensive strategy. Default: 110%")]
+        [SettingPropertyGroup(ArmyStrategyHeader)]
+        public float OffensiveTendencyOffensiveStrategy { get; set; } = 1.1f;
+
+        [SettingPropertyFloatingInteger("{=dpUAnwfP}Chase tendency for offensive Army Strategy", 0.0f, 5.0f, "#0%", Order = 5, RequireRestart = false, HintText = "{=zT85SDWT}Sets the party chase tendency for armies using the offensive strategy. Default: 80%")]
+        [SettingPropertyGroup(ArmyStrategyHeader)]
+        public float ChaseTendencyOffensiveStrategy { get; set; } = 0.8f;
 
         [SettingPropertyBool("{=MUSHsQr8}Logging", Order = 0, RequireRestart = false, HintText = "{=Wa3DouAN}Enables logs for testing and reporting purposes. Default: Disabled")]
         [SettingPropertyGroup(OtherHeader, GroupOrder = 100)]

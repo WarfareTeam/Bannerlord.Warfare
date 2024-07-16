@@ -96,6 +96,9 @@
     <Reference Include="TaleWorlds.Core.ViewModelCollection">
       <HintPath>..\..\..\..\..\..\..\Program Files\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.Core.ViewModelCollection.dll</HintPath>
     </Reference>
+    <Reference Include="TaleWorlds.DotNet">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.DotNet.dll</HintPath>
+    </Reference>
     <Reference Include="TaleWorlds.Engine.GauntletUI">
       <HintPath>..\..\..\..\..\..\..\Program Files\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.Engine.GauntletUI.dll</HintPath>
     </Reference>
