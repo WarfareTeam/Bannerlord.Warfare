@@ -2,6 +2,7 @@
 
 ## Issues
 - ~~When adding into an existing game, mercenaries part of a kingdom already won't have a correlating contract, causing crashing.~~
+- As a prisoner, opening kingdom screen causes a crash.
 
 ## General
 - Campaign time should slowly pass during player battles, allowing the possibility of reinforcements.
