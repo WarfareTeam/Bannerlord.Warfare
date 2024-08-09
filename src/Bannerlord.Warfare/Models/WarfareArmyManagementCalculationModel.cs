@@ -19,11 +19,11 @@ namespace Warfare.Models
         {
             if (party.ActualClan != null && !party.ActualClan.IsEliminated && party.ActualClan.IsMinorFaction && party != MobileParty.MainParty)
             {
-                if (Settings.Current.FactionLeadersCallMercenaryToArmyWithoutInfluence && armyLeaderParty.LeaderHero == armyLeaderParty.MapFaction.Leader)
+                if (Settings.Current.FactionLeadersCallMercenaryToArmyWithoutCost && armyLeaderParty.LeaderHero == armyLeaderParty.MapFaction.Leader)
                 {
                     return 0;
                 }
-                return (int)(_model.CalculatePartyInfluenceCost(armyLeaderParty, party) * Settings.Current.InfluenceCostToCallMercenaryToArmy);
+                return (int)(_model.CalculatePartyInfluenceCost(armyLeaderParty, party) * Settings.Current.CostMultiplerToCallMercenaryToArmy);
             }
             return _model.CalculatePartyInfluenceCost(armyLeaderParty, party);
         }

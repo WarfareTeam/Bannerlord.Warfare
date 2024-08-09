@@ -66,8 +66,15 @@
 		<string id="xg0izQ4X" text="{=xg0izQ4X}{HOUR} {?HOUR_IS_PLURAL}hours{?}hour{\?}" />
 		<string id="j2df0ifh" text="This army will be more inclined to take defensive actions against enemies such as responding to enemy raids and sieges." />
 		<string id="fWgm6b6b" text="This army will be more inclined to take offensive actions against enemies such as raiding and besieging." />
+		<string id="XxlLwFdW" text="Maintain Cohesion" />
+		<string id="UxCTxfA9" text="Automatically maintains cohesion for this army using player influence" />
+		<string id="CdZaf4Ir" text="Insufficient influence to maintain cohesion for army: {ARMY}" />
+		<string id="QETGd5n6" text="Daily Influence Change: {CHANGE}{INFLUENCE_ICON}" />
 		<!--Settings-->
 		<string id="Wa3DouAN" text="Warfare" />
+		<string id="EtmesuQ7" text="General" />
+		<string id="FZPtQ4Gu" text="Modify Winter Warfare Tendency (EXPERIMENTAL)" />
+		<string id="Uwo79RY3" text="Decreases the chance of war decisions in winter based on total calculating trait levels of proposer and ruler. Default: Disabled" />
 		<string id="srjDu3DL" text="Mercenary Contract Type" />
 		<string id="jzipGOog" text="The mercenary contract length. Effects the contract cost as it is relative to daily wages. Default: Seasonal" />
 		<string id="EVEAh6Eg" text="Weekly" />
@@ -75,10 +82,12 @@
 		<string id="pYZ9blgd" text="Annual" />
 		<string id="UVQI4HIo" text="Mercenary Contract Gold Cost Multiplier" />
 		<string id="xAl7nwNt" text="Multiplier for the costs when hiring a mercenary. The total contract cost is calculated by multiplying the total daily cost of mercenary party wages and the amount of days the mercenary will be contracted for. WARNING: If they aren't paid enough to at least cover troop wages, they may not properly feed their troops as well as having other side effects. Default: 1.25" />
-		<string id="TMZ4jBjZ" text="Faction Leaders Can Call Mercenary To Army Without Influence" />
-		<string id="642MdHQq" text="Allows the faction leader to call mercenaries to their army without an influence cost. Default: Enabled" />
-		<string id="MlXBzNfg" text="Influence Cost To Call Mercenary To Army" />
-		<string id="yLoVOwXi" text="The influence cost to call a mercenary party to an army. Default: 1.0" />
+		<string id="TMZ4jBjZ" text="Faction Leaders Can Call Mercenary To Army Without Cost" />
+		<string id="642MdHQq" text="Allows the faction leader to call mercenaries to their army without a cost. Default: Enabled" />
+		<string id="MlXBzNfg" text="Cost Multiplier To Call Mercenary To Army" />
+		<string id="yLoVOwXi" text="The cost multiplier to call a mercenary party to an army. Default: 1.0" />
+		<string id="tPbzAK5Z" text="Call Mercenary To Army Cost Type" />
+		<string id="Z6MO2Cki" text="The cost type to call a mercenary party to an army. Default: Denars" />
 		<string id="IcF3bsNX" text="Enable Cohesion Change" />
 		<string id="PKL1vtQN" text="Allows cohesion to be depleted over time. Default: Enabled" />
 		<string id="RvMefSHA" text="Daily Cohesion Change Multiplier" />
@@ -112,6 +121,6 @@
 		<string id="zT85SDWT" text="Sets the party chase tendency for armies using the offensive strategy. Default: 80%" />
 		<string id="krUuhA7I" text="Other" />
 		<string id="MUSHsQr8" text="Logging" />
-		<string id="Wa3DouAN" text="Enables logs for testing and reporting purposes. Default: Disabled" />
+		<string id="Wa3DouAN" text="Enables logs for testing and reporting purposes. Enable this only if Author requests a log during issue reproduction. Default: Disabled" />
 	</strings>
 </base>

@@ -13,7 +13,7 @@ using Warfare.Content.Strategies;
 using Warfare.Behaviors;
 using Warfare;
 
-namespace Bannerlord.Warfare.Patches
+namespace Warfare.Patches
 {
     [HarmonyPatch(typeof(AiEngagePartyBehavior), "AiHourlyTick")]
     public static class AiEngagePartyBehaviorPatch

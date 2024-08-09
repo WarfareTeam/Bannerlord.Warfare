@@ -11,7 +11,6 @@ using HarmonyLib;
 
 using Warfare.Behaviors;
 using Warfare.Models;
-using Bannerlord.Warfare.Models;
 
 namespace Warfare
 {
@@ -34,6 +33,7 @@ namespace Warfare
             if (gameStarterObject is CampaignGameStarter starter)
             {
                 starter.AddBehavior(new ContractBehavior());
+                starter.AddBehavior(new CohesionBoostBehavior());
                 starter.AddBehavior(new MercenaryBehavior());
                 //starter.AddBehavior(new PrisonerBehavior());
                 starter.AddBehavior(new StrategyBehavior());

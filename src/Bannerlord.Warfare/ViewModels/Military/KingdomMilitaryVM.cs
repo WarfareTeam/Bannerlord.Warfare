@@ -14,6 +14,7 @@ using TaleWorlds.CampaignSystem.MapEvents;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
+using TaleWorlds.CampaignSystem.ViewModelCollection.CharacterDeveloper;
 using TaleWorlds.CampaignSystem.ViewModelCollection.ClanManagement;
 using TaleWorlds.CampaignSystem.ViewModelCollection.KingdomManagement.Armies;
 using TaleWorlds.CampaignSystem.ViewModelCollection.KingdomManagement;
@@ -21,17 +22,16 @@ using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Core.ViewModelCollection.Selector;
 using TaleWorlds.Library;
+using TaleWorlds.LinQuick;
 using TaleWorlds.Localization;
 using TaleWorlds.ScreenSystem;
 
 using Bannerlord.UIExtenderEx.Attributes;
-
 using Warfare.Behaviors;
 using Warfare.Content.Contracts;
 using Warfare.Extensions;
 using Warfare.GauntletUI;
 using Warfare.ViewModels.ArmyManagement;
-using TaleWorlds.LinQuick;
 
 namespace Warfare.ViewModels.Military
 {
@@ -104,6 +104,8 @@ namespace Warfare.ViewModels.Military
 
         private string _strategySelectionTitle;
 
+        private string _maintainCohesionText;
+
         private HintViewModel _changeLeaderHint;
 
         private HintViewModel _splitArmyHint;
@@ -117,6 +119,8 @@ namespace Warfare.ViewModels.Military
         private HintViewModel _extendHint;
 
         private HintViewModel _fireHint;
+
+        private HintViewModel _maintainCohesionHint;
 
         private bool _canChangeCurrentArmyLeader;
 
@@ -137,6 +141,10 @@ namespace Warfare.ViewModels.Military
         private bool _shouldExtendCurrentMercenary;
 
         private bool _isSelectionEnabled;
+
+        private bool _canMaintainCohesion;
+
+        private bool _isMaintainCohesionSelected;
 
         private int _minimumArmyCost;
 
@@ -173,6 +181,7 @@ namespace Warfare.ViewModels.Military
             HireHint = new();
             ExtendHint = new();
             FireHint = new();
+            MaintainCohesionHint = new();
             IsAcceptableItemSelected = false;
             IsAcceptableMercenarySelected = false;
             StrategySelection = new SelectorVM<SelectorItemVM>(0, OnStrategySelectionChanged);
@@ -206,6 +215,7 @@ namespace Warfare.ViewModels.Military
             CategoryNameText = new TextObject("{=4T0zfjz0}Military").ToString();
             NoItemSelectedText = GameTexts.FindText("str_kingdom_no_army_selected").ToString();
             NoMercenarySelectedText = new TextObject("{=JknjvtkX}No Mercenary Selected").ToString();
+            MaintainCohesionText = new TextObject("{=XxlLwFdW}Maintain Cohesion").ToString();
             Armies.ApplyActionOnAllItems(delegate (KingdomArmyItemVM x)
             {
                 x.RefreshValues();
@@ -223,13 +233,9 @@ namespace Warfare.ViewModels.Military
         {
             if (_kingdomInterface.ViewModel != null)
             {
-                if (_kingdomInterface.ViewModel is KingdomArmyManagementVM)
+                if (_kingdomInterface.ViewModel is WarfareArmyManagementVM)
                 {
-                    (_kingdomInterface.ViewModel as KingdomArmyManagementVM).OnFrameTick(_kingdomInterface.Layer);
-                }
-                else
-                {
-                    (_kingdomInterface.ViewModel as SplitArmyVM).OnFrameTick(_kingdomInterface.Layer);
+                    (_kingdomInterface.ViewModel as WarfareArmyManagementVM).OnFrameTick(_kingdomInterface.Layer);
                 }
             }
         }
@@ -338,6 +344,9 @@ namespace Warfare.ViewModels.Military
                 SplitArmyHint.HintText = disabledReason;
                 CanDisbandCurrentArmy = GetCanDisbandCurrentArmyWithReason(out disabledReason);
                 DisbandHint.HintText = disabledReason;
+                CanMaintainCohesion = Clan.PlayerClan.Influence >= Campaign.Current.Models.ArmyManagementCalculationModel.GetCohesionBoostInfluenceCost(CurrentSelectedArmy.Army, 10);
+                IsMaintainCohesionSelected = Campaign.Current.GetCampaignBehavior<CohesionBoostBehavior>().FindCohesionBoost(CurrentSelectedArmy.Army) != null;
+                MaintainCohesionHint.HintText = new TextObject("{=UxCTxfA9}Automatically maintains cohesion for this army using player influence");
                 if (CurrentSelectedArmy != null)
                 {
                     CanShowLocationOfCurrentArmy = CurrentSelectedArmy.Army.AiBehaviorObject is Settlement || CurrentSelectedArmy.Army.AiBehaviorObject is MobileParty;
@@ -995,6 +1004,24 @@ namespace Warfare.ViewModels.Military
                 if (s.SelectedIndex > 0)
                 {
                     Campaign.Current.GetCampaignBehavior<StrategyBehavior>().SetPriority(CurrentSelectedArmy.Army.ArmyOwner, s.SelectedIndex);
+                }
+            }
+        }
+
+        public void ExecuteMaintainCohesion()
+        {
+            if (CanMaintainCohesion)
+            {
+                CohesionBoostBehavior behavior = Campaign.Current.GetCampaignBehavior<CohesionBoostBehavior>();
+                if (behavior.FindCohesionBoost(CurrentSelectedArmy.Army) != null)
+                {
+                    behavior.RemoveCohesionBoost(CurrentSelectedArmy.Army);
+                    SubModule.Log("Removed existing boost");
+                }
+                else
+                {
+                    behavior.AddCohesionBoost(CurrentSelectedArmy.Army);
+                    SubModule.Log("Added new boost");
                 }
             }
         }
@@ -1842,6 +1869,74 @@ namespace Warfare.ViewModels.Military
                 {
                     _strategySelection = value;
                     OnPropertyChangedWithValue(value, "StrategySelection");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool CanMaintainCohesion
+        {
+            get
+            {
+                return _canMaintainCohesion;
+            }
+            set
+            {
+                if (value != _canMaintainCohesion)
+                {
+                    _canMaintainCohesion = value;
+                    OnPropertyChangedWithValue(value, "CanMaintainCohesion");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool IsMaintainCohesionSelected
+        {
+            get
+            {
+                return _isMaintainCohesionSelected;
+            }
+            set
+            {
+                if (value != _isMaintainCohesionSelected)
+                {
+                    _isMaintainCohesionSelected = value;
+                    OnPropertyChangedWithValue(value, "IsMaintainCohesionSelected");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public HintViewModel MaintainCohesionHint
+        {
+            get
+            {
+                return _maintainCohesionHint;
+            }
+            set
+            {
+                if (value != _maintainCohesionHint)
+                {
+                    _maintainCohesionHint = value;
+                    OnPropertyChangedWithValue(value, "MaintainCohesionHint");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public string MaintainCohesionText
+        {
+            get
+            {
+                return _maintainCohesionText;
+            }
+            set
+            {
+                if (value != _maintainCohesionText)
+                {
+                    _maintainCohesionText = value;
+                    OnPropertyChangedWithValue(value, "MaintainCohesionText");
                 }
             }
         }
