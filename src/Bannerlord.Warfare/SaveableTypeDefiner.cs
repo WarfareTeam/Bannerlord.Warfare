@@ -17,12 +17,15 @@ namespace Warfare
             //AddClassDefinition(typeof(PrisonerManager), 4);
             AddClassDefinition(typeof(Strategy), 5);
             AddClassDefinition(typeof(StrategyManager), 6);
+            AddClassDefinition(typeof(CohesionBoost), 7);
+            AddClassDefinition(typeof(CohesionBoostManager), 8);
         }
 
         protected override void DefineContainerDefinitions()
         {
             ConstructContainerDefinition(typeof(List<Contract>));
             ConstructContainerDefinition(typeof(List<Strategy>));
+            ConstructContainerDefinition(typeof(List<CohesionBoost>));
         }
     }
 }

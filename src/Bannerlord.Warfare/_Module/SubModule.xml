@@ -1,7 +1,7 @@
 <Module>
-	<Id value="Bannerlord.Warfare"/>
 	<Name value="Warfare"/>
-	<Version value="v1.0.3" />
+	<Id value="Bannerlord.Warfare"/>
+	<Version value="v1.0.4" />
 	<DefaultModule value="false"/>
 	<ModuleCategory value="Singleplayer"/>
 	<Official value="false"/>
@@ -19,7 +19,7 @@
         <DependedModuleMetadata id="Bannerlord.Harmony" order="LoadBeforeThis" version="v2.3.3" />
         <DependedModuleMetadata id="Bannerlord.ButterLib" order="LoadBeforeThis" version="v2.9.10" />
         <DependedModuleMetadata id="Bannerlord.MBOptionScreen" order="LoadBeforeThis" version="v5.10.1" />
-        <DependedModuleMetadata id="Bannerlord.UIExtenderEx" order="LoadBeforeThis" version="v2.11.0" />
+        <DependedModuleMetadata id="Bannerlord.UIExtenderEx" order="LoadBeforeThis" version="v2.12.0" />
         <DependedModuleMetadata id="Native" order="LoadBeforeThis" version="vv1.2.10.*" />
         <DependedModuleMetadata id="SandBoxCore" order="LoadBeforeThis" version="vv1.2.10.*" />
         <DependedModuleMetadata id="Sandbox" order="LoadBeforeThis" version="vv1.2.10.*" />

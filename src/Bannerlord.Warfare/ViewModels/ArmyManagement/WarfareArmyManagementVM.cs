@@ -9,6 +9,7 @@ using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.CampaignSystem.ViewModelCollection.ArmyManagement;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Input;
+using TaleWorlds.CampaignSystem.ViewModelCollection.Map.MapBar;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Core.ViewModelCollection.Tutorial;
@@ -16,24 +17,47 @@ using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
-
+using Warfare.Extensions;
 using Warfare.Helpers;
 
 namespace Warfare.ViewModels.ArmyManagement
 {
-    internal class KingdomArmyManagementVM : ViewModel
+    internal class WarfareArmyManagementVM : ViewModel
     {
+        public class ManagementItemComparer : IComparer<WarfareArmyManagementItemVM>
+        {
+            public int Compare(WarfareArmyManagementItemVM x, WarfareArmyManagementItemVM y)
+            {
+                if (x.IsMainHero)
+                {
+                    return -1;
+                }
+
+                return y.IsAlreadyWithPlayer.CompareTo(x.IsAlreadyWithPlayer);
+            }
+        }
+
         private readonly Action _onClose;
 
         private readonly Action _onFinalize;
 
         public readonly Army Army;
 
-        private readonly ArmyManagementItemVM _mainPartyItem;
+        public readonly Hero LeaderHero;
+
+        public readonly MobileParty LeaderParty;
+
+        private readonly Hero NewLeader;
+
+        private readonly WarfareArmyManagementItemVM _mainPartyItem;
+
+        private readonly float _initialGold;
 
         private readonly float _initialInfluence;
 
         private string _latestTutorialElementID;
+
+        private string _playerDoesntHaveEnoughGoldStr;
 
         private string _playerDoesntHaveEnoughInfluenceStr;
 
@@ -55,19 +79,21 @@ namespace Warfare.ViewModels.ArmyManagement
 
         private List<MobileParty> _currentParties;
 
-        private ArmyManagementItemVM _focusedItem;
+        private WarfareArmyManagementItemVM _focusedItem;
 
-        private MBBindingList<ArmyManagementItemVM> _partyList;
+        private MBBindingList<WarfareArmyManagementItemVM> _partyList;
 
-        private MBBindingList<ArmyManagementItemVM> _partiesInCart;
+        private MBBindingList<WarfareArmyManagementItemVM> _partiesInCart;
 
-        private MBBindingList<ArmyManagementItemVM> _partiesToRemove;
+        private MBBindingList<WarfareArmyManagementItemVM> _partiesToRemove;
 
-        private ArmyManagementSortControllerVM _sortControllerVM;
+        private WarfareArmyManagementSortControllerVM _sortControllerVM;
 
         private int _totalStrength;
 
-        private int _totalCost;
+        private int _totalGoldCost;
+
+        private int _totalInfluenceCost;
 
         private int _cohesion;
 
@@ -81,7 +107,9 @@ namespace Warfare.ViewModels.ArmyManagement
 
         private string _totalCostText;
 
-        private string _totalCostNumbersText;
+        private string _totalGoldCostNumbersText;
+
+        private string _totalInfluenceCostNumbersText;
 
         private string _totalInfluence;
 
@@ -108,6 +136,8 @@ namespace Warfare.ViewModels.ArmyManagement
         private bool _playerHasArmy;
 
         private bool _canDisbandArmy;
+
+        private bool _canAffordGoldCost;
 
         private bool _canAffordInfluenceCost;
 
@@ -139,8 +169,24 @@ namespace Warfare.ViewModels.ArmyManagement
 
         private InputKeyItemVM _removeInputKey;
 
-        public KingdomArmyManagementVM(Action onClose, Action onFinalize)
+        private bool _isSplitArmy;
+
+        public WarfareArmyManagementVM(Action onClose, Action onFinalize = null!, Hero newLeader = null!)
         {
+            if (onFinalize == null)
+            {
+                Army = MobileParty.MainParty.Army;
+                LeaderParty = MobileParty.MainParty;
+                LeaderHero = Hero.MainHero;
+
+            }
+            else
+            {
+                Army = VMHelper.Military!.CurrentSelectedArmy.Army;
+                LeaderParty = Army.LeaderParty;
+                LeaderHero = LeaderParty.LeaderHero;
+            }
+            NewLeader = newLeader;
             _onClose = onClose;
             _onFinalize = onFinalize;
             PartyList = new();
@@ -154,32 +200,46 @@ namespace Warfare.ViewModels.ArmyManagement
             DisbandArmyHint = new();
             DoneHint = new();
             TutorialNotification = new();
+            CanAffordGoldCost = true;
             CanAffordInfluenceCost = true;
-            Army = VMHelper.Military!.CurrentSelectedArmy.Army;
-            PlayerHasArmy = Army != null;
-            foreach (MobileParty item in MobileParty.All)
+            IsSplitArmy = newLeader != null;
+            PlayerHasArmy = !IsSplitArmy && Army != null;
+            if (!IsSplitArmy)
             {
-                if (item.LeaderHero != null && item.MapFaction == Hero.MainHero.MapFaction && item.LeaderHero != Army.LeaderParty.LeaderHero && !item.IsCaravan)
+                foreach (MobileParty item in MobileParty.All)
                 {
-                    PartyList.Add(new ArmyManagementItemVM(OnAddToCart, OnRemove, OnFocus, item));
+                    if (item.LeaderHero != null && item.MapFaction == Hero.MainHero.MapFaction && item.LeaderHero != LeaderHero && !item.IsCaravan)
+                    {
+                        PartyList.Add(new WarfareArmyManagementItemVM(OnAddToCart, OnRemove, OnFocus, item));
+                    }
+                }
+                _mainPartyItem = new WarfareArmyManagementItemVM(null, null, null, LeaderParty)
+                {
+                    IsTransferDisabled = true,
+                    IsAlreadyWithPlayer = true,
+                    IsMainHero = true,
+                    IsInCart = true
+                };
+                PartiesInCart.Add(_mainPartyItem);
+                foreach (WarfareArmyManagementItemVM party in PartyList)
+                {
+                    if (Army != null && party.Party.Army == Army && party.Party != LeaderParty)
+                    {
+                        party.Cost = 0;
+                        party.IsAlreadyWithPlayer = true;
+                        party.IsInCart = true;
+                        PartiesInCart.Add(party);
+                    }
                 }
             }
-            _mainPartyItem = new ArmyManagementItemVM(null, null, null, Army.LeaderParty)
+            else
             {
-                IsTransferDisabled = true,
-                IsAlreadyWithPlayer = true,
-                IsMainHero = true,
-                IsInCart = true
-            };
-            PartiesInCart.Add(_mainPartyItem);
-            foreach (ArmyManagementItemVM party in PartyList)
-            {
-                if (Army != null && party.Party.Army == Army && party.Party != Army.LeaderParty)
+                foreach (MobileParty item in Army!.Parties)
                 {
-                    party.Cost = 0;
-                    party.IsAlreadyWithPlayer = true;
-                    party.IsInCart = true;
-                    PartiesInCart.Add(party);
+                    if (item.LeaderHero != Hero.MainHero && item.LeaderHero != newLeader && item.LeaderHero != Army.LeaderParty.LeaderHero)
+                    {
+                        PartyList.Add(new WarfareArmyManagementItemVM(OnAddToCart, OnRemove, OnFocus, item, newLeader));
+                    }
                 }
             }
             CalculateCohesion();
@@ -188,10 +248,11 @@ namespace Warfare.ViewModels.ArmyManagement
             {
                 CohesionBoostCost = Campaign.Current.Models.ArmyManagementCalculationModel.GetCohesionBoostInfluenceCost(Army, 10);
             }
+            _initialGold = Hero.MainHero.Gold;
             _initialInfluence = Hero.MainHero.Clan.Influence;
             OnRefresh();
             Game.Current.EventManager.TriggerEvent(new TutorialContextChangedEvent(TutorialContexts.ArmyManagement));
-            SortControllerVM = new ArmyManagementSortControllerVM(_partyList);
+            SortControllerVM = new WarfareArmyManagementSortControllerVM(ref _partyList);
             Game.Current.EventManager.RegisterEvent<TutorialNotificationElementChangeEvent>(OnTutorialNotificationElementIDChange);
             RefreshValues();
         }
@@ -199,7 +260,14 @@ namespace Warfare.ViewModels.ArmyManagement
         public override void RefreshValues()
         {
             base.RefreshValues();
-            TitleText = GameTexts.FindText("str_army_management").ToString();
+            if (!IsSplitArmy)
+            {
+                TitleText = GameTexts.FindText("str_army_management").ToString();
+            }
+            else
+            {
+                TitleText = new TextObject("{=8MvD4u4J}Split Army").ToString();
+            }
             BoostTitleText = GameTexts.FindText("str_boost_cohesion").ToString();
             CancelText = GameTexts.FindText("str_cancel").ToString();
             DoneText = GameTexts.FindText("str_done").ToString();
@@ -211,19 +279,20 @@ namespace Warfare.ViewModels.ArmyManagement
             NameText = GameTexts.FindText("str_sort_by_name_label").ToString();
             OwnerText = GameTexts.FindText("str_party").ToString();
             DisbandArmyText = GameTexts.FindText("str_disband_army").ToString();
-            DisbandCost = Army.LeaderParty == MobileParty.MainParty ? 0 : Campaign.Current.Models.DiplomacyModel.GetInfluenceCostOfDisbandingArmy();
+            DisbandCost = Army != null && (Hero.MainHero == Hero.MainHero.MapFaction.Leader || Army.LeaderParty == MobileParty.MainParty) ? 0 : Campaign.Current.Models.DiplomacyModel.GetInfluenceCostOfDisbandingArmy();
             CanDisbandArmy = GetCanDisbandArmyWithReason(out var disabledReason);
             DisbandArmyHint.HintText = disabledReason;
+            _playerDoesntHaveEnoughGoldStr = GameTexts.FindText("str_warning_you_dont_have_enough_influence").ToString();
             _playerDoesntHaveEnoughInfluenceStr = GameTexts.FindText("str_warning_you_dont_have_enough_influence").ToString();
             GameTexts.SetVariable("TOTAL_INFLUENCE", MathF.Round(Hero.MainHero.Clan.Influence));
             TotalInfluence = GameTexts.FindText("str_total_influence").ToString();
             GameTexts.SetVariable("NUMBER", 10);
             CohesionBoostAmountText = GameTexts.FindText("str_plus_with_number").ToString();
-            PartyList.ApplyActionOnAllItems(delegate (ArmyManagementItemVM x)
+            PartyList.ApplyActionOnAllItems(delegate (WarfareArmyManagementItemVM x)
             {
                 x.RefreshValues();
             });
-            PartiesInCart.ApplyActionOnAllItems(delegate (ArmyManagementItemVM x)
+            PartiesInCart.ApplyActionOnAllItems(delegate (WarfareArmyManagementItemVM x)
             {
                 x.RefreshValues();
             });
@@ -260,7 +329,7 @@ namespace Warfare.ViewModels.ArmyManagement
             NewCohesion = MathF.Min(Cohesion + _boostedCohesion, 100);
             ArmyManagementCalculationModel armyManagementCalculationModel = Campaign.Current.Models.ArmyManagementCalculationModel;
             _currentParties.Clear();
-            foreach (ArmyManagementItemVM item in PartiesInCart)
+            foreach (WarfareArmyManagementItemVM item in PartiesInCart)
             {
                 if (item.Party != Army.LeaderParty)
                 {
@@ -273,48 +342,66 @@ namespace Warfare.ViewModels.ArmyManagement
             }
         }
 
-        private void OnFocus(ArmyManagementItemVM focusedItem)
+        private void OnFocus(WarfareArmyManagementItemVM focusedItem)
         {
             FocusedItem = focusedItem;
         }
 
-        private void OnAddToCart(ArmyManagementItemVM armyItem)
+        private void OnAddToCart(WarfareArmyManagementItemVM armyItem)
         {
             if (!PartiesInCart.Contains(armyItem))
             {
                 PartiesInCart.Add(armyItem);
                 armyItem.IsInCart = true;
-                Game.Current.EventManager.TriggerEvent(new PartyAddedToArmyByPlayerEvent(armyItem.Party));
-                if (_partiesToRemove.Contains(armyItem))
+                if (!IsSplitArmy)
                 {
-                    _partiesToRemove.Remove(armyItem);
-                }
+                    Game.Current.EventManager.TriggerEvent(new PartyAddedToArmyByPlayerEvent(armyItem.Party));
+                    if (_partiesToRemove.Contains(armyItem))
+                    {
+                        _partiesToRemove.Remove(armyItem);
+                    }
 
-                if (armyItem.IsAlreadyWithPlayer)
+                    if (armyItem.IsAlreadyWithPlayer)
+                    {
+                        armyItem.CanJoinBackWithoutCost = false;
+                    }
+                }
+                if (Settings.Current.CallMercenaryToArmyCostType.SelectedIndex == 0 && armyItem.Clan.IsMinorFaction)
                 {
-                    armyItem.CanJoinBackWithoutCost = false;
+                    TotalGoldCost += armyItem.Cost;
                 }
-
-                TotalCost += armyItem.Cost;
+                else
+                {
+                    TotalInfluenceCost += armyItem.Cost;
+                }
             }
 
             CalculateCohesion();
             OnRefresh();
         }
 
-        private void OnRemove(ArmyManagementItemVM armyItem)
+        private void OnRemove(WarfareArmyManagementItemVM armyItem)
         {
             if (PartiesInCart.Contains(armyItem))
             {
                 PartiesInCart.Remove(armyItem);
                 armyItem.IsInCart = false;
-                _partiesToRemove.Add(armyItem);
-                if (armyItem.IsAlreadyWithPlayer)
+                if (!IsSplitArmy)
                 {
-                    armyItem.CanJoinBackWithoutCost = true;
+                    _partiesToRemove.Add(armyItem);
+                    if (armyItem.IsAlreadyWithPlayer)
+                    {
+                        armyItem.CanJoinBackWithoutCost = true;
+                    }
                 }
-
-                TotalCost -= armyItem.Cost;
+                if (Settings.Current.CallMercenaryToArmyCostType.SelectedIndex == 0 && armyItem.Clan.IsMinorFaction)
+                {
+                    TotalGoldCost -= armyItem.Cost;
+                }
+                else
+                {
+                    TotalInfluenceCost -= armyItem.Cost;
+                }
             }
 
             CalculateCohesion();
@@ -323,32 +410,34 @@ namespace Warfare.ViewModels.ArmyManagement
 
         private void ApplyCohesionChange()
         {
-            if (Army != null)
+            if (Army == null)
             {
-                int num = NewCohesion - Cohesion;
-                if (_influenceSpentForCohesionBoosting > 0 || Army.Parties.All((MobileParty p) => p.ActualClan == Army.LeaderParty.ActualClan))
-                {
-                    Army.BoostCohesionWithInfluence(num, _influenceSpentForCohesionBoosting);
-                }
+                return;
+            }
+            int num = NewCohesion - Cohesion;
+            if (_influenceSpentForCohesionBoosting > 0 || Army.Parties.All((MobileParty p) => p.ActualClan == Army.LeaderParty.ActualClan))
+            {
+                Army.BoostCohesionWithInfluence(num, _influenceSpentForCohesionBoosting);
             }
         }
 
         private void OnBoostCohesion()
         {
-            if (Army != null && Army.Cohesion < 100f)
+            if (Army == null || Army.Cohesion >= 100f)
             {
-                if (Hero.MainHero.Clan.Influence >= (float)(CohesionBoostCost + TotalCost))
-                {
-                    NewCohesion += 10;
-                    TotalCost += CohesionBoostCost;
-                    _boostedCohesion += 10;
-                    _influenceSpentForCohesionBoosting += CohesionBoostCost;
-                    OnRefresh();
-                }
-                else
-                {
-                    MBInformationManager.AddQuickInformation(new TextObject("{=Xmw93W6a}Not Enough Influence"));
-                }
+                return;
+            }
+            if (Hero.MainHero.Clan.Influence >= (float)(CohesionBoostCost + TotalInfluenceCost))
+            {
+                NewCohesion += 10;
+                TotalInfluenceCost += CohesionBoostCost;
+                _boostedCohesion += 10;
+                _influenceSpentForCohesionBoosting += CohesionBoostCost;
+                OnRefresh();
+            }
+            else
+            {
+                MBInformationManager.AddQuickInformation(new TextObject("{=Xmw93W6a}Not Enough Influence"));
             }
         }
 
@@ -357,15 +446,18 @@ namespace Warfare.ViewModels.ArmyManagement
             TotalStrength = (from x in PartiesInCart select Campaign.Current.Models.ArmyManagementCalculationModel.GetPartyStrength(x.Party.Party)).Sum();
             GameTexts.SetVariable("LEFT", GameTexts.FindText("str_total_cost").ToString());
             TotalCostText = GameTexts.FindText("str_LEFT_colon").ToString();
-            GameTexts.SetVariable("LEFT", TotalCost.ToString());
+            GameTexts.SetVariable("LEFT", CampaignUIHelper.GetAbbreviatedValueTextFromValue(TotalGoldCost));
+            GameTexts.SetVariable("RIGHT", CampaignUIHelper.GetAbbreviatedValueTextFromValue(Hero.MainHero.Gold));
+            TotalGoldCostNumbersText = GameTexts.FindText("str_LEFT_over_RIGHT").ToString();
+            GameTexts.SetVariable("LEFT", TotalInfluenceCost.ToString());
             GameTexts.SetVariable("RIGHT", ((int)Hero.MainHero.Clan.Influence).ToString());
-            TotalCostNumbersText = GameTexts.FindText("str_LEFT_over_RIGHT").ToString();
+            TotalInfluenceCostNumbersText = GameTexts.FindText("str_LEFT_over_RIGHT").ToString();
             GameTexts.SetVariable("NUM", PartiesInCart.Count());
             TotalLords = GameTexts.FindText("str_NUM_lords").ToString();
             GameTexts.SetVariable("LEFT", GameTexts.FindText("str_strength").ToString());
             TotalStrengthText = GameTexts.FindText("str_LEFT_colon").ToString();
-            CanCreateArmy = (float)TotalCost <= Hero.MainHero.Clan.Influence && PartiesInCart.Count() > 1;
-            PlayerHasArmy = Army != null && (_partiesToRemove.Count <= 0 || PartiesInCart.Count((ArmyManagementItemVM p) => p.IsAlreadyWithPlayer) >= 1);
+            CanCreateArmy = TotalGoldCost <= Hero.MainHero.Gold && (float)TotalInfluenceCost <= Hero.MainHero.Clan.Influence && PartiesInCart.Count() > 1;
+            PlayerHasArmy = !IsSplitArmy && Army != null && (_partiesToRemove.Count <= 0 || PartiesInCart.Count((WarfareArmyManagementItemVM p) => p.IsAlreadyWithPlayer) >= 1);
             CanBoostCohesion = PlayerHasArmy && 100 - NewCohesion >= 10;
             if (CanBoostCohesion)
             {
@@ -390,7 +482,7 @@ namespace Warfare.ViewModels.ArmyManagement
             }
 
             UpdateTooltips();
-            PartiesInCart.Sort(new ArmyManagementVM.ManagementItemComparer());
+            PartiesInCart.Sort(new ManagementItemComparer());
             CanDisbandArmy = GetCanDisbandArmyWithReason(out var disabledReason);
             DisbandArmyHint.HintText = disabledReason;
         }
@@ -410,13 +502,13 @@ namespace Warfare.ViewModels.ArmyManagement
                 return false;
             }
 
-            if (Army.LeaderParty.MapEvent != null)
+            if (LeaderParty.MapEvent != null)
             {
                 disabledReason = new TextObject("{=uipNpzVw}Cannot disband the army right now.");
                 return false;
             }
             
-            if (Army.LeaderParty.SiegeEvent != null)
+            if (LeaderParty.SiegeEvent != null)
             {
                 disabledReason = new TextObject("{=mGWrSJLE}You cannot manage an army while it's in a map event.");
                 return false;
@@ -439,7 +531,7 @@ namespace Warfare.ViewModels.ArmyManagement
                 CohesionHint = new BasicTooltipViewModel(() => CampaignUIHelper.GetArmyCohesionTooltip(Army));
                 Army.RecalculateArmyMorale();
                 MathF.Round(Army.Morale, 1).ToString("0.0");
-                MBTextManager.SetTextVariable("BASE_EFFECT", MathF.Round(Army.LeaderParty.Morale, 1).ToString("0.0"));
+                MBTextManager.SetTextVariable("BASE_EFFECT", MathF.Round(LeaderParty.Morale, 1).ToString("0.0"));
                 MBTextManager.SetTextVariable("STR1", "");
                 MBTextManager.SetTextVariable("STR2", "");
                 MBTextManager.SetTextVariable("ARMY_MORALE", Army.Morale);
@@ -456,108 +548,142 @@ namespace Warfare.ViewModels.ArmyManagement
             }
             else
             {
-                GameTexts.SetVariable("reg1", (int)Army.LeaderParty.Morale);
+                GameTexts.SetVariable("reg1", (int)LeaderParty.Morale);
                 MoraleHint.HintText = GameTexts.FindText("str_morale_reg1");
             }
 
-            DoneHint.HintText = new TextObject("{=!}" + (CanAffordInfluenceCost ? null : _playerDoesntHaveEnoughInfluenceStr));
+            DoneHint.HintText = new TextObject("{=!}" + (!CanAffordInfluenceCost ? _playerDoesntHaveEnoughInfluenceStr : CanAffordGoldCost ? _playerDoesntHaveEnoughGoldStr : null));
             MBTextManager.SetTextVariable("newline", "\n");
-            MBTextManager.SetTextVariable("DAILY_FOOD_CONSUMPTION", Army.LeaderParty.FoodChange);
+            MBTextManager.SetTextVariable("DAILY_FOOD_CONSUMPTION", LeaderParty.FoodChange);
             FoodHint.HintText = GameTexts.FindText("str_food_consumption_tooltip");
         }
 
         public void ExecuteDone()
         {
+            if (!CanAffordGoldCost)
+            {
+                return;
+            }
             if (!CanAffordInfluenceCost)
             {
                 return;
             }
-
             if (NewCohesion > Cohesion)
             {
                 ApplyCohesionChange();
             }
-
-            if (PartiesInCart.Count > 1 && MobileParty.MainParty.MapFaction.IsKingdomFaction)
+            if (!IsSplitArmy)
             {
-                if (Army == null)
+                if (PartiesInCart.Count > 1 && MobileParty.MainParty.MapFaction.IsKingdomFaction)
                 {
-                    ((Kingdom)MobileParty.MainParty.MapFaction).CreateArmy(Hero.MainHero, Hero.MainHero.HomeSettlement, Army.ArmyTypes.Patrolling);
-                }
-
-                foreach (ArmyManagementItemVM item in PartiesInCart)
-                {
-                    if (item.Party != Army.LeaderParty)
+                    if (Army == null)
                     {
-                        item.Party.Army = Army;
-                        SetPartyAiAction.GetActionForEscortingParty(item.Party, Army.LeaderParty);
+                        ((Kingdom)MobileParty.MainParty.MapFaction).CreateArmy(Hero.MainHero, Hero.MainHero.HomeSettlement, Army.ArmyTypes.Patrolling);
                     }
-                }
 
-                ChangeClanInfluenceAction.Apply(Clan.PlayerClan, -(TotalCost - _influenceSpentForCohesionBoosting));
-            }
-
-            if (_partiesToRemove.Count > 0)
-            {
-                bool flag = false;
-                foreach (ArmyManagementItemVM item2 in _partiesToRemove)
-                {
-                    if (item2.Party == Army.LeaderParty)
+                    foreach (WarfareArmyManagementItemVM item in PartiesInCart)
                     {
-                        item2.Party.Army = null;
-                        flag = true;
-                    }
-                }
-
-                if (!flag)
-                {
-                    foreach (ArmyManagementItemVM item3 in _partiesToRemove)
-                    {
-                        if (Army?.Parties.Contains(item3.Party) ?? false)
+                        if (item.Party != LeaderParty)
                         {
-                            item3.Party.Army = null;
+                            item.Party.Army = Army;
+                            SetPartyAiAction.GetActionForEscortingParty(item.Party, LeaderParty);
                         }
                     }
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, -TotalGoldCost);
+                    ChangeClanInfluenceAction.Apply(Clan.PlayerClan, -(TotalInfluenceCost - _influenceSpentForCohesionBoosting));
                 }
 
-                _partiesToRemove.Clear();
+                if (_partiesToRemove.Count > 0)
+                {
+                    bool flag = false;
+                    foreach (WarfareArmyManagementItemVM item2 in _partiesToRemove)
+                    {
+                        if (item2.Party == LeaderParty)
+                        {
+                            item2.Party.Army = null;
+                            flag = true;
+                        }
+                    }
+
+                    if (!flag)
+                    {
+                        foreach (WarfareArmyManagementItemVM item3 in _partiesToRemove)
+                        {
+                            if (Army?.Parties.Contains(item3.Party) ?? false)
+                            {
+                                item3.Party.Army = null;
+                            }
+                        }
+                    }
+
+                    _partiesToRemove.Clear();
+                }
+                if (_onFinalize != null)
+                {
+                    _onFinalize();
+                }
             }
-            _onFinalize();
+            else
+            {
+                if (PartiesInCart.Count > 0)
+                {
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, -TotalGoldCost);
+                    ChangeClanInfluenceAction.Apply(Clan.PlayerClan, -TotalInfluenceCost);
+                    if (LeaderHero != Hero.MainHero)
+                    {
+                        GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, TotalGoldCost / 2);
+                        ChangeClanInfluenceAction.Apply(LeaderParty.ActualClan, TotalInfluenceCost / 2);
+                    };
+                    NewLeader.Clan.Kingdom.CreateArmy(NewLeader, (from p in PartiesInCart select p.Party).ToList());
+                    if (_onFinalize != null)
+                    {
+                        _onFinalize();
+                    }
+                }
+            }
             _onClose();
             CampaignEventDispatcher.Instance.OnArmyOverlaySetDirty();
         }
 
         public void ExecuteCancel()
         {
-            ChangeClanInfluenceAction.Apply(Clan.PlayerClan, _initialInfluence - Clan.PlayerClan.Influence);
+            if (!IsSplitArmy)
+            {
+                GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, (int)(_initialGold - Hero.MainHero.Gold));
+                ChangeClanInfluenceAction.Apply(Clan.PlayerClan, _initialInfluence - Clan.PlayerClan.Influence);
+            }
             _onClose();
         }
 
         public void ExecuteReset()
         {
-            foreach (ArmyManagementItemVM item in PartiesInCart.ToList())
+            foreach (WarfareArmyManagementItemVM item in PartiesInCart.ToList())
             {
                 OnRemove(item);
                 item.UpdateEligibility();
             }
-
-            PartiesInCart.Add(_mainPartyItem);
-            foreach (ArmyManagementItemVM party in PartyList)
+            if (!IsSplitArmy)
             {
-                if (party.IsAlreadyWithPlayer)
+                PartiesInCart.Add(_mainPartyItem);
+                foreach (WarfareArmyManagementItemVM party in PartyList)
                 {
-                    PartiesInCart.Add(party);
-                    party.IsInCart = true;
-                    party.CanJoinBackWithoutCost = false;
+                    if (party.IsAlreadyWithPlayer)
+                    {
+                        PartiesInCart.Add(party);
+                        party.IsInCart = true;
+                        party.CanJoinBackWithoutCost = false;
+                    }
                 }
-            }
 
-            NewCohesion = Cohesion;
-            ChangeClanInfluenceAction.Apply(Clan.PlayerClan, _initialInfluence - Clan.PlayerClan.Influence);
-            TotalCost = 0;
-            _boostedCohesion = 0;
-            _influenceSpentForCohesionBoosting = 0;
-            _partiesToRemove.Clear();
+                NewCohesion = Cohesion;
+                GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, (int)(_initialGold - Hero.MainHero.Gold));
+                ChangeClanInfluenceAction.Apply(Clan.PlayerClan, _initialInfluence - Clan.PlayerClan.Influence);
+                _boostedCohesion = 0;
+                _influenceSpentForCohesionBoosting = 0;
+                _partiesToRemove.Clear();
+            }
+            TotalGoldCost = 0;
+            TotalInfluenceCost = 0;
             OnRefresh();
         }
 
@@ -566,7 +692,7 @@ namespace Warfare.ViewModels.ArmyManagement
             if (CanDisbandArmy)
             {
                 TextObject inquiryText = new TextObject("{=619gtcXb}Are you sure you want to disband this army? This will result in relation loss.");
-                if (Army.LeaderParty == MobileParty.MainParty)
+                if (LeaderParty == MobileParty.MainParty)
                 {
                     inquiryText = new TextObject("{=kqeA8rjL}Are you sure you want to disband your army?");
                 }
@@ -585,7 +711,7 @@ namespace Warfare.ViewModels.ArmyManagement
 
         private void DisbandArmy()
         {
-            foreach (ArmyManagementItemVM item in PartiesInCart.ToList())
+            foreach (WarfareArmyManagementItemVM item in PartiesInCart.ToList())
             {
                 item.IsInCart = false;
             }
@@ -599,7 +725,10 @@ namespace Warfare.ViewModels.ArmyManagement
             {
                 DisbandArmyAction.ApplyByLeaderPartyRemoved(Army);
             }
-            _onFinalize();
+            if (_onFinalize != null)
+            {
+                _onFinalize();
+            }
             _onClose();
         }
 
@@ -673,7 +802,7 @@ namespace Warfare.ViewModels.ArmyManagement
         }
 
         [DataSourceProperty]
-        public ArmyManagementSortControllerVM SortControllerVM
+        public WarfareArmyManagementSortControllerVM SortControllerVM
         {
             get
             {
@@ -860,19 +989,37 @@ namespace Warfare.ViewModels.ArmyManagement
         }
 
         [DataSourceProperty]
-        public int TotalCost
+        public int TotalGoldCost
         {
             get
             {
-                return _totalCost;
+                return _totalGoldCost;
             }
             set
             {
-                if (value != _totalCost)
+                if (value != _totalGoldCost)
                 {
-                    _totalCost = value;
-                    CanAffordInfluenceCost = TotalCost <= 0 || (float)TotalCost <= Hero.MainHero.Clan.Influence;
-                    OnPropertyChangedWithValue(value, "TotalCost");
+                    _totalGoldCost = value;
+                    CanAffordGoldCost = TotalGoldCost <= 0 || TotalGoldCost <= Hero.MainHero.Gold;
+                    OnPropertyChangedWithValue(value, "TotalGoldCost");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public int TotalInfluenceCost
+        {
+            get
+            {
+                return _totalInfluenceCost;
+            }
+            set
+            {
+                if (value != _totalInfluenceCost)
+                {
+                    _totalInfluenceCost = value;
+                    CanAffordInfluenceCost = TotalInfluenceCost <= 0 || (float)TotalInfluenceCost <= Hero.MainHero.Clan.Influence;
+                    OnPropertyChangedWithValue(value, "TotalInfluenceCost");
                 }
             }
         }
@@ -941,6 +1088,23 @@ namespace Warfare.ViewModels.ArmyManagement
                 {
                     _canDisbandArmy = value;
                     OnPropertyChangedWithValue(value, "CanDisbandArmy");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool CanAffordGoldCost
+        {
+            get
+            {
+                return _canAffordGoldCost;
+            }
+            set
+            {
+                if (value != _canAffordGoldCost)
+                {
+                    _canAffordGoldCost = value;
+                    OnPropertyChangedWithValue(value, "CanAffordGoldCost");
                 }
             }
         }
@@ -1048,7 +1212,7 @@ namespace Warfare.ViewModels.ArmyManagement
         }
 
         [DataSourceProperty]
-        public ArmyManagementItemVM FocusedItem
+        public WarfareArmyManagementItemVM FocusedItem
         {
             get
             {
@@ -1065,7 +1229,7 @@ namespace Warfare.ViewModels.ArmyManagement
         }
 
         [DataSourceProperty]
-        public MBBindingList<ArmyManagementItemVM> PartyList
+        public MBBindingList<WarfareArmyManagementItemVM> PartyList
         {
             get
             {
@@ -1082,7 +1246,7 @@ namespace Warfare.ViewModels.ArmyManagement
         }
 
         [DataSourceProperty]
-        public MBBindingList<ArmyManagementItemVM> PartiesInCart
+        public MBBindingList<WarfareArmyManagementItemVM> PartiesInCart
         {
             get
             {
@@ -1133,18 +1297,35 @@ namespace Warfare.ViewModels.ArmyManagement
         }
 
         [DataSourceProperty]
-        public string TotalCostNumbersText
+        public string TotalGoldCostNumbersText
         {
             get
             {
-                return _totalCostNumbersText;
+                return _totalGoldCostNumbersText;
             }
             set
             {
-                if (value != _totalCostNumbersText)
+                if (value != _totalGoldCostNumbersText)
                 {
-                    _totalCostNumbersText = value;
-                    OnPropertyChangedWithValue(value, "TotalCostNumbersText");
+                    _totalGoldCostNumbersText = value;
+                    OnPropertyChangedWithValue(value, "TotalGoldCostNumbersText");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public string TotalInfluenceCostNumbersText
+        {
+            get
+            {
+                return _totalInfluenceCostNumbersText;
+            }
+            set
+            {
+                if (value != _totalInfluenceCostNumbersText)
+                {
+                    _totalInfluenceCostNumbersText = value;
+                    OnPropertyChangedWithValue(value, "TotalInfluenceCostNumbersText");
                 }
             }
         }
@@ -1454,7 +1635,7 @@ namespace Warfare.ViewModels.ArmyManagement
 
                 _removeInputKey = value;
                 OnPropertyChangedWithValue(value, "RemoveInputKey");
-                foreach (ArmyManagementItemVM party in PartyList)
+                foreach (WarfareArmyManagementItemVM party in PartyList)
                 {
                     party.RemoveInputKey = value;
                 }
@@ -1466,7 +1647,24 @@ namespace Warfare.ViewModels.ArmyManagement
         {
             get
             {
-                return Army.LeaderParty == null || Army.LeaderParty == MobileParty.MainParty;
+                return LeaderParty == null || LeaderParty == MobileParty.MainParty;
+            }
+        }
+
+        [DataSourceProperty]
+        public bool IsSplitArmy
+        {
+            get
+            {
+                return _isSplitArmy;
+            }
+            set
+            {
+                if (value != _isSplitArmy)
+                {
+                    _isSplitArmy = value;
+                    OnPropertyChangedWithValue(value, "IsSplitArmy");
+                }
             }
         }
     }

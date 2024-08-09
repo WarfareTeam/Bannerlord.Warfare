@@ -10,12 +10,13 @@ namespace Warfare
 {
     public class Settings : AttributeGlobalSettings<Settings>
     {
+        private const string GeneralHeader = "{=EtmesuQ7}General";
         private const string MercenariesHeader = "{=L3vpqJKB}Mercenaries";
         private const string ArmiesHeader = "{=inKr3PbA}Armies";
         private const string AIHeader = "{=baZKI4zX}AI";
         private const string ArmyAIHeader = ArmiesHeader + "/" + AIHeader;
         private const string StrategyHeader = "{=e1CrjgN3}Strategy";
-        private const string ArmyStrategyHeader = ArmyAIHeader + "/" + StrategyHeader;
+        private const string ArmyStrategyHeader = ArmiesHeader + "/" + StrategyHeader;
         private const string OtherHeader = "{=krUuhA7I}Other";
 
         public override string Id => "WarfareSettings";
@@ -23,44 +24,52 @@ namespace Warfare
         public override string FolderName => "Warfare";
         public override string FormatType => "json2";
 
+        [SettingPropertyBool("{=FZPtQ4Gu}Modify Winter Warfare Tendency (EXPERIMENTAL)", Order = 0, RequireRestart = false, HintText = "{=Uwo79RY3}Decreases the chance of war decisions in winter based on total calculating trait levels of proposer and ruler. Default: Disabled")]
+        [SettingPropertyGroup(GeneralHeader, GroupOrder = 0)]
+        public bool ModifyWinterWarfareTendency { get; set; } = false;
+
         [SettingPropertyDropdown("{=srjDu3DL}Mercenary Contract Type", Order = 0, RequireRestart = false, HintText = "{=jzipGOog}The mercenary contract length. Effects the contract cost as it is relative to daily wages. Default: Seasonal")]
-        [SettingPropertyGroup(MercenariesHeader)]
+        [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public Dropdown<string> MercenaryContractType { get; } = new(new string[] { "{=EVEAh6Eg}Weekly", "{=dIZZ55i0}Seasonal", "{=pYZ9blgd}Annual" }, 1);
 
-        [SettingPropertyFloatingInteger("{=UVQI4HIo}Mercenary Contract Gold Cost Multiplier", 0.0f, 5.0f, Order = 1, RequireRestart = false, HintText = "{=xAl7nwNt}Multiplier for the costs when hiring a mercenary. The total contract cost is calculated by multiplying the total daily cost of mercenary party wages and the amount of days the mercenary will be contracted for. WARNING: If they aren't paid enough to at least cover troop wages, they may not properly feed their troops as well as having other side effects. Default: 1.25")]
-        [SettingPropertyGroup(MercenariesHeader)]
+        [SettingPropertyFloatingInteger("{=UVQI4HIo}Mercenary Contract Cost Multiplier", 0.0f, 5.0f, Order = 1, RequireRestart = false, HintText = "{=xAl7nwNt}Multiplier for the costs when hiring a mercenary. The total contract cost is calculated by multiplying the total daily cost of mercenary party wages and the amount of days the mercenary will be contracted for. WARNING: If they aren't paid enough to at least cover troop wages, they may not properly feed their troops as well as having other side effects. Default: 1.25")]
+        [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public float MercenaryContractGoldCostMultiplier { get; set; } = 1.25f;
 
-        [SettingPropertyBool("{=TMZ4jBjZ}Faction Leaders Can Call Mercenary To Army Without Influence", Order = 2, RequireRestart = false, HintText = "{=642MdHQq}Allows the faction leader to call mercenaries to their army without an influence cost. Default: Enabled")]
-        [SettingPropertyGroup(MercenariesHeader)]
-        public bool FactionLeadersCallMercenaryToArmyWithoutInfluence { get; set; } = true;
+        [SettingPropertyBool("{=TMZ4jBjZ}Faction Leader Call Mercenary To Army Without Cost", Order = 2, RequireRestart = false, HintText = "{=642MdHQq}Allows the faction leader to call mercenaries to their army without a cost. Default: Enabled")]
+        [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
+        public bool FactionLeadersCallMercenaryToArmyWithoutCost { get; set; } = true;
 
-        [SettingPropertyFloatingInteger("{=MlXBzNfg}Influence Cost To Call Mercenary To Army", 0.0f, 5.0f, Order = 3, RequireRestart = false, HintText = "{=yLoVOwXi}The influence cost to call a mercenary party to an army. Default: 1.0")]
-        [SettingPropertyGroup(MercenariesHeader)]
-        public float InfluenceCostToCallMercenaryToArmy { get; set; } = 1f;
+        [SettingPropertyFloatingInteger("{=MlXBzNfg}Cost Multipler To Call Mercenary To Army", 0.0f, 5.0f, Order = 3, RequireRestart = false, HintText = "{=yLoVOwXi}The cost multiplier to call a mercenary party to an army. Default: 1.0")]
+        [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
+        public float CostMultiplerToCallMercenaryToArmy { get; set; } = 1f;
 
-        [SettingPropertyInteger("{=hqpPZFf2}Minimum Wars To Hire Mercenaries", 0, 10, Order = 4, RequireRestart = false, HintText = "{=JIHCDNcu}The minimum amount of wars for AI clans to hire mercenaries. Default: 1")]
-        [SettingPropertyGroup(MercenariesHeader)]
+        [SettingPropertyDropdown("{=tPbzAK5Z}Call Mercenary To Army Cost Type", Order = 4, RequireRestart = false, HintText = "{=Z6MO2Cki}The cost type to call a mercenary party to an army. Default: Denars")]
+        [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
+        public Dropdown<string> CallMercenaryToArmyCostType { get; } = new(new string[] { "{=hYgmzZJX}Denars", "{=RVPidk5a}Influence" }, 0);
+
+        [SettingPropertyInteger("{=hqpPZFf2}Minimum Wars To Hire Mercenaries", 0, 10, Order = 5, RequireRestart = false, HintText = "{=JIHCDNcu}The minimum amount of wars for AI clans to hire mercenaries. Default: 1")]
+        [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public int MinimumWarsToHireMercenaries { get; set; } = 1;
 
-        [SettingPropertyBool("{=rjjUIti9}Spawn Additional Mercenaries", Order = 5, RequireRestart = false, HintText = "{=qTfVx8hh}Spawns more mercenaries when starting a new game than vanilla includes. This will make the world livelier and give more contract possiblities. The mod is balanced around this being enabled. Default: Enabled")]
-        [SettingPropertyGroup(MercenariesHeader)]
+        [SettingPropertyBool("{=rjjUIti9}Spawn Additional Mercenaries", Order = 6, RequireRestart = false, HintText = "{=qTfVx8hh}Spawns more mercenaries when starting a new game than vanilla includes. This will make the world livelier and give more contract possiblities. The mod is balanced around this being enabled. Default: Enabled")]
+        [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public bool SpawnAdditionalMercenaries { get; set; } = true;
 
-        [SettingPropertyInteger("{=JrsHuJB0}Mercenary Clans Per Culture", 0, 10, Order = 6, RequireRestart = false, HintText = "{=b1YjXBJA}Spawns more mercenary clans for each culture until the selected threshold is reached. Default: 5")]
-        [SettingPropertyGroup(MercenariesHeader)]
+        [SettingPropertyInteger("{=JrsHuJB0}Mercenary Clans Per Culture", 0, 10, Order = 7, RequireRestart = false, HintText = "{=b1YjXBJA}Spawns more mercenary clans for each culture until the selected threshold is reached. Default: 5")]
+        [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public int MercenaryClansPerCulture { get; set; } = 5;
 
         [SettingPropertyBool("{=IcF3bsNX}Enable Cohesion Change", Order = 0, RequireRestart = false, HintText = "{=PKL1vtQN}Allows cohesion to be depleted over time. Default: Enabled")]
-        [SettingPropertyGroup(ArmiesHeader)]
+        [SettingPropertyGroup(ArmiesHeader, GroupOrder = 10)]
         public bool EnableCohesionChange { get; set; } = true;
 
         [SettingPropertyBool("{=SwU5nhKX}Enable Modify Maximum Battlefield Agents", Order = 1, RequireRestart = false, HintText = "{=hIbdHP2A}Allows the maximum battlefield agents modifier to be set using the mod, which overrides the vanilla setting which ranges from 200-1000. Default: Disabled")]
-        [SettingPropertyGroup(ArmiesHeader)]
+        [SettingPropertyGroup(ArmiesHeader, GroupOrder = 10)]
         public bool EnableModifyMaximumBattlefieldAgents { get; set; } = false;
 
         [SettingPropertyInteger("{=uqq9P40V}Maximum Battlefield Agents", 1000, 2000, Order = 2, RequireRestart = false, HintText = "{=gNUoN5Ia}Sets the maximum number of total agents on battles. NOTE: Setting this too high can result in crashes! It is recommended to test a field battle using lots of cavalary if you plan to set this higher than 1000. Overrides the Battle Size setting in the vanilla Performance settings section. Default: 1000")]
-        [SettingPropertyGroup(ArmiesHeader)]
+        [SettingPropertyGroup(ArmiesHeader, GroupOrder = 10)]
         public int MaximumBattlefieldAgents { get; set; } = 1000;
 
         [SettingPropertyBool("{=pLTpHLi0}Modify Army Besiege AI", Order = 0, RequireRestart = false, HintText = "{=V2B0f9AM}Modifies the army besieging AI to prevent AI armies from moving to siege a settlement already being besieged by another army, based upon the power difference in besieged and besieger power. This minimizes the chance of a player siege being taken over by an AI. There will tend to be multiple war fronts / theaters with this enabled. Default: Enabled")]
@@ -99,7 +108,7 @@ namespace Warfare
         [SettingPropertyGroup(ArmyStrategyHeader)]
         public float ChaseTendencyOffensiveStrategy { get; set; } = 0.8f;
 
-        [SettingPropertyBool("{=MUSHsQr8}Logging", Order = 0, RequireRestart = false, HintText = "{=Wa3DouAN}Enables logs for testing and reporting purposes. Default: Disabled")]
+        [SettingPropertyBool("{=MUSHsQr8}Logging", Order = 0, RequireRestart = false, HintText = "{=Wa3DouAN}Enables logs for testing and reporting purposes. Enable this only if Author requests a log during issue reproduction. Default: Disabled")]
         [SettingPropertyGroup(OtherHeader, GroupOrder = 100)]
         public bool Logging { get; set; } = false;
 

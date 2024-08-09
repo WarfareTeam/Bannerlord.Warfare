@@ -21,61 +21,36 @@ namespace Warfare.GauntletUI
         private SpriteCategory? _category;
         private CampaignTimeControlMode _timeControlModeBeforeArmyManagementOpened;
 
-        public void ShowInterface(Action onFinalize, Hero newLeader = null!)
+        public void ShowInterface(Action onFinalize = null!, Hero newLeader = null!)
         {
             SpriteData spriteData = UIResourceManager.SpriteData;
             TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
             ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
             _category = spriteData.SpriteCategories["ui_armymanagement"];
             _layer = new GauntletLayer(300);
-            if (newLeader == null)
-            {
-                ShowArmyManagementInterface(onFinalize);
-            }
-            else
-            {
-                ShowSplitArmyInterface(onFinalize, newLeader);
-            }
-            _category.Load(resourceContext, uiResourceDepot);
-            _screenBase = ScreenManager.TopScreen;
-            _layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("GenericCampaignPanelsGameKeyCategory"));
-            _layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("GenericPanelGameKeyCategory"));
-            _layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("ArmyManagementHotkeyCategory"));
-            _layer.InputRestrictions.SetInputRestrictions();
-            _layer.IsFocusLayer = true;
-            _screenBase.AddLayer(_layer);
-            ScreenManager.TrySetFocus(_layer);
-            if (newLeader == null)
-            {
-                _timeControlModeBeforeArmyManagementOpened = Campaign.Current.TimeControlMode;
-                Campaign.Current.TimeControlMode = CampaignTimeControlMode.Stop;
-                Campaign.Current.SetTimeControlModeLock(true);
-                MapScreen mapScreen = (ScreenManager.TopScreen as MapScreen)!;
-                if (mapScreen != null)
-                {
-                    mapScreen.SetIsInArmyManagement(true);
-                }
-            }
-        }
-
-        public void ShowArmyManagementInterface(Action onFinalize)
-        {
-            KingdomArmyManagementVM vm = (KingdomArmyManagementVM)(_vm = new KingdomArmyManagementVM(OnClose, onFinalize));
+            WarfareArmyManagementVM vm = (WarfareArmyManagementVM)(_vm = new WarfareArmyManagementVM(OnClose, onFinalize, newLeader));
             vm.SetCancelInputKey(HotKeyManager.GetCategory("GenericPanelGameKeyCategory").GetHotKey("Exit"));
             vm.SetDoneInputKey(HotKeyManager.GetCategory("GenericPanelGameKeyCategory").GetHotKey("Confirm"));
             vm.SetResetInputKey(HotKeyManager.GetCategory("GenericPanelGameKeyCategory").GetHotKey("Reset"));
             vm.SetRemoveInputKey(HotKeyManager.GetCategory("ArmyManagementHotkeyCategory").GetHotKey("RemoveParty"));
             _layer.LoadMovie("ArmyManagement", vm);
-        }
-
-        public void ShowSplitArmyInterface(Action onFinalize, Hero newLeader)
-        {
-            SplitArmyVM vm = (SplitArmyVM)(_vm = new SplitArmyVM(VMHelper.Military.CurrentSelectedArmy.Army, newLeader, OnClose, onFinalize));
-            vm.SetCancelInputKey(HotKeyManager.GetCategory("GenericPanelGameKeyCategory").GetHotKey("Exit"));
-            vm.SetDoneInputKey(HotKeyManager.GetCategory("GenericPanelGameKeyCategory").GetHotKey("Confirm"));
-            vm.SetResetInputKey(HotKeyManager.GetCategory("GenericPanelGameKeyCategory").GetHotKey("Reset"));
-            vm.SetRemoveInputKey(HotKeyManager.GetCategory("ArmyManagementHotkeyCategory").GetHotKey("RemoveParty"));
-            _layer.LoadMovie("SplitArmy", vm);
+            _category.Load(resourceContext, uiResourceDepot);
+            _screenBase = ScreenManager.TopScreen;
+            _layer.InputRestrictions.SetInputRestrictions();
+            _layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("GenericCampaignPanelsGameKeyCategory"));
+            _layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("GenericPanelGameKeyCategory"));
+            _layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("ArmyManagementHotkeyCategory"));
+            _layer.IsFocusLayer = true;
+            _screenBase.AddLayer(_layer);
+            ScreenManager.TrySetFocus(_layer);
+            _timeControlModeBeforeArmyManagementOpened = Campaign.Current.TimeControlMode;
+            Campaign.Current.TimeControlMode = CampaignTimeControlMode.Stop;
+            Campaign.Current.SetTimeControlModeLock(true);
+            MapScreen mapScreen = (ScreenManager.TopScreen as MapScreen)!;
+            if (mapScreen != null)
+            {
+                mapScreen.SetIsInArmyManagement(true);
+            }
         }
 
         public void OnClose()

@@ -13,7 +13,7 @@ using Warfare.Behaviors;
 using Warfare.Content.Strategies;
 using Warfare;
 
-namespace Bannerlord.Warfare.Models
+namespace Warfare.Models
 {
     public class WarfareTargetScoreCalculatingModel : TargetScoreCalculatingModel
     {

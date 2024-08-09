@@ -1,27 +1,36 @@
 ﻿using System;
 
-using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.ComponentInterfaces;
-using TaleWorlds.CampaignSystem.Extensions;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Siege;
-using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Input;
+using TaleWorlds.CampaignSystem.ViewModelCollection;
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
+using TaleWorlds.CampaignSystem.Extensions;
 
 namespace Warfare.ViewModels.ArmyManagement
 {
-    public class SplitArmyItemVM : ViewModel
+    public class WarfareArmyManagementItemVM : ViewModel
     {
-        private readonly Action<SplitArmyItemVM> _onAddToCart;
+        private readonly Action<WarfareArmyManagementItemVM> _onAddToCart;
 
-        private readonly Action<SplitArmyItemVM> _onRemove;
+        private readonly Action<WarfareArmyManagementItemVM> _onRemove;
 
-        private readonly Action<SplitArmyItemVM> _onFocus;
+        private readonly Action<WarfareArmyManagementItemVM> _onFocus;
 
         public readonly MobileParty Party;
+
+        public readonly Hero NewLeader;
+
+        private const float _minimumPartySizeScoreNeeded = 0.4f;
+
+        public bool CanJoinBackWithoutCost;
+
+        private TextObject _eligibilityReason;
 
         private InputKeyItemVM _removeInputKey;
 
@@ -30,6 +39,8 @@ namespace Warfare.ViewModels.ArmyManagement
         private ImageIdentifierVM _lordFace;
 
         private string _nameText;
+
+        private string _inArmyText;
 
         private string _leaderNameText;
 
@@ -43,11 +54,11 @@ namespace Warfare.ViewModels.ArmyManagement
 
         private bool _isEligible;
 
-        private TextObject _eligibleText;
-
         private bool _isMainHero;
 
         private bool _isInCart;
+
+        private bool _isAlreadyWithPlayer;
 
         private bool _isTransferDisabled;
 
@@ -59,26 +70,37 @@ namespace Warfare.ViewModels.ArmyManagement
 
         public Clan Clan { get; }
 
-        public SplitArmyItemVM(Action<SplitArmyItemVM> onAddToCart, Action<SplitArmyItemVM> onRemove, Action<SplitArmyItemVM> onFocus, Hero newLeader, MobileParty mobileParty)
+        private string _costText = "-1";
+
+        private bool _isInfluenceCost;
+
+        public WarfareArmyManagementItemVM(Action<WarfareArmyManagementItemVM> onAddToCart, Action<WarfareArmyManagementItemVM> onRemove, Action<WarfareArmyManagementItemVM> onFocus, MobileParty mobileParty, Hero newLeader = null!)
         {
             ArmyManagementCalculationModel armyManagementCalculationModel = Campaign.Current.Models.ArmyManagementCalculationModel;
             _onAddToCart = onAddToCart;
             _onRemove = onRemove;
             _onFocus = onFocus;
             Party = mobileParty;
+            NewLeader = newLeader;
+            _eligibilityReason = TextObject.Empty;
             ClanBanner = new ImageIdentifierVM(BannerCode.CreateFrom(mobileParty.LeaderHero.ClanBanner), nineGrid: true);
             CharacterCode characterCode = CampaignUIHelper.GetCharacterCode(mobileParty.LeaderHero.CharacterObject);
             LordFace = new ImageIdentifierVM(characterCode);
             Relation = armyManagementCalculationModel.GetPartyRelation(mobileParty.LeaderHero);
             Strength = Party.MemberRoster.TotalManCount;
-            _distance = Campaign.Current.Models.MapDistanceModel.GetDistance(Party, newLeader.PartyBelongedTo);
+            _distance = Campaign.Current.Models.MapDistanceModel.GetDistance(Party, newLeader == null ? MobileParty.MainParty : newLeader.PartyBelongedTo);
             DistInTime = MathF.Ceiling(_distance / Party.Speed);
             Clan = mobileParty.LeaderHero.Clan;
             IsMainHero = mobileParty.IsMainParty;
+            UpdateEligibility();
             Cost = armyManagementCalculationModel.CalculatePartyInfluenceCost(MobileParty.MainParty, mobileParty);
-            if (Clan.Kingdom.Leader != Hero.MainHero && mobileParty.Army.LeaderParty != MobileParty.MainParty)
+            if (newLeader != null && Clan.Kingdom.Leader != Hero.MainHero && mobileParty.Army.LeaderParty != MobileParty.MainParty)
             {
                 Cost *= 2;
+            }
+            if (Settings.Current.CallMercenaryToArmyCostType.SelectedIndex == 0 && Clan.IsMinorFaction)
+            {
+                Cost *= 1000;
             }
             IsTransferDisabled = IsMainHero || PlayerSiege.PlayerSiegeEvent != null;
             RefreshValues();
@@ -87,14 +109,22 @@ namespace Warfare.ViewModels.ArmyManagement
         public override void RefreshValues()
         {
             base.RefreshValues();
+            InArmyText = GameTexts.FindText("str_in_army").ToString();
             LeaderNameText = Party.LeaderHero.Name.ToString();
             NameText = Party.Name.ToString();
             if (!Party.IsMainParty)
             {
-                DistanceText = _distance < 5 ? GameTexts.FindText("str_nearby").ToString() : CampaignUIHelper.GetPartyDistanceByTimeText((int)_distance, Party.Speed);
+                DistanceText = (((int)_distance < 5) ? GameTexts.FindText("str_nearby").ToString() : CampaignUIHelper.GetPartyDistanceByTimeText((int)_distance, Party.Speed));
             }
-            IsEligible = GetIsEligibleWithReason(out TextObject explanation);
-            EligibleText = explanation;
+            IsInfluenceCost = Settings.Current.CallMercenaryToArmyCostType.SelectedIndex == 1 || !Clan.IsMinorFaction;
+            if (IsInfluenceCost)
+            {
+                CostText = "" + Cost;
+            }
+            else
+            {
+                CostText = GetAbbreviatedValueTextFromValue(Cost);
+            }
         }
 
         public void ExecuteAction()
@@ -114,17 +144,19 @@ namespace Warfare.ViewModels.ArmyManagement
             if (!IsMainHero)
             {
                 _onRemove(this);
+                UpdateEligibility();
             }
-            RefreshValues();
         }
 
         private void OnAddToCart()
         {
+            UpdateEligibility();
             if (IsEligible)
             {
                 _onAddToCart(this);
             }
-            RefreshValues();
+
+            UpdateEligibility();
         }
 
         public void ExecuteSetFocused()
@@ -139,43 +171,84 @@ namespace Warfare.ViewModels.ArmyManagement
             _onFocus?.Invoke(null);
         }
 
-        public bool GetIsEligibleWithReason(out TextObject explanation)
+        public void UpdateEligibility()
         {
-            if (PlayerSiege.PlayerSiegeEvent != null)
+            ArmyManagementCalculationModel armyManagementCalculationModel = Campaign.Current.Models?.ArmyManagementCalculationModel;
+            float num = armyManagementCalculationModel?.GetPartySizeScore(Party) ?? 0f;
+            IDisbandPartyCampaignBehavior behavior = Campaign.Current.CampaignBehaviorManager.GetBehavior<IDisbandPartyCampaignBehavior>();
+            bool isEligible = false;
+            _eligibilityReason = TextObject.Empty;
+            if (!CanJoinBackWithoutCost)
             {
-                explanation = GameTexts.FindText("str_action_disabled_reason_siege");
-                return false;
+                if (PlayerSiege.PlayerSiegeEvent != null)
+                {
+                    _eligibilityReason = GameTexts.FindText("str_action_disabled_reason_siege");
+                }
+                else if (Party == null)
+                {
+                    _eligibilityReason = new TextObject("{=f6vTzVar}Does not have a mobile party.");
+                }
+                else if (Party.MapEvent != null || Party.SiegeEvent != null)
+                {
+                    _eligibilityReason = new TextObject("{=pkbUiKFJ}Currently fighting an enemy.");
+                }
+                else if (IsInCart)
+                {
+                    _eligibilityReason = new TextObject("{=idRXFzQ6}Already added to the army.");
+                }
+                else if (NewLeader == null)
+                {
+                    if (Party.LeaderHero == Hero.MainHero.MapFaction?.Leader)
+                    {
+                        _eligibilityReason = new TextObject("{=ipLqVv1f}You cannot invite the ruler's party to your army.");
+                    }
+                    else if (Party.Army != null && Party.Army != Hero.MainHero.PartyBelongedTo?.Army)
+                    {
+                        _eligibilityReason = new TextObject("{=aROohsat}Already in another army.");
+                    }
+                    else if (Party.Army != null && Party.Army == Hero.MainHero.PartyBelongedTo?.Army)
+                    {
+                        _eligibilityReason = new TextObject("{=Vq8yavES}Already in army.");
+                    }
+                    else if (num <= 0.4f)
+                    {
+                        _eligibilityReason = new TextObject("{=SVJlOYCB}Party has less men than 40% of it's party size limit.");
+                    }
+                    else if (Party.IsDisbanding || (behavior != null && behavior.IsPartyWaitingForDisband(Party)))
+                    {
+                        _eligibilityReason = new TextObject("{=tFGM0yav}This party is disbanding.");
+                    }
+                    else if (armyManagementCalculationModel != null && !armyManagementCalculationModel.CheckPartyEligibility(Party))
+                    {
+                        _eligibilityReason = new TextObject("{=nuK4Afnr}Party is not eligible to join the army.");
+                    }
+                    else
+                    {
+                        isEligible = true;
+                    }
+                }
+                else if (Party.Army != null && Party.Army.LeaderParty == Party.LeaderHero.PartyBelongedTo)
+                {
+                    _eligibilityReason = new TextObject("{=kNW1qYSi}{HERO.NAME} is already leading another army.");
+                    _eligibilityReason.SetCharacterProperties("HERO", Party.LeaderHero.CharacterObject);
+                }
+                else
+                {
+                    isEligible = true;
+                }
             }
-            if (Party == null)
+            else
             {
-                explanation = new TextObject("{=f6vTzVar}Does not have a mobile party.");
-                return false;
+                isEligible = true;
             }
-            if (Party.Army != null && Party.Army.LeaderParty == Party.LeaderHero.PartyBelongedTo)
-            {
-                explanation = new TextObject("{=kNW1qYSi}{HERO.NAME} is already leading another army.");
-                explanation.SetCharacterProperties("HERO", Party.LeaderHero.CharacterObject);
-                return false;
-            }
-            if (Party.MapEvent != null || Party.SiegeEvent != null)
-            {
-                explanation = new TextObject("{=pkbUiKFJ}Currently fighting an enemy.");
-                return false;
-            }
-            if (IsInCart)
-            {
-                explanation = new TextObject("{=idRXFzQ6}Already added to the army.");
-                return false;
-            }
-            explanation = TextObject.Empty;
-            return true;
+            IsEligible = isEligible;
         }
 
         public void ExecuteBeginHint()
         {
             if (!IsEligible)
             {
-                MBInformationManager.ShowHint(EligibleText.ToString());
+                MBInformationManager.ShowHint(_eligibilityReason.ToString());
                 return;
             }
 
@@ -192,6 +265,69 @@ namespace Warfare.ViewModels.ArmyManagement
             if (Party?.LeaderHero != null)
             {
                 Campaign.Current.EncyclopediaManager.GoToLink(Party.LeaderHero.EncyclopediaLink);
+            }
+        }
+
+        public string GetAbbreviatedValueTextFromValue(int valueAmount)
+        {
+            string variable = "";
+            decimal num = valueAmount;
+            if (valueAmount < 1000)
+            {
+                return valueAmount.ToString();
+            }
+            if (valueAmount >= 1000 && valueAmount < 1000000)
+            {
+                variable = new TextObject("{=thousandabbr}k").ToString();
+                num /= 1000m;
+            }
+            else if (valueAmount >= 1000000 && valueAmount < 1000000000)
+            {
+                variable = new TextObject("{=millionabbr}m").ToString();
+                num /= 1000000m;
+            }
+            else if (valueAmount >= 1000000000 && valueAmount <= int.MaxValue)
+            {
+                variable = new TextObject("{=billionabbr}b").ToString();
+                num /= 1000000000m;
+            }
+            TextObject denarValueInfoText = new TextObject("{=mapbardenarvalue}{DENAR_AMOUNT}{VALUE_ABBREVIATION}");
+            denarValueInfoText.SetTextVariable("DENAR_AMOUNT", num.ToString());
+            denarValueInfoText.SetTextVariable("VALUE_ABBREVIATION", variable);
+            return denarValueInfoText.ToString();
+        }
+
+        [DataSourceProperty]
+        public string CostText
+        {
+            get
+            {
+                return _costText;
+            }
+            set
+            {
+                if (value != _costText)
+                {
+                    _costText = value;
+                    OnPropertyChangedWithValue(value, "CostText");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool IsInfluenceCost
+        {
+            get
+            {
+                return _isInfluenceCost;
+            }
+            set
+            {
+                if (value != _isInfluenceCost)
+                {
+                    _isInfluenceCost = value;
+                    OnPropertyChangedWithValue(value, "IsInfluenceCost");
+                }
             }
         }
 
@@ -224,24 +360,7 @@ namespace Warfare.ViewModels.ArmyManagement
                 if (value != _isEligible)
                 {
                     _isEligible = value;
-                    OnPropertyChangedWithValue(value, "IsPartyEligibleForArmy");
-                }
-            }
-        }
-
-        [DataSourceProperty]
-        public TextObject EligibleText
-        {
-            get
-            {
-                return _eligibleText;
-            }
-            set
-            {
-                if (value != _eligibleText)
-                {
-                    _eligibleText = value;
-                    OnPropertyChangedWithValue(value, "EligibleText");
+                    OnPropertyChangedWithValue(value, "IsEligible");
                 }
             }
         }
@@ -310,6 +429,23 @@ namespace Warfare.ViewModels.ArmyManagement
                 {
                     _distanceText = value;
                     OnPropertyChangedWithValue(value, "DistanceText");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public string InArmyText
+        {
+            get
+            {
+                return _inArmyText;
+            }
+            set
+            {
+                if (value != _inArmyText)
+                {
+                    _inArmyText = value;
+                    OnPropertyChangedWithValue(value, "InArmyText");
                 }
             }
         }
@@ -395,6 +531,23 @@ namespace Warfare.ViewModels.ArmyManagement
                 {
                     _nameText = value;
                     OnPropertyChangedWithValue(value, "NameText");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool IsAlreadyWithPlayer
+        {
+            get
+            {
+                return _isAlreadyWithPlayer;
+            }
+            set
+            {
+                if (value != _isAlreadyWithPlayer)
+                {
+                    _isAlreadyWithPlayer = value;
+                    OnPropertyChangedWithValue(value, "IsAlreadyWithPlayer");
                 }
             }
         }
