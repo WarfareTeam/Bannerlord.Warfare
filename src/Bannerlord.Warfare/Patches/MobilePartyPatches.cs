@@ -3,6 +3,7 @@
 using HarmonyLib;
 
 using Warfare.Extensions;
+using TaleWorlds.CampaignSystem;
 
 namespace Warfare.Patches
 {
@@ -33,7 +34,7 @@ namespace Warfare.Patches
     {
         public static void Postfix(MobileParty __instance, ref bool __result)
         {
-            if (__result && __instance.ActualClan != null && __instance.IsLordParty && __instance.ActualClan.IsMinorFaction && __instance != MobileParty.MainParty)
+            if (__result && __instance.ActualClan != null && __instance.IsLordParty && __instance.ActualClan.IsMinorFaction && __instance.ActualClan != Clan.PlayerClan)
             {
                 __result = false;
             }

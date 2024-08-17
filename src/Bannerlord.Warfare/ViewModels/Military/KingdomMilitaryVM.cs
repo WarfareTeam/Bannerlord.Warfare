@@ -327,8 +327,8 @@ namespace Warfare.ViewModels.Military
                 CurrentSelectedArmy = item;
                 NotificationCount = _viewDataTracker.NumOfKingdomArmyNotifications;
                 IEnumerable<int> memberPartyInfluenceCosts = from p in CurrentSelectedArmy.Army.Parties where !p.IsMainParty select Campaign.Current.Models.ArmyManagementCalculationModel.CalculatePartyInfluenceCost(MobileParty.MainParty, p);
-                MinimumArmyCost = memberPartyInfluenceCosts.OrderBy(x => x).FirstOrDefault();
-                TotalArmyCost = memberPartyInfluenceCosts.Sum();
+                MinimumArmyCost = Hero.MainHero.IsPrisoner ? 0 : memberPartyInfluenceCosts.OrderBy(x => x).FirstOrDefault();
+                TotalArmyCost = Hero.MainHero.IsPrisoner ? 0 : memberPartyInfluenceCosts.Sum();
                 DisbandCost = 0;
                 if (_kingdom.RulingClan != Clan.PlayerClan && CurrentSelectedArmy.Army.LeaderParty != MobileParty.MainParty)
                 {
@@ -490,6 +490,12 @@ namespace Warfare.ViewModels.Military
                     return false;
                 }
                 disabledReason = new TextObject("{=aXPDpkAR}You can not perform this action while the army is in a map event.");
+                return false;
+            }
+
+            if (Hero.MainHero.IsPrisoner)
+            {
+                disabledReason = GameTexts.FindText("str_action_disabled_reason_prisoner");
                 return false;
             }
 
