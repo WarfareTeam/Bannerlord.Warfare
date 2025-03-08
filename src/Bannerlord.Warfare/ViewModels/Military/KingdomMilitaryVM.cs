@@ -433,7 +433,7 @@ namespace Warfare.ViewModels.Military
 
             if (!CurrentSelectedArmy.Army.Parties.Contains(MobileParty.MainParty) && Hero.MainHero != CurrentSelectedArmy.Army.Kingdom.Leader)
             {
-                disabledReason = new TextObject("{=kBGlNylO}You cannot manage an army unless you are the faction leader or an army member.");
+                disabledReason = new TextObject("{=kBGlNylO}You cannot manage an army unless you are the army leader, faction leader or an army member.");
                 return false;
             }
 
