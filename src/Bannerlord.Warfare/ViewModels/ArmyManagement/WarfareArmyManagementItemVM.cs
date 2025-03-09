@@ -232,6 +232,10 @@ namespace Warfare.ViewModels.ArmyManagement
                     _eligibilityReason = new TextObject("{=kNW1qYSi}{HERO.NAME} is already leading another army.");
                     _eligibilityReason.SetCharacterProperties("HERO", Party.LeaderHero.CharacterObject);
                 }
+                else if (Party.Army != null && Party == MobileParty.MainParty && Party.Army.Parties.Contains(MobileParty.MainParty))
+                {
+                    _eligibilityReason = new TextObject("{=d2GgQuYI}You must leave the party before becoming it's new leader.");
+                }
                 else
                 {
                     isEligible = true;

@@ -433,7 +433,7 @@ namespace Warfare.ViewModels.Military
 
             if (!CurrentSelectedArmy.Army.Parties.Contains(MobileParty.MainParty) && Hero.MainHero != CurrentSelectedArmy.Army.Kingdom.Leader)
             {
-                disabledReason = new TextObject("{=kBGlNylO}You cannot manage an army unless you are the faction leader or an army member.");
+                disabledReason = new TextObject("{=kBGlNylO}You cannot manage an army unless you are the army leader, faction leader or an army member.");
                 return false;
             }
 
@@ -884,6 +884,11 @@ namespace Warfare.ViewModels.Military
                 {
                     explanation = new TextObject("{=kNW1qYSi}{HERO.NAME} is already leading another army.");
                     explanation.SetCharacterProperties("HERO", hero.CharacterObject);
+                    return false;
+                }
+                if (hero.PartyBelongedTo == MobileParty.MainParty && hero.PartyBelongedTo.Army.Parties.Contains(MobileParty.MainParty))
+                {
+                    explanation = new TextObject("{=d2GgQuYI}You must leave the party before becoming it's new leader.");
                     return false;
                 }
             }

@@ -52,7 +52,7 @@ namespace Warfare.Behaviors
                     Clan clan = clans.ElementAt(j);
                     foreach (Hero hero in clan.Heroes)
                     {
-                        if (!hero.IsDead && hero != Hero.MainHero)
+                        if (!Settings.Current.MaintainVanillaNames && !hero.IsDead && hero != Hero.MainHero)
                         {
                             TextObject name = new TextObject(hero.Name.ToString().Split(' ').FirstOrDefault());
                             hero.SetName(name, name);
@@ -60,13 +60,19 @@ namespace Warfare.Behaviors
                         hero.Gold = 0;
                         GiveGoldAction.ApplyBetweenCharacters(null, hero, GetStartingGold());
                     }
-                    clan.GetType().GetField("_banner", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(clan, Banner.CreateRandomClanBanner(MBRandom.RandomInt()));
-                    clan.GetType().GetProperty("EncyclopediaText", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(clan, new TextObject());
+                    if (!Settings.Current.MaintainVanillaBanners)
+                    {
+                        clan.GetType().GetField("_banner", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(clan, Banner.CreateRandomClanBanner(MBRandom.RandomInt()));
+                    }
                     if (minorCulture != null && clan.Culture == minorCulture)
                     {
                         clan.Culture = culture;
                     }
-                    ChangeClanName(clan);
+                    if (!Settings.Current.MaintainVanillaNames)
+                    {
+                        clan.GetType().GetProperty("EncyclopediaText", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(clan, new TextObject());
+                        ChangeClanName(clan);
+                    }
                     clan.ResetClanRenown();
                     clan.AddRenown(GetStartingRenown(clan));
                     RecruitTroops(clan, true);
