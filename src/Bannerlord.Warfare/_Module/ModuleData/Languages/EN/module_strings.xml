@@ -96,6 +96,10 @@
 		<string id="JIHCDNcu" text="The minimum amount of wars for AI clans to hire mercenaries. Default: 1" />
 		<string id="rjjUIti9" text="Spawn Additional Mercenaries" />
 		<string id="qTfVx8hh" text="Spawns more mercenaries when starting a new game than vanilla includes. This will make the world livelier and give more contract possiblities. The mod is balanced around this being enabled. Default: Enabled" />
+		<string id="rmugSIvK" text="Maintain Vanilla Names" />
+		<string id="BdXcxPA6" text="When the vanilla mercenary clans are spawned in a new game, they will use vanilla naming conventions. By default, this mod renames them to maintain consistency with additionally spawned mercenaries. The additional mercenaries will maintain Warfare naming conventions. Default: Disabled" />
+		<string id="U9sTpxGe" text="Maintain Vanilla Banners" />
+		<string id="6Tsx3ntW" text="When the vanilla mercenary clans are spawned in a new game, they will use vanilla banners. By default, this mod shuffles them to maintain consistency with additionally spawned mercenaries. The additional mercenaries will maintain Warfare banner conventions. Default: Disabled" />
 		<string id="SwU5nhKX" text="Enable Modify Maximum Battlefield Agents" />
 		<string id="hIbdHP2A" text="Allows the maximum battlefield agents modifier to be set using the mod, which overrides the vanilla setting which ranges from 200-1000. Default: Disabled" />
 		<string id="uqq9P40V" text="Maximum Battlefield Agents" />
