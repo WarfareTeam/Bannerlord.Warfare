@@ -886,6 +886,11 @@ namespace Warfare.ViewModels.Military
                     explanation.SetCharacterProperties("HERO", hero.CharacterObject);
                     return false;
                 }
+                if (hero.PartyBelongedTo == MobileParty.MainParty && hero.PartyBelongedTo.Army.Parties.Contains(MobileParty.MainParty))
+                {
+                    explanation = new TextObject("{=d2GgQuYI}You must leave the party before becoming it's new leader.");
+                    return false;
+                }
             }
             if (hero.IsPrisoner)
             {

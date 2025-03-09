@@ -70,6 +70,7 @@
 		<string id="UxCTxfA9" text="Automatically maintains cohesion for this army using player influence" />
 		<string id="CdZaf4Ir" text="Insufficient influence to maintain cohesion for army: {ARMY}" />
 		<string id="QETGd5n6" text="Daily Influence Change: {CHANGE}{INFLUENCE_ICON}" />
+		<string id="d2GgQuYI" text="You must leave the party before becoming it's new leader." />
 		<!--Settings-->
 		<string id="Wa3DouAN" text="Warfare" />
 		<string id="EtmesuQ7" text="General" />
