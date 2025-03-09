@@ -3,6 +3,7 @@
 ## Issues
 - ~~When adding into an existing game, mercenaries part of a kingdom already won't have a correlating contract, causing crashing.~~
 - ~~As a prisoner, opening kingdom screen causes a crash.~~
+- Army map overlay needs hotkeys.
 
 ## General
 - Campaign time should slowly pass during player battles, allowing the possibility of reinforcements.
@@ -14,13 +15,12 @@
 - Ability for an NPC clan to become independent to form their own faction with certain conditions.
 - Backwards compatibility
 - MCM Options: Armies besiege AI, Additional mercenary clans
-- Seasonal warfare; Winter should be spent stockpiling and focusing on keeping the economy stable, and warfare should resume in the spring. Very aggressive rulers or commanders may still take the risk that comes with prosecuting a winter war.
-- Automatic cohesion maintenance for individual armies, paid by player.
+- ~~Seasonal warfare; Winter should be spent stockpiling and focusing on keeping the economy stable, and warfare should resume in the spring. Very aggressive rulers or commanders may still take the risk that comes with prosecuting a winter war.~~ Experimentally added in 1.0.4
+- ~~Automatic cohesion maintenance for individual armies, paid by player.~~ Added in 1.0.4
 - Fully replenish cohesion of all active armies in the kingdom from the map, paid by player.
 - Armies can deteriorate allowing room for nomads and other migrants to proliferate and take over regions ? Similar to the migration of the Visigoths / Huns around the fall of Rome
 
 ## Army Overhaul
-- Army map overlay needs hotkeys.
 - When the leader of an army is changed to the player while the player is a member of that army, the army map overlay breaks and fails to display the army members.
 - ~~Parties not yet gathered in the army should not be put in a disorganized state when moved between armies, such as during a leader change or split.~~
 - Mercenaries should not be able to manage armies they are a part of, add members to it, etc.
