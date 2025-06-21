@@ -40,7 +40,7 @@ namespace Warfare
         [SettingPropertyGroup(ArmiesHeader, GroupOrder = 10)]
         public int MaximumBattlefieldAgents { get; set; } = 1000;
 
-        [SettingPropertyBool("{=pLTpHLi0}Modify Army Besiege AI", Order = 0, RequireRestart = false, HintText = "{=V2B0f9AM}Modifies the army besieging AI to prevent AI armies from moving to siege a settlement already being besieged by another army, based upon the power difference in besieged and besieger power. This minimizes the chance of a player siege being taken over by an AI. There will tend to be multiple war fronts / theaters with this enabled. Default: Enabled")]
+        [SettingPropertyBool("{=pLTpHLi0}Modify Army Besiege AI", Order = 0, RequireRestart = false, HintText = "{=V2B0f9AM}Modifies army AI to prevent sieging a settlement that is being besieged by another army depending on the power difference in attacker and defender power. This lowers the chance of a player siege being taken over by an AI and tends to create multiple fronts in a war when enabled. Default: Enabled")]
         [SettingPropertyGroup(ArmyAIHeader, GroupOrder = 0)]
         public bool ModifyArmyBesiegeAI { get; set; } = true;
 
@@ -80,7 +80,7 @@ namespace Warfare
         [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public Dropdown<string> MercenaryContractType { get; } = new(new string[] { "{=EVEAh6Eg}Weekly", "{=dIZZ55i0}Seasonal", "{=pYZ9blgd}Annual" }, 1);
 
-        [SettingPropertyFloatingInteger("{=UVQI4HIo}Mercenary Contract Cost Multiplier", 0.0f, 5.0f, Order = 1, RequireRestart = false, HintText = "{=xAl7nwNt}Multiplier for the costs when hiring a mercenary. The total contract cost is calculated by multiplying the total daily cost of mercenary party wages and the amount of days the mercenary will be contracted for. WARNING: If they aren't paid enough to at least cover troop wages, they may not properly feed their troops as well as having other side effects. Default: 1.25")]
+        [SettingPropertyFloatingInteger("{=UVQI4HIo}Mercenary Contract Cost Multiplier", 0.0f, 5.0f, Order = 1, RequireRestart = false, HintText = "{=xAl7nwNt}Cost multiplier when hiring a mercenary. Total contract cost is calculated as (Total Daily Party Wages * Total Contract Days * Multiplier). This should be set high enough to pay for food and their troop wages to prevent starvation. Default: 1.25")]
         [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public float MercenaryContractGoldCostMultiplier { get; set; } = 1.25f;
 
@@ -108,11 +108,11 @@ namespace Warfare
         [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public bool SpawnAdditionalMercenaries { get; set; } = true;
 
-        [SettingPropertyBool("{=rmugSIvK}Maintain Vanilla Names", Order = 8, RequireRestart = false, HintText = "{=BdXcxPA6}When the vanilla mercenary clans are spawned in a new game, they will use vanilla naming conventions for the clan and their members. By default, this mod renames them to maintain consistency with additionally spawned mercenaries. The additional mercenaries will maintain Warfare naming conventions. Default: Disabled")]
+        [SettingPropertyBool("{=rmugSIvK}Maintain Vanilla Names", Order = 8, RequireRestart = false, HintText = "{=BdXcxPA6}Prevents Vanilla mercenary clans and their members from being renamed in a new game. This will cause inconsistency in naming conventions if paired with 'Spawn Additional Mercenaries' option. Default: Disabled")]
         [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public bool MaintainVanillaNames { get; set; } = false;
 
-        [SettingPropertyBool("{=U9sTpxGe}Maintain Vanilla Banners", Order = 9, RequireRestart = false, HintText = "{=6Tsx3ntW}When the vanilla mercenary clans are spawned in a new game, they will use vanilla banners. By default, this mod shuffles them to maintain consistency with additionally spawned mercenaries. The additional mercenaries will maintain Warfare banner conventions. Default: Disabled")]
+        [SettingPropertyBool("{=U9sTpxGe}Maintain Vanilla Banners", Order = 9, RequireRestart = false, HintText = "{=6Tsx3ntW}Prevents Vanilla mercenary clan banners from being shuffled in a new game. This will cause inconsistency in banner conventions if paired with 'Spawn Additional Mercenaries' option. Default: Disabled")]
         [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public bool MaintainVanillaBanners { get; set; } = false;
 

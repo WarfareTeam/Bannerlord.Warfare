@@ -82,7 +82,7 @@
 		<string id="dIZZ55i0" text="Seasonal" />
 		<string id="pYZ9blgd" text="Annual" />
 		<string id="UVQI4HIo" text="Mercenary Contract Gold Cost Multiplier" />
-		<string id="xAl7nwNt" text="Multiplier for the costs when hiring a mercenary. The total contract cost is calculated by multiplying the total daily cost of mercenary party wages and the amount of days the mercenary will be contracted for. WARNING: If they aren't paid enough to at least cover troop wages, they may not properly feed their troops as well as having other side effects. Default: 1.25" />
+		<string id="xAl7nwNt" text="Cost multiplier when hiring a mercenary. Total contract cost is calculated as (Total Daily Party Wages * Total Contract Days * Multiplier). This should be set high enough to pay for food and their troop wages to prevent starvation. Default: 1.25" />
 		<string id="TMZ4jBjZ" text="Faction Leaders Can Call Mercenary To Army Without Cost" />
 		<string id="642MdHQq" text="Allows the faction leader to call mercenaries to their army without a cost. Default: Enabled" />
 		<string id="MlXBzNfg" text="Cost Multiplier To Call Mercenary To Army" />
@@ -98,15 +98,15 @@
 		<string id="rjjUIti9" text="Spawn Additional Mercenaries" />
 		<string id="qTfVx8hh" text="Spawns more mercenaries when starting a new game than vanilla includes. This will make the world livelier and give more contract possiblities. The mod is balanced around this being enabled. Default: Enabled" />
 		<string id="rmugSIvK" text="Maintain Vanilla Names" />
-		<string id="BdXcxPA6" text="When the vanilla mercenary clans are spawned in a new game, they will use vanilla naming conventions. By default, this mod renames them to maintain consistency with additionally spawned mercenaries. The additional mercenaries will maintain Warfare naming conventions. Default: Disabled" />
+		<string id="BdXcxPA6" text="Prevents Vanilla mercenary clans and their members from being renamed in a new game. This will cause inconsistency in naming conventions if paired with 'Spawn Additional Mercenaries' option. Default: Disabled" />
 		<string id="U9sTpxGe" text="Maintain Vanilla Banners" />
-		<string id="6Tsx3ntW" text="When the vanilla mercenary clans are spawned in a new game, they will use vanilla banners. By default, this mod shuffles them to maintain consistency with additionally spawned mercenaries. The additional mercenaries will maintain Warfare banner conventions. Default: Disabled" />
+		<string id="6Tsx3ntW" text="Prevents Vanilla mercenary clan banners from being shuffled in a new game. This will cause inconsistency in banner conventions if paired with 'Spawn Additional Mercenaries' option. Default: Disabled" />
 		<string id="SwU5nhKX" text="Enable Modify Maximum Battlefield Agents" />
 		<string id="hIbdHP2A" text="Allows the maximum battlefield agents modifier to be set using the mod, which overrides the vanilla setting which ranges from 200-1000. Default: Disabled" />
 		<string id="uqq9P40V" text="Maximum Battlefield Agents" />
 		<string id="gNUoN5Ia" text="Sets the maximum number of total agents on battles. NOTE: Setting this too high can result in crashes! It is recommended to test a field battle using lots of cavalary if you plan to set this higher than 1000. Overrides the Battle Size setting in the vanilla Performance settings section. Default: 500" />
 		<string id="pLTpHLi0" text="Modify Army Besiege AI" />
-		<string id="V2B0f9AM" text="Modifies the army besieging AI to prevent AI armies from moving to siege a settlement already being besieged by another army. This minimizes the chance of a player siege being taken over by an AI. There will tend to be multiple war fronts / theaters with this enabled. Default: Enabled" />
+		<string id="V2B0f9AM" text="Modifies army AI to prevent sieging a settlement that is being besieged by another army depending on the power difference in attacker and defender power. This lowers the chance of a player siege being taken over by an AI and tends to create multiple fronts in a war when enabled. Default: Enabled" />
 		<string id="9vo8PxtF" text="Minimum Fiefs To Modify Army Besiege AI" />
 		<string id="KAnYH0W2" text="Modifies the army besieging AI only if the target faction has at least the specified number of fiefs. This has no effect if 'Modify Army Besiege AI' is Disabled. Default: 3" />
 		<string id="hQ6ROvxB" text="Time To Prevent Army Besiege AI (Hours)" />
