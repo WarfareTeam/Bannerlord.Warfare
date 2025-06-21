@@ -57,25 +57,31 @@ namespace Warfare.Behaviors
                             TextObject name = new TextObject(hero.Name.ToString().Split(' ').FirstOrDefault());
                             hero.SetName(name, name);
                         }
-                        hero.Gold = 0;
-                        GiveGoldAction.ApplyBetweenCharacters(null, hero, GetStartingGold());
+                        if (Settings.Current.ModifyVanillaMercenaries)
+                        {
+                            hero.Gold = 0;
+                            GiveGoldAction.ApplyBetweenCharacters(null, hero, GetStartingGold());
+                        }
                     }
                     if (!Settings.Current.MaintainVanillaBanners)
                     {
                         clan.GetType().GetField("_banner", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(clan, Banner.CreateRandomClanBanner(MBRandom.RandomInt()));
-                    }
-                    if (minorCulture != null && clan.Culture == minorCulture)
-                    {
-                        clan.Culture = culture;
                     }
                     if (!Settings.Current.MaintainVanillaNames)
                     {
                         clan.GetType().GetProperty("EncyclopediaText", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(clan, new TextObject());
                         ChangeClanName(clan);
                     }
-                    clan.ResetClanRenown();
-                    clan.AddRenown(GetStartingRenown(clan));
-                    RecruitTroops(clan, true);
+                    if (Settings.Current.ModifyVanillaMercenaries)
+                    {
+                        if (minorCulture != null && clan.Culture == minorCulture)
+                        {
+                            clan.Culture = culture;
+                        }
+                        clan.ResetClanRenown();
+                        clan.AddRenown(GetStartingRenown(clan));
+                        RecruitTroops(clan, true);
+                    }
                 }
                 if (Settings.Current.SpawnAdditionalMercenaries)
                 {

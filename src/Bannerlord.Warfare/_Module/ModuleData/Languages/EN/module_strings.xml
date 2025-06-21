@@ -101,6 +101,8 @@
 		<string id="BdXcxPA6" text="Prevents Vanilla mercenary clans and their members from being renamed in a new game. This will cause inconsistency in naming conventions if paired with 'Spawn Additional Mercenaries' option. Default: Disabled" />
 		<string id="U9sTpxGe" text="Maintain Vanilla Banners" />
 		<string id="6Tsx3ntW" text="Prevents Vanilla mercenary clan banners from being shuffled in a new game. This will cause inconsistency in banner conventions if paired with 'Spawn Additional Mercenaries' option. Default: Disabled" />
+		<string id="UXEwQKYV" text="Modify Vanilla Properties" />
+		<string id="EzLcKJwU" text="Prevents properties of Vanilla mercenary clans and their members from being changed in a new game ie starting gold, renown and troops. Default: Disabled" />
 		<string id="SwU5nhKX" text="Enable Modify Maximum Battlefield Agents" />
 		<string id="hIbdHP2A" text="Allows the maximum battlefield agents modifier to be set using the mod, which overrides the vanilla setting which ranges from 200-1000. Default: Disabled" />
 		<string id="uqq9P40V" text="Maximum Battlefield Agents" />
