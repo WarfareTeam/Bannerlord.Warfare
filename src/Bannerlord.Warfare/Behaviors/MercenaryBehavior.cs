@@ -80,7 +80,10 @@ namespace Warfare.Behaviors
                         }
                         clan.ResetClanRenown();
                         clan.AddRenown(GetStartingRenown(clan));
-                        RecruitTroops(clan, true);
+                        if (!Settings.Current.UseVanillaRecruitment)
+                        {
+                            RecruitTroops(clan, true);
+                        }
                     }
                 }
                 if (Settings.Current.SpawnAdditionalMercenaries)
@@ -106,7 +109,10 @@ namespace Warfare.Behaviors
                             GiveGoldAction.ApplyBetweenCharacters(null, hero, GetStartingGold());
                             clan.CreateNewMobileParty(hero).Ai.SetMoveModeHold();
                         }
-                        RecruitTroops(clan, true);
+                        if (!Settings.Current.UseVanillaRecruitment)
+                        {
+                            RecruitTroops(clan, true);
+                        }
                     }
 
                 }
@@ -125,7 +131,7 @@ namespace Warfare.Behaviors
 
         public void OnHourlyTickClan(Clan clan)
         {
-            if (queue.IsEmpty() || !queue.Contains(clan))
+            if (Settings.Current.UseVanillaRecruitment || queue.IsEmpty() || !queue.Contains(clan))
             {
                 return;
             }
@@ -135,7 +141,7 @@ namespace Warfare.Behaviors
 
         public void OnDailyTickClan(Clan clan)
         {
-            if (!queue.IsEmpty() && queue.Contains(clan))
+            if (Settings.Current.UseVanillaRecruitment || (!queue.IsEmpty() && queue.Contains(clan)))
             {
                 return;
             }

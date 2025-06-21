@@ -120,6 +120,10 @@ namespace Warfare
         [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public bool MaintainVanillaProperties { get; set; } = false;
 
+        [SettingPropertyBool("{=FBIPOuX5}Use Vanilla Recruitment", Order = 11, RequireRestart = false, HintText = "{=A4KGF9k3}By default, the mod using it's own recruiting scheme to give mercenaries increased importance for richly developed kingdoms, especially as a campaign progresses, similar to Crusader Kings. Toggling this option on will revert to vanilla recruiting behavior. Default: Disabled")]
+        [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
+        public bool UseVanillaRecruitment { get; set; } = false;
+
         [SettingPropertyBool("{=MUSHsQr8}Logging", Order = 0, RequireRestart = false, HintText = "{=Wa3DouAN}Enables logs for testing and reporting purposes. Enable this only if Author requests a log during issue reproduction. Default: Disabled")]
         [SettingPropertyGroup(OtherHeader, GroupOrder = 100)]
         public bool Logging { get; set; } = false;

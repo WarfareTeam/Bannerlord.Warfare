@@ -40,7 +40,7 @@ namespace Warfare.Patches
         public static bool Prefix(MobileParty mobileParty)
         {
             // Mercenary troop recruiting is handled in MercenaryBehavior with this mod.
-            return mobileParty == null || !mobileParty.IsActive || !mobileParty.IsLordParty || !mobileParty.ActualClan.IsMinorFaction || mobileParty.ActualClan == Clan.PlayerClan;
+            return Settings.Current.UseVanillaRecruitment || mobileParty == null || !mobileParty.IsActive || !mobileParty.IsLordParty || !mobileParty.ActualClan.IsMinorFaction || mobileParty.ActualClan == Clan.PlayerClan;
         }
     }
 }
