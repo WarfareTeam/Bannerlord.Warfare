@@ -118,7 +118,7 @@ namespace Warfare
 
         [SettingPropertyBool("{=UXEwQKYV}Maintain Vanilla Properties", Order = 10, RequireRestart = false, HintText = "{=EzLcKJwU}Prevents properties of Vanilla mercenary clans and their members from being changed in a new game ie starting gold, renown and troops. Default: Disabled")]
         [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
-        public bool ModifyVanillaMercenaries { get; set; } = false;
+        public bool MaintainVanillaProperties { get; set; } = false;
 
         [SettingPropertyBool("{=MUSHsQr8}Logging", Order = 0, RequireRestart = false, HintText = "{=Wa3DouAN}Enables logs for testing and reporting purposes. Enable this only if Author requests a log during issue reproduction. Default: Disabled")]
         [SettingPropertyGroup(OtherHeader, GroupOrder = 100)]

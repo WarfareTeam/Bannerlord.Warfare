@@ -57,7 +57,7 @@ namespace Warfare.Behaviors
                             TextObject name = new TextObject(hero.Name.ToString().Split(' ').FirstOrDefault());
                             hero.SetName(name, name);
                         }
-                        if (Settings.Current.ModifyVanillaMercenaries)
+                        if (Settings.Current.MaintainVanillaProperties)
                         {
                             hero.Gold = 0;
                             GiveGoldAction.ApplyBetweenCharacters(null, hero, GetStartingGold());
@@ -72,7 +72,7 @@ namespace Warfare.Behaviors
                         clan.GetType().GetProperty("EncyclopediaText", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(clan, new TextObject());
                         ChangeClanName(clan);
                     }
-                    if (Settings.Current.ModifyVanillaMercenaries)
+                    if (Settings.Current.MaintainVanillaProperties)
                     {
                         if (minorCulture != null && clan.Culture == minorCulture)
                         {
