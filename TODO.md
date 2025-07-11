@@ -1,6 +1,7 @@
 # To do
 
 ## Issues
+- When used with Banner Kings, signing a mercenary contract results in a crash. https://report.butr.link/BCDCCA
 - Army map overlay needs hotkeys.
 - Mercenaries should not be able to manage armies they are a part of, add members to it, etc.
 - ~~When adding into an existing game, mercenaries part of a kingdom already won't have a correlating contract, causing crashing.~~
