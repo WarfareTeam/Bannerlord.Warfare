@@ -31,7 +31,7 @@ namespace Warfare.Content.Contracts
             int change = 0;
             foreach (CohesionBoost boost in _cohesionBoosts.ToListQ())
             {
-                if (boost.Army == null)
+                if (boost.Army == null || !boost.Army.LeaderParty.IsActive)
                 {
                     RemoveCohesionBoost(boost.Army);
                     continue;
