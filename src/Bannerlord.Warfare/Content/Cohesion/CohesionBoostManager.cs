@@ -23,6 +23,11 @@ namespace Warfare.Content.Contracts
 
         internal void CheckCohesionBoosts()
         {
+            if (!Settings.Current.EnableCohesionMaintenance)
+            {
+                _cohesionBoosts.Clear();
+                return;
+            }
             int change = 0;
             foreach (CohesionBoost boost in _cohesionBoosts.ToListQ())
             {

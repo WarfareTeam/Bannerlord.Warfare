@@ -3,6 +3,7 @@
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.SaveSystem;
 using TaleWorlds.LinQuick;
+using Warfare.Content.Contracts;
 
 namespace Warfare.Content.Strategies
 {
@@ -15,6 +16,11 @@ namespace Warfare.Content.Strategies
 
         internal void CheckValidStrategies()
         {
+            if (!Settings.Current.EnableStrategies)
+            {
+                _strategies.Clear();
+                return;
+            }
             foreach (Strategy strategy in _strategies.ToListQ())
             {
                 Hero hero = strategy.Hero;

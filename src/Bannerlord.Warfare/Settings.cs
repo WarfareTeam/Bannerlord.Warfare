@@ -32,11 +32,23 @@ namespace Warfare
         [SettingPropertyGroup(ArmiesHeader, GroupOrder = 10)]
         public bool EnableCohesionChange { get; set; } = true;
 
-        [SettingPropertyBool("{=SwU5nhKX}Enable Modify Maximum Battlefield Agents", Order = 1, RequireRestart = false, HintText = "{=hIbdHP2A}Allows the maximum battlefield agents modifier to be set using the mod, which overrides the vanilla setting which ranges from 200-1000. Default: Disabled")]
+        [SettingPropertyBool("{=4z4b8UeA}Enable Army Leader Swapping", Order = 1, RequireRestart = false, HintText = "{=G3MUHLeV}Allows the player to change army leaders in the Kingdom Military screen. Default: Enabled")]
+        [SettingPropertyGroup(ArmiesHeader, GroupOrder = 10)]
+        public bool EnableArmyLeaderSwapping { get; set; } = true;
+
+        [SettingPropertyBool("{=GIm9j9bW}Enable Army Splitting", Order = 2, RequireRestart = false, HintText = "{=8g6Nz64O}Allows the player to split single armies into two new armies in the Kingdom Military screen. Default: Enabled")]
+        [SettingPropertyGroup(ArmiesHeader, GroupOrder = 10)]
+        public bool EnableArmySplitting { get; set; } = true;
+
+        [SettingPropertyBool("{=tYVLgewn}Enable Cohesion Maintenance", Order = 3, RequireRestart = false, HintText = "{=VRDKshVt}Allows the player to maintain cohesion for armies in the Kingdom Military screen. Default: Enabled")]
+        [SettingPropertyGroup(ArmiesHeader, GroupOrder = 10)]
+        public bool EnableCohesionMaintenance { get; set; } = true;
+
+        [SettingPropertyBool("{=SwU5nhKX}Enable Modify Maximum Battlefield Agents", Order = 4, RequireRestart = false, HintText = "{=hIbdHP2A}Allows the maximum battlefield agents modifier to be set using the mod, which overrides the vanilla setting which ranges from 200-1000. Default: Disabled")]
         [SettingPropertyGroup(ArmiesHeader, GroupOrder = 10)]
         public bool EnableModifyMaximumBattlefieldAgents { get; set; } = false;
 
-        [SettingPropertyInteger("{=uqq9P40V}Maximum Battlefield Agents", 1000, 2000, Order = 2, RequireRestart = false, HintText = "{=gNUoN5Ia}Sets the maximum number of total agents on battles. NOTE: Setting this too high can result in crashes! It is recommended to test a field battle using lots of cavalary if you plan to set this higher than 1000. Overrides the Battle Size setting in the vanilla Performance settings section. Default: 1000")]
+        [SettingPropertyInteger("{=uqq9P40V}Maximum Battlefield Agents", 1000, 2000, Order = 5, RequireRestart = false, HintText = "{=gNUoN5Ia}Sets the maximum number of total agents on battles. NOTE: Setting this too high can result in crashes! It is recommended to test a field battle using lots of cavalary if you plan to set this higher than 1000. Overrides the Battle Size setting in the vanilla Performance settings section. Default: 1000")]
         [SettingPropertyGroup(ArmiesHeader, GroupOrder = 10)]
         public int MaximumBattlefieldAgents { get; set; } = 1000;
 
@@ -51,6 +63,10 @@ namespace Warfare
         [SettingPropertyInteger("{=hQ6ROvxB}Time To Prevent Army Besiege AI (Hours)", 1, 168, Order = 2, RequireRestart = false, HintText = "{=OGME2Ekq}Sets the amount of time in hours that the AI will be prevented from attempting to besiege a settlement being besieged by another army. This has no effect if 'Modify Army Besiege AI' is Disabled. Default: 24")]
         [SettingPropertyGroup(ArmyAIHeader, GroupOrder = 0)]
         public int TimeToPreventArmyBesiegeAIHours { get; set; } = 24;
+
+        [SettingPropertyBool(ArmyStrategyHeader, IsToggle = true, Order = 0, RequireRestart = false, HintText = "{=vX5BEbSR}Allows the player to set war strategies for armies in the Kingdom Military screen. Default: Enabled")]
+        [SettingPropertyGroup(ArmyStrategyHeader, GroupOrder = 10)]
+        public bool EnableStrategies { get; set; } = true;
 
         [SettingPropertyFloatingInteger("{=WWq8ftLX}Defensive tendency for defensive Army Strategy", 0.0f, 5.0f, "#0%", Order = 0, RequireRestart = false, HintText = "{=0iHIh4HO}Sets the defensive tendency for armies using the defensive strategy. Default: 110%")]
         [SettingPropertyGroup(ArmyStrategyHeader, GroupOrder = 10)]

@@ -21,6 +21,10 @@ namespace Warfare.Patches
         //TODO: Make a transpiler for the method
         public static bool Prefix(MobileParty mobileParty, PartyThinkParams p, IDisbandPartyCampaignBehavior ____disbandPartyCampaignBehavior)
         {
+            if (!Settings.Current.EnableStrategies)
+            {
+                return true;
+            }
             if (mobileParty.CurrentSettlement != null && mobileParty.CurrentSettlement.SiegeEvent != null)
             {
                 return false;

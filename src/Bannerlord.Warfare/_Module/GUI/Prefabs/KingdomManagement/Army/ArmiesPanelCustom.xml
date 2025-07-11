@@ -125,7 +125,7 @@
 							<ListPanel Id="ArmyNameParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginBottom="15">
                               <Children>
 								<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" Brush="Kingdom.TitleMedium.Text" Text="@ArmyName" ClipContents="false" />
-								<Widget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" HorizontalAlignment="Center">
+								<Widget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" HorizontalAlignment="Center" IsVisible="@ShowChangeArmyLeader">
 								  <Children>
 									<ButtonWidget Id="ChangeLeaderButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" HorizontalAlignment="Center" Brush="Warfare.Military.ChangeArmyLeaderIcon" Command.Click="ExecuteChangeLeader" IsEnabled="@CanChangeCurrentArmyLeader" UpdateChildrenStates="true" GamepadNavigationIndex="0">
 										<Children>
@@ -141,7 +141,7 @@
 									<HintWidget DataSource="{ChangeLeaderHint}" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" IsEnabled="false"/>
 								  </Children>
 								</Widget>
-								<Widget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" HorizontalAlignment="Center">
+								<Widget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" HorizontalAlignment="Center" IsVisible="@ShowSplitArmy">
 								  <Children>
 									<ButtonWidget Id="SplitArmyButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" HorizontalAlignment="Center" Brush="Warfare.Military.SplitArmyIcon" Command.Click="ExecuteSplitArmy" IsEnabled="@CanSplitCurrentArmy" UpdateChildrenStates="true" GamepadNavigationIndex="0">
 										<Children>
@@ -268,7 +268,7 @@
 
 					<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" IsVisible="@IsSelectionEnabled">
 					  <Children>
-						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop">
+						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" IsVisible="@ShowWarStrategy">
 						  <Children>
 							<TextWidget DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Kingdom.TitleMedium.Text" Brush.FontSize="24" ClipContents="false" Text="@StrategySelectionTitle" />
 							<DropdownWidget DataSource="{StrategySelection}" Id="DropdownParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginTop="2" ListPanel="SelectionList" Button="DropdownButton" CurrentSelectedIndex="@SelectedIndex" RichTextWidget="DropdownButton\SelectedTextWidget">
@@ -306,7 +306,7 @@
 
 					<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" IsVisible="@IsSelectionEnabled">
 					  <Children>
-						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop">
+						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" IsVisible="@ShowMaintainCohesion">
 						  <Children>
 							<TextWidget DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Kingdom.TitleMedium.Text" Brush.FontSize="24" ClipContents="false" Text="@MaintainCohesionText" />
 							<ButtonWidget Id="MaintainCohesionButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" Command.Click="ExecuteMaintainCohesion" IsEnabled="@CanMaintainCohesion" Brush="SPOptions.Checkbox.Empty.Button" ButtonType="Toggle" IsSelected="@IsMaintainCohesionSelected" ToggleIndicator="ToggleIndicator" UpdateChildrenStates="true" GamepadNavigationIndex="1" >

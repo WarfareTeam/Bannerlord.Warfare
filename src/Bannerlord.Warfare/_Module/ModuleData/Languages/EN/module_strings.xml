@@ -91,6 +91,12 @@
 		<string id="Z6MO2Cki" text="The cost type to call a mercenary party to an army. Default: Denars" />
 		<string id="IcF3bsNX" text="Enable Cohesion Change" />
 		<string id="PKL1vtQN" text="Allows cohesion to be depleted over time. Default: Enabled" />
+		<string id="4z4b8UeA" text="Enable Army Leader Swapping" />
+		<string id="G3MUHLeV" text="Allows the player to change army leaders in the Kingdom Military screen. Default: Enabled" />
+		<string id="GIm9j9bW" text="Enable Army Splitting" />
+		<string id="8g6Nz64O" text="Allows the player to split single armies into two new armies in the Kingdom Military screen. Default: Enabled" />
+		<string id="tYVLgewn" text="Enable Cohesion Maintenance" />
+		<string id="VRDKshVt" text="Allows the player to maintain cohesion for armies in the Kingdom Military screen. Default: Enabled" />
 		<string id="RvMefSHA" text="Daily Cohesion Change Multiplier" />
 		<string id="I30BnKHt" text="The multiplier to the vanilla daily change in cohesion for armies. Default: 1.0" />
 		<string id="hqpPZFf2" text="Minimum Wars To Hire Mercenaries" />
@@ -116,6 +122,7 @@
 		<string id="hQ6ROvxB" text="Time To Prevent Army Besiege AI (Hours)" />
 		<string id="OGME2Ekq" text="Sets the amount of time in hours that the AI will be prevented from attempting to besiege a settlement being besieged by another army. This has no effect if 'Modify Army Besiege AI' is Disabled. Default: 24" />
 		<string id="e1CrjgN3" text="Strategy" />
+		<string id="vX5BEbSR" text="Allows the player to set war strategies for armies in the Kingdom Military screen. Default: Enable" />
 		<string id="WWq8ftLX" text="Defensive tendency for defensive Army Strategy" />
 		<string id="0iHIh4HO" text="Sets the defensive tendency for armies using the defensive strategy. Default: 110%" />
 		<string id="1raR5mTu" text="Offensive tendency for defensive Army Strategy" />
