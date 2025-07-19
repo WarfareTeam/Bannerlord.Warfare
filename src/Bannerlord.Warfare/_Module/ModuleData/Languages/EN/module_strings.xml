@@ -71,6 +71,23 @@
 		<string id="CdZaf4Ir" text="Insufficient influence to maintain cohesion for army: {ARMY}" />
 		<string id="QETGd5n6" text="Daily Influence Change: {CHANGE}{INFLUENCE_ICON}" />
 		<string id="d2GgQuYI" text="You must leave the party before becoming it's new leader." />
+		<string id="cfwzuNa9" text="Village Being Raided" />
+		<string id="a5TpDQTY" text="War Declared" />
+		<string id="KczmEYFF" text="Peace Declared" />
+		<string id="SDRMX4x2" text="Army Created" />
+		<string id="iQk7xM7N" text="Army Dispersed" />
+		<string id="1vl6Fx00" text="Settlement Besieged" />
+		<string id="2yRoDSFv" text="{LEADER_NAME} has disbanded their army near {SETTLEMENT} since dismissal is requested." />
+		<string id="jAZDcWDs" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since other parties have left the army." />
+		<string id="qT7EdgVA" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since kingdom has been changed." />
+		<string id="VxIbrdlv" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since cohesion has been depleted." />
+		<string id="g7A0NEoi" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since the objective is finished." />
+		<string id="tT13MvdK" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since they have left the army." />
+		<string id="FpyapN2t" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since a new leader cannot be selected." />
+		<string id="YQ88av6Z" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since they couldn't arrive to the point on time." />
+		<string id="0XYI6M3o" text="{LEADER_NAME} had their army near {SETTLEMENT} disbanded since they are dead." />
+		<string id="tX7SnH06" text="{LEADER_NAME} disbanded their army near {SETTLEMENT}." />
+		<string id="f3acvV05" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since they were taken as a prisoner." />
 		<!--Settings-->
 		<string id="Wa3DouAN" text="Warfare" />
 		<string id="EtmesuQ7" text="General" />
@@ -135,6 +152,35 @@
 		<string id="Zs9y8UIJ" text="Sets the offensive tendency for armies using the offensive strategy. Default: 110%" />
 		<string id="dpUAnwfP" text="Chase tendency for offensive Army Strategy" />
 		<string id="zT85SDWT" text="Sets the party chase tendency for armies using the offensive strategy. Default: 80%" />
+		<string id="DVi14Dlk" text="Notifications" />
+		<string id="bDcqYCLy" text="Enables notification settings for when armies are created. Disable to restore vanilla functionality. Default: Enabled" />
+		<string id="UXFYkh1n" text="Army Created Notifications" />
+		<string id="S2vYmJwD" text="The notification type when armies are created. Default: Map Notices" />
+		<string id="7pcUYe1h" text="Army Dispersed Notifications" />
+		<string id="PgKmmm1S" text="The notification type when armies are dispersed. Default: Map Notices" />
+		<string id="L57HvIj2" text="Siege Notifications" />
+		<string id="vwv73P46" text="The notification type when settlements are besieged. Default: Map Notices" />
+		<string id="v787b8fL" text="Siege Notification Scope" />
+		<string id="2nsISx0j" text="The scope for notifications when settlements are besieged. This has no effect if 'Siege Notifications' is disabled. Please note that some options may spam you. Default: Player Owned" />
+		<string id="FJzdaiw3" text="Raid Notifications" />
+		<string id="vHOyBszl" text="The notification type when villages are raided. Default: Map Notices" />
+		<string id="N0Tep7Mn" text="Raid Notification Scope" />
+		<string id="RsDUECFX" text="The scope for notifications when villages are raided. This has no effect if 'Raid Notifications' is disabled. Please note that some options may spam you. Default: Player Owned" />
+		<string id="7jmHArxu" text="Peace Notifications" />
+		<string id="hLogSdIh" text="The notification type when peace is made. Default: Map Notices" />
+		<string id="TQukRSdC" text="Peace Notification Scope" />
+		<string id="2vEeoIJd" text="The scope for notifications when peace is made. This has no effect if 'Peace Notifications' is disabled. Please note that some options may spam you. Default: Player Kingdom" />
+		<string id="i75FIDh6" text="War Notifications" />
+		<string id="tzhRdKEb" text="The notification type when war is declared. Default: Map Notices" />
+		<string id="bNsvZ4RR" text="War Notification Scope" />
+		<string id="gMmdELMU" text="The scope for notifications when war is declared. This has no effect if 'War Notifications' is disabled. Please note that some options may spam you. Default: Player Kingdom" />
+		<string id="gbKP4WXI" text="None" />
+		<string id="JhPIjf9E" text="Map Notices" />
+		<string id="M0P06g6W" text="Popups" />
+		<string id="PGafzLm5" text="Both" />
+		<string id="mqQj47Mg" text="Player Owned" />
+		<string id="Wu20hUsM" text="Player Kingdom" />
+		<string id="oA1ePGVL" text="All Kingdoms" />
 		<string id="krUuhA7I" text="Other" />
 		<string id="MUSHsQr8" text="Logging" />
 		<string id="Wa3DouAN" text="Enables logs for testing and reporting purposes. Enable this only if Author requests a log during issue reproduction. Default: Disabled" />

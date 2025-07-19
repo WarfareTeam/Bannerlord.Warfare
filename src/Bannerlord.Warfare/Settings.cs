@@ -11,12 +11,13 @@ namespace Warfare
     public class Settings : AttributeGlobalSettings<Settings>
     {
         private const string GeneralHeader = "{=EtmesuQ7}General";
-        private const string MercenariesHeader = "{=L3vpqJKB}Mercenaries";
         private const string ArmiesHeader = "{=inKr3PbA}Armies";
         private const string AIHeader = "{=baZKI4zX}AI";
         private const string ArmyAIHeader = ArmiesHeader + "/" + AIHeader;
         private const string StrategyHeader = "{=e1CrjgN3}Strategy";
         private const string ArmyStrategyHeader = ArmiesHeader + "/" + StrategyHeader;
+        private const string MercenariesHeader = "{=L3vpqJKB}Mercenaries";
+        private const string NotificationsHeader = "{=DVi14Dlk}Notifications";
         private const string OtherHeader = "{=krUuhA7I}Other";
 
         public override string Id => "WarfareSettings";
@@ -139,6 +140,50 @@ namespace Warfare
         [SettingPropertyBool("{=FBIPOuX5}Use Vanilla Recruitment", Order = 11, RequireRestart = false, HintText = "{=A4KGF9k3}By default, the mod using it's own recruiting scheme to give mercenaries increased importance for richly developed kingdoms, especially as a campaign progresses, similar to Crusader Kings. Toggling this option on will revert to vanilla recruiting behavior. Default: Disabled")]
         [SettingPropertyGroup(MercenariesHeader, GroupOrder = 20)]
         public bool UseVanillaRecruitment { get; set; } = false;
+
+        [SettingPropertyBool(NotificationsHeader, IsToggle = true, Order = 0, RequireRestart = false, HintText = "{=bDcqYCLy}Enables notification settings for when armies are created. Disable to restore vanilla functionality. Default: Enabled")]
+        [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
+        public bool EnableNotifications { get; set; } = true;
+
+        [SettingPropertyDropdown("{=UXFYkh1n}Army Created Notifications", Order = 1, RequireRestart = false, HintText = "{=S2vYmJwD}The notification type when armies are created. Default: Map Notices")]
+        [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
+        public Dropdown<string> ArmyCreatedNotifications { get; } = new(new string[] { "{=gbKP4WXI}None", "{=JhPIjf9E}Map Notices", "{=M0P06g6W}Popups", "{=PGafzLm5}Both" }, 1);
+
+        [SettingPropertyDropdown("{=7pcUYe1h}Army Dispersed Notifications", Order = 2, RequireRestart = false, HintText = "{=PgKmmm1S}The notification type when armies are dispersed. Default: Map Notices")]
+        [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
+        public Dropdown<string> ArmyDispersedNotifications { get; } = new(new string[] { "{=gbKP4WXI}None", "{=JhPIjf9E}Map Notices", "{=M0P06g6W}Popups", "{=PGafzLm5}Both" }, 1);
+
+        [SettingPropertyDropdown("{=L57HvIj2}Siege Notifications", Order = 3, RequireRestart = false, HintText = "{=vwv73P46}The notification type when settlements are besieged. Default: Map Notices")]
+        [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
+        public Dropdown<string> SiegeNotifications { get; } = new(new string[] { "{=gbKP4WXI}None", "{=JhPIjf9E}Map Notices", "{=M0P06g6W}Popups", "{=PGafzLm5}Both" }, 1);
+
+        [SettingPropertyDropdown("{=v787b8fL}Siege Notification Scope", Order = 4, RequireRestart = false, HintText = "{=2nsISx0j}The scope for notifications when settlements are besieged. This has no effect if 'Siege Notifications' is disabled. Please note that some options may spam you. Default: Player Owned")]
+        [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
+        public Dropdown<string> SiegeNotificationScope { get; } = new(new string[] { "{=mqQj47Mg}Player Owned", "{=Wu20hUsM}Player Kingdom" }, 0);
+
+        [SettingPropertyDropdown("{=FJzdaiw3}Raid Notifications", Order = 5, RequireRestart = false, HintText = "{=vHOyBszl}The notification type when villages are raided. Default: Map Notices")]
+        [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
+        public Dropdown<string> RaidNotifications { get; } = new(new string[] { "{=gbKP4WXI}None", "{=JhPIjf9E}Map Notices", "{=M0P06g6W}Popups", "{=PGafzLm5}Both" }, 1);
+
+        [SettingPropertyDropdown("{=N0Tep7Mn}Raid Notification Scope", Order = 6, RequireRestart = false, HintText = "{=RsDUECFX}The scope for notifications when villages are raided. This has no effect if 'Raid Notifications' is disabled. Please note that some options may spam you. Default: Player Owned")]
+        [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
+        public Dropdown<string> RaidNotificationScope { get; } = new(new string[] { "{=mqQj47Mg}Player Owned", "{=Wu20hUsM}Player Kingdom" }, 0);
+
+        [SettingPropertyDropdown("{=7jmHArxu}Peace Notifications", Order = 7, RequireRestart = false, HintText = "{=hLogSdIh}The notification type when peace is made. Default: Map Notices")]
+        [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
+        public Dropdown<string> PeaceNotifications { get; } = new(new string[] { "{=gbKP4WXI}None", "{=JhPIjf9E}Map Notices", "{=M0P06g6W}Popups", "{=PGafzLm5}Both" }, 1);
+
+        [SettingPropertyDropdown("{=TQukRSdC}Peace Notification Scope", Order = 8, RequireRestart = false, HintText = "{=2vEeoIJd}The scope for notifications when peace is made. This has no effect if 'Peace Notifications' is disabled. Please note that some options may spam you. Default: Player Kingdom")]
+        [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
+        public Dropdown<string> PeaceNotificationScope { get; } = new(new string[] { "{=Wu20hUsM}Player Kingdom", "{=oA1ePGVL}All Kingdoms" }, 0);
+
+        [SettingPropertyDropdown("{=i75FIDh6}War Notifications", Order = 9, RequireRestart = false, HintText = "{=tzhRdKEb}The notification type when war is declared. Default: Map Notices")]
+        [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
+        public Dropdown<string> WarNotifications { get; } = new(new string[] { "{=gbKP4WXI}None", "{=JhPIjf9E}Map Notices", "{=M0P06g6W}Popups", "{=PGafzLm5}Both" }, 1);
+
+        [SettingPropertyDropdown("{=bNsvZ4RR}War Notification Scope", Order = 10, RequireRestart = false, HintText = "{=gMmdELMU}The scope for notifications when war is declared. This has no effect if 'War Notifications' is disabled. Please note that some options may spam you. Default: Player Kingdom")]
+        [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
+        public Dropdown<string> WarNotificationScope { get; } = new(new string[] { "{=Wu20hUsM}Player Kingdom", "{=oA1ePGVL}All Kingdoms" }, 0);
 
         [SettingPropertyBool("{=MUSHsQr8}Logging", Order = 0, RequireRestart = false, HintText = "{=Wa3DouAN}Enables logs for testing and reporting purposes. Enable this only if Author requests a log during issue reproduction. Default: Disabled")]
         [SettingPropertyGroup(OtherHeader, GroupOrder = 100)]
