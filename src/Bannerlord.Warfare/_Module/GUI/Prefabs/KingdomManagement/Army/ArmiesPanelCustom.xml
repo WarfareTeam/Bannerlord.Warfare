@@ -304,7 +304,7 @@
 				<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" VerticalAlignment="Top" MarginRight="85" MarginTop="45" IsVisible="@ShowArmies">
 				  <Children>
 
-					<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren">
+					<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" IsVisible="@IsSelectionEnabled">
 					  <Children>
 						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" IsVisible="@ShowMaintainCohesion">
 						  <Children>
