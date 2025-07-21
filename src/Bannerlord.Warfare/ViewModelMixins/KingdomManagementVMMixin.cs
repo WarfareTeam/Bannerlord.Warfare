@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
 
 using TaleWorlds.CampaignSystem.ViewModelCollection.KingdomManagement;
-using TaleWorlds.Core;
 using TaleWorlds.Library;
+using TaleWorlds.Localization;
 
 using Bannerlord.UIExtenderEx.Attributes;
 using Bannerlord.UIExtenderEx.ViewModels;
+
 using Warfare.Helpers;
 using Warfare.ViewModels.Military;
-using TaleWorlds.Localization;
+using Warfare.ViewModels.World;
 
 namespace Warfare.ViewModelMixins
 {
@@ -17,16 +18,26 @@ namespace Warfare.ViewModelMixins
     {
         private string _militaryText;
 
+        private string _worldText;
+
         public KingdomManagementVMMixin(KingdomManagementVM vm) : base(vm)
         {
             Military = new KingdomMilitaryVM();
+            World = new KingdomWorldVM();
             MilitaryText = new TextObject("{=4T0zfjz0}Military").ToString();
+            WorldText = new TextObject("{=B9Be9n7r}World").ToString();
         }
 
         [DataSourceMethod]
         public void ExecuteShowMilitary()
         {
             ViewModel!.GetType().GetMethod("SetSelectedCategory", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ViewModel, new object[] { 3 });
+        }
+
+        [DataSourceMethod]
+        public void ExecuteShowWorld()
+        {
+            ViewModel!.GetType().GetMethod("SetSelectedCategory", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ViewModel, new object[] { 5 });
         }
 
         [DataSourceProperty]
@@ -47,6 +58,23 @@ namespace Warfare.ViewModelMixins
         }
 
         [DataSourceProperty]
+        public KingdomWorldVM World
+        {
+            get
+            {
+                return VMHelper.World!;
+            }
+            set
+            {
+                if (value != VMHelper.World)
+                {
+                    VMHelper.World = value;
+                    OnPropertyChangedWithValue(value, "World");
+                }
+            }
+        }
+
+        [DataSourceProperty]
         public string MilitaryText
         {
             get
@@ -59,6 +87,23 @@ namespace Warfare.ViewModelMixins
                 {
                     _militaryText = value;
                     OnPropertyChangedWithValue(value, "MilitaryText");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public string WorldText
+        {
+            get
+            {
+                return _worldText;
+            }
+            set
+            {
+                if (value != _worldText)
+                {
+                    _worldText = value;
+                    OnPropertyChangedWithValue(value, "WorldText");
                 }
             }
         }
