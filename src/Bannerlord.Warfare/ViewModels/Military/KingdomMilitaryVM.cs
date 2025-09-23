@@ -52,6 +52,14 @@ namespace Warfare.ViewModels.Military
 
         private bool _showMercenaries;
 
+        private bool _showChangeArmyLeader;
+
+        private bool _showSplitArmy;
+
+        private bool _showMaintainCohesion;
+
+        private bool _showWarStrategy;
+
         private ClanCardSelectionPopupVM _cardSelectionPopup;
 
         private bool _isAcceptableMercenarySelected;
@@ -197,6 +205,10 @@ namespace Warfare.ViewModels.Military
         public override void RefreshValues()
         {
             base.RefreshValues();
+            ShowChangeArmyLeader = Settings.Current.EnableArmyLeaderSwapping;
+            ShowMaintainCohesion = Settings.Current.EnableCohesionMaintenance;
+            ShowSplitArmy = Settings.Current.EnableArmySplitting;
+            ShowWarStrategy = Settings.Current.EnableStrategies;
             StrategySelectionTitle = GameTexts.FindText("str_kingdom_war_strategy").ToString();
             MilitaryText = new TextObject("{=4T0zfjz0}Military").ToString();
             ArmiesText = GameTexts.FindText("str_armies").ToString();
@@ -1560,6 +1572,74 @@ namespace Warfare.ViewModels.Military
                 {
                     _showMercenaries = value;
                     OnPropertyChangedWithValue(value, "ShowMercenaries");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool ShowChangeArmyLeader
+        {
+            get
+            {
+                return _showChangeArmyLeader;
+            }
+            set
+            {
+                if (value != _showChangeArmyLeader)
+                {
+                    _showChangeArmyLeader = value;
+                    OnPropertyChangedWithValue(value, "ShowChangeArmyLeader");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool ShowSplitArmy
+        {
+            get
+            {
+                return _showSplitArmy;
+            }
+            set
+            {
+                if (value != _showSplitArmy)
+                {
+                    _showSplitArmy = value;
+                    OnPropertyChangedWithValue(value, "ShowSplitArmy");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool ShowMaintainCohesion
+        {
+            get
+            {
+                return _showMaintainCohesion;
+            }
+            set
+            {
+                if (value != _showMaintainCohesion)
+                {
+                    _showMaintainCohesion = value;
+                    OnPropertyChangedWithValue(value, "ShowMaintainCohesion");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool ShowWarStrategy
+        {
+            get
+            {
+                return _showWarStrategy;
+            }
+            set
+            {
+                if (value != _showWarStrategy)
+                {
+                    _showWarStrategy = value;
+                    OnPropertyChangedWithValue(value, "ShowWarStrategy");
                 }
             }
         }

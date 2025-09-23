@@ -2,6 +2,7 @@
 
 using Warfare.Content.Contracts;
 using Warfare.Content.Strategies;
+using Warfare.Notifications;
 
 namespace Warfare
 {
@@ -19,6 +20,8 @@ namespace Warfare
             AddClassDefinition(typeof(StrategyManager), 6);
             AddClassDefinition(typeof(CohesionBoost), 7);
             AddClassDefinition(typeof(CohesionBoostManager), 8);
+            AddClassDefinition(typeof(VillageRaidedLogEntry), 9000);
+            AddClassDefinition(typeof(VillageRaidedMapNotification), 90001);
         }
 
         protected override void DefineContainerDefinitions()

@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using Helpers;
 using System.Collections.Generic;
-
-using Helpers;
+using System.Linq;
+using System.Reflection;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.GameState;

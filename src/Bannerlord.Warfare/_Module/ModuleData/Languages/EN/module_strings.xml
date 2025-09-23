@@ -71,6 +71,23 @@
 		<string id="CdZaf4Ir" text="Insufficient influence to maintain cohesion for army: {ARMY}" />
 		<string id="QETGd5n6" text="Daily Influence Change: {CHANGE}{INFLUENCE_ICON}" />
 		<string id="d2GgQuYI" text="You must leave the party before becoming it's new leader." />
+		<string id="cfwzuNa9" text="Village Being Raided" />
+		<string id="a5TpDQTY" text="War Declared" />
+		<string id="KczmEYFF" text="Peace Declared" />
+		<string id="SDRMX4x2" text="Army Created" />
+		<string id="iQk7xM7N" text="Army Dispersed" />
+		<string id="1vl6Fx00" text="Settlement Besieged" />
+		<string id="2yRoDSFv" text="{LEADER_NAME} has disbanded their army near {SETTLEMENT} since dismissal is requested." />
+		<string id="jAZDcWDs" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since other parties have left the army." />
+		<string id="qT7EdgVA" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since kingdom has been changed." />
+		<string id="VxIbrdlv" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since cohesion has been depleted." />
+		<string id="g7A0NEoi" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since the objective is finished." />
+		<string id="tT13MvdK" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since they have left the army." />
+		<string id="FpyapN2t" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since a new leader cannot be selected." />
+		<string id="YQ88av6Z" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since they couldn't arrive to the point on time." />
+		<string id="0XYI6M3o" text="{LEADER_NAME} had their army near {SETTLEMENT} disbanded since they are dead." />
+		<string id="tX7SnH06" text="{LEADER_NAME} disbanded their army near {SETTLEMENT}." />
+		<string id="f3acvV05" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since they were taken as a prisoner." />
 		<!--Settings-->
 		<string id="Wa3DouAN" text="Warfare" />
 		<string id="EtmesuQ7" text="General" />
@@ -82,7 +99,7 @@
 		<string id="dIZZ55i0" text="Seasonal" />
 		<string id="pYZ9blgd" text="Annual" />
 		<string id="UVQI4HIo" text="Mercenary Contract Gold Cost Multiplier" />
-		<string id="xAl7nwNt" text="Multiplier for the costs when hiring a mercenary. The total contract cost is calculated by multiplying the total daily cost of mercenary party wages and the amount of days the mercenary will be contracted for. WARNING: If they aren't paid enough to at least cover troop wages, they may not properly feed their troops as well as having other side effects. Default: 1.25" />
+		<string id="xAl7nwNt" text="Cost multiplier when hiring a mercenary. Total contract cost is calculated as (Total Daily Party Wages * Total Contract Days * Multiplier). This should be set high enough to pay for food and their troop wages to prevent starvation. Default: 1.25" />
 		<string id="TMZ4jBjZ" text="Faction Leaders Can Call Mercenary To Army Without Cost" />
 		<string id="642MdHQq" text="Allows the faction leader to call mercenaries to their army without a cost. Default: Enabled" />
 		<string id="MlXBzNfg" text="Cost Multiplier To Call Mercenary To Army" />
@@ -91,6 +108,12 @@
 		<string id="Z6MO2Cki" text="The cost type to call a mercenary party to an army. Default: Denars" />
 		<string id="IcF3bsNX" text="Enable Cohesion Change" />
 		<string id="PKL1vtQN" text="Allows cohesion to be depleted over time. Default: Enabled" />
+		<string id="4z4b8UeA" text="Enable Army Leader Swapping" />
+		<string id="G3MUHLeV" text="Allows the player to change army leaders in the Kingdom Military screen. Default: Enabled" />
+		<string id="GIm9j9bW" text="Enable Army Splitting" />
+		<string id="8g6Nz64O" text="Allows the player to split single armies into two new armies in the Kingdom Military screen. Default: Enabled" />
+		<string id="tYVLgewn" text="Enable Cohesion Maintenance" />
+		<string id="VRDKshVt" text="Allows the player to maintain cohesion for armies in the Kingdom Military screen. Default: Enabled" />
 		<string id="RvMefSHA" text="Daily Cohesion Change Multiplier" />
 		<string id="I30BnKHt" text="The multiplier to the vanilla daily change in cohesion for armies. Default: 1.0" />
 		<string id="hqpPZFf2" text="Minimum Wars To Hire Mercenaries" />
@@ -98,20 +121,25 @@
 		<string id="rjjUIti9" text="Spawn Additional Mercenaries" />
 		<string id="qTfVx8hh" text="Spawns more mercenaries when starting a new game than vanilla includes. This will make the world livelier and give more contract possiblities. The mod is balanced around this being enabled. Default: Enabled" />
 		<string id="rmugSIvK" text="Maintain Vanilla Names" />
-		<string id="BdXcxPA6" text="When the vanilla mercenary clans are spawned in a new game, they will use vanilla naming conventions. By default, this mod renames them to maintain consistency with additionally spawned mercenaries. The additional mercenaries will maintain Warfare naming conventions. Default: Disabled" />
+		<string id="BdXcxPA6" text="Prevents Vanilla mercenary clans and their members from being renamed in a new game. This will cause inconsistency in naming conventions if paired with 'Spawn Additional Mercenaries' option. Default: Disabled" />
 		<string id="U9sTpxGe" text="Maintain Vanilla Banners" />
-		<string id="6Tsx3ntW" text="When the vanilla mercenary clans are spawned in a new game, they will use vanilla banners. By default, this mod shuffles them to maintain consistency with additionally spawned mercenaries. The additional mercenaries will maintain Warfare banner conventions. Default: Disabled" />
+		<string id="6Tsx3ntW" text="Prevents Vanilla mercenary clan banners from being shuffled in a new game. This will cause inconsistency in banner conventions if paired with 'Spawn Additional Mercenaries' option. Default: Disabled" />
+		<string id="UXEwQKYV" text="Maintain Vanilla Properties" />
+		<string id="EzLcKJwU" text="Prevents properties of Vanilla mercenary clans and their members from being changed in a new game ie starting gold, renown and troops. Default: Disabled" />
+		<string id="FBIPOuX5" text="Use Vanilla Recruitment" />
+		<string id="A4KGF9k3" text="By default, the mod using it's own recruiting scheme to give mercenaries increased importance for richly developed kingdoms, especially as a campaign progresses, similar to Crusader Kings. Toggling this option on will revert to vanilla recruiting behavior. Default: Disabled" />
 		<string id="SwU5nhKX" text="Enable Modify Maximum Battlefield Agents" />
 		<string id="hIbdHP2A" text="Allows the maximum battlefield agents modifier to be set using the mod, which overrides the vanilla setting which ranges from 200-1000. Default: Disabled" />
 		<string id="uqq9P40V" text="Maximum Battlefield Agents" />
 		<string id="gNUoN5Ia" text="Sets the maximum number of total agents on battles. NOTE: Setting this too high can result in crashes! It is recommended to test a field battle using lots of cavalary if you plan to set this higher than 1000. Overrides the Battle Size setting in the vanilla Performance settings section. Default: 500" />
 		<string id="pLTpHLi0" text="Modify Army Besiege AI" />
-		<string id="V2B0f9AM" text="Modifies the army besieging AI to prevent AI armies from moving to siege a settlement already being besieged by another army. This minimizes the chance of a player siege being taken over by an AI. There will tend to be multiple war fronts / theaters with this enabled. Default: Enabled" />
+		<string id="V2B0f9AM" text="Modifies army AI to prevent sieging a settlement that is being besieged by another army depending on the power difference in attacker and defender power. This lowers the chance of a player siege being taken over by an AI and tends to create multiple fronts in a war when enabled. Default: Enabled" />
 		<string id="9vo8PxtF" text="Minimum Fiefs To Modify Army Besiege AI" />
 		<string id="KAnYH0W2" text="Modifies the army besieging AI only if the target faction has at least the specified number of fiefs. This has no effect if 'Modify Army Besiege AI' is Disabled. Default: 3" />
 		<string id="hQ6ROvxB" text="Time To Prevent Army Besiege AI (Hours)" />
 		<string id="OGME2Ekq" text="Sets the amount of time in hours that the AI will be prevented from attempting to besiege a settlement being besieged by another army. This has no effect if 'Modify Army Besiege AI' is Disabled. Default: 24" />
 		<string id="e1CrjgN3" text="Strategy" />
+		<string id="vX5BEbSR" text="Allows the player to set war strategies for armies in the Kingdom Military screen. Default: Enable" />
 		<string id="WWq8ftLX" text="Defensive tendency for defensive Army Strategy" />
 		<string id="0iHIh4HO" text="Sets the defensive tendency for armies using the defensive strategy. Default: 110%" />
 		<string id="1raR5mTu" text="Offensive tendency for defensive Army Strategy" />
@@ -124,6 +152,35 @@
 		<string id="Zs9y8UIJ" text="Sets the offensive tendency for armies using the offensive strategy. Default: 110%" />
 		<string id="dpUAnwfP" text="Chase tendency for offensive Army Strategy" />
 		<string id="zT85SDWT" text="Sets the party chase tendency for armies using the offensive strategy. Default: 80%" />
+		<string id="DVi14Dlk" text="Notifications" />
+		<string id="bDcqYCLy" text="Enables notification settings for when armies are created. Disable to restore vanilla functionality. Default: Enabled" />
+		<string id="UXFYkh1n" text="Army Created Notifications" />
+		<string id="S2vYmJwD" text="The notification type when armies are created. Default: Map Notices" />
+		<string id="7pcUYe1h" text="Army Dispersed Notifications" />
+		<string id="PgKmmm1S" text="The notification type when armies are dispersed. Default: Map Notices" />
+		<string id="L57HvIj2" text="Siege Notifications" />
+		<string id="vwv73P46" text="The notification type when settlements are besieged. Default: Map Notices" />
+		<string id="v787b8fL" text="Siege Notification Scope" />
+		<string id="2nsISx0j" text="The scope for notifications when settlements are besieged. This has no effect if 'Siege Notifications' is disabled. Please note that some options may spam you. Default: Player Owned" />
+		<string id="FJzdaiw3" text="Raid Notifications" />
+		<string id="vHOyBszl" text="The notification type when villages are raided. Default: Map Notices" />
+		<string id="N0Tep7Mn" text="Raid Notification Scope" />
+		<string id="RsDUECFX" text="The scope for notifications when villages are raided. This has no effect if 'Raid Notifications' is disabled. Please note that some options may spam you. Default: Player Owned" />
+		<string id="7jmHArxu" text="Peace Notifications" />
+		<string id="hLogSdIh" text="The notification type when peace is made. Default: Map Notices" />
+		<string id="TQukRSdC" text="Peace Notification Scope" />
+		<string id="2vEeoIJd" text="The scope for notifications when peace is made. This has no effect if 'Peace Notifications' is disabled. Please note that some options may spam you. Default: Player Kingdom" />
+		<string id="i75FIDh6" text="War Notifications" />
+		<string id="tzhRdKEb" text="The notification type when war is declared. Default: Map Notices" />
+		<string id="bNsvZ4RR" text="War Notification Scope" />
+		<string id="gMmdELMU" text="The scope for notifications when war is declared. This has no effect if 'War Notifications' is disabled. Please note that some options may spam you. Default: Player Kingdom" />
+		<string id="gbKP4WXI" text="None" />
+		<string id="JhPIjf9E" text="Map Notices" />
+		<string id="M0P06g6W" text="Popups" />
+		<string id="PGafzLm5" text="Both" />
+		<string id="mqQj47Mg" text="Player Owned" />
+		<string id="Wu20hUsM" text="Player Kingdom" />
+		<string id="oA1ePGVL" text="All Kingdoms" />
 		<string id="krUuhA7I" text="Other" />
 		<string id="MUSHsQr8" text="Logging" />
 		<string id="Wa3DouAN" text="Enables logs for testing and reporting purposes. Enable this only if Author requests a log during issue reproduction. Default: Disabled" />

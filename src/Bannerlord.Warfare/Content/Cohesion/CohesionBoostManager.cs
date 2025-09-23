@@ -23,10 +23,16 @@ namespace Warfare.Content.Contracts
 
         internal void CheckCohesionBoosts()
         {
+            Hero hero = Hero.MainHero;
+            if (!Settings.Current.EnableCohesionMaintenance || hero.MapFaction == null || !hero.MapFaction.IsKingdomFaction)
+            {
+                _cohesionBoosts.Clear();
+                return;
+            }
             int change = 0;
             foreach (CohesionBoost boost in _cohesionBoosts.ToListQ())
             {
-                if (boost.Army == null)
+                if (boost.Army == null || !boost.Army.LeaderParty.IsActive || boost.Army.Kingdom != hero.Clan.Kingdom)
                 {
                     RemoveCohesionBoost(boost.Army);
                     continue;

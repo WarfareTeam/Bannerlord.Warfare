@@ -4,7 +4,7 @@ using HarmonyLib;
 
 using Warfare.GauntletUI;
 
-namespace Bannerlord.Warfare.Patches
+namespace Warfare.Patches
 {
     [HarmonyPatch(typeof(GauntletMapBarGlobalLayer), "OpenArmyManagement")]
     public static class GauntletMapBarGlobalLayerPatch

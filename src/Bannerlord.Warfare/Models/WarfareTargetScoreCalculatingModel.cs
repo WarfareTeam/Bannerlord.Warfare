@@ -27,6 +27,10 @@ namespace Warfare.Models
         //TODO: Make a transpiler for the method
         public override float GetTargetScoreForFaction(Settlement targetSettlement, Army.ArmyTypes missionType, MobileParty mobileParty, float ourStrength, int numberOfEnemyFactionSettlements = -1, float totalEnemyMobilePartyStrength = -1)
         {
+            if (!Settings.Current.EnableStrategies)
+            {
+                return _model.GetTargetScoreForFaction(targetSettlement, missionType, mobileParty, ourStrength, numberOfEnemyFactionSettlements, totalEnemyMobilePartyStrength);
+            }
             float powerScore = 0f;
             float distanceScore = 0f;
             float settlementImportanceScore = 0f;
