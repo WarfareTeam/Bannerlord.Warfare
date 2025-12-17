@@ -3,6 +3,7 @@ using System.Linq;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection.KingdomManagement;
+using TaleWorlds.CampaignSystem.ViewModelCollection.KingdomManagement.Diplomacy;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Core.ViewModelCollection.Selector;

@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace Warfare.PrefabExtensions
 {
-    [PrefabExtension("ArmyCartItem", "descendant::TextWidget[@IsHidden='@IsAlreadyWithPlayer']")]
+    [PrefabExtension("ArmyCartItem", "descendant::TextWidget[@IntText='@Cost']")]
     internal class ArmyCartItemCostPrefabExtension : PrefabExtensionInsertPatch
     {
         public override InsertType Type => InsertType.Replace;
@@ -17,8 +17,7 @@ namespace Warfare.PrefabExtensions
         public ArmyCartItemCostPrefabExtension()
         {
             _document = new XmlDocument();
-            _document.LoadXml(@"
-                <TextWidget WidthSizePolicy='CoverChildren' HeightSizePolicy='CoverChildren' VerticalAlignment='Center' Brush='ArmyManagement.Army.Cart.Value' Brush.FontSize='24' MarginTop='5' Text='@CostText' IsHidden='@IsAlreadyWithPlayer' />");
+            _document.LoadXml(@"<TextWidget WidthSizePolicy='CoverChildren' HeightSizePolicy='CoverChildren' VerticalAlignment='Center' Brush='ArmyManagement.Army.Cart.Value' Brush.FontSize='24' MarginTop='5' Text='@CostText' IsHidden='@IsAlreadyWithPlayer' />");
         }
         [PrefabExtensionXmlDocument]
         public XmlDocument GetPrefabExtension() => _document;

@@ -6,7 +6,7 @@ using Bannerlord.UIExtenderEx.Prefabs2;
 
 namespace Warfare.PrefabExtensions
 {
-    [PrefabExtension("ArmyManagement", "descendant::Widget[@Id='DisbandButton']")]
+    [PrefabExtension("ArmyManagementRightPanel", "descendant::ButtonWidget[@Id='DisbandButton']")]
     internal class ArmyManagementDisbandArmyButtonPrefabExtension : PrefabExtensionSetAttributePatch
     {
         public override List<Attribute> Attributes => new()
@@ -14,7 +14,7 @@ namespace Warfare.PrefabExtensions
             new Attribute("IsHidden", "@IsSplitArmy")
         };
     }
-    [PrefabExtension("ArmyManagement", "descendant::ButtonWidget[@IsEnabled='@CanDisbandArmy']")]
+    [PrefabExtension("ArmyManagementRightPanel", "descendant::ButtonWidget[@IsEnabled='@CanDisbandArmy']")]
     internal sealed class ArmyManagementDisbandCostPrefabExtension : PrefabExtensionInsertPatch
     {
         public override InsertType Type => InsertType.Append;
@@ -88,6 +88,41 @@ namespace Warfare.PrefabExtensions
 				    </Widget>
                   </Children>
                 </ListPanel>");
+        }
+
+        [PrefabExtensionXmlDocument]
+        public XmlDocument GetPrefabExtension() => _document;
+    }
+    [PrefabExtension("ArmyManagementLeftPanel", "descendant::Constant[@Name='ArmyManagement.Panel.Left.Width']")]
+    internal sealed class ArmyManagementLeftPanelAdditivePatch : PrefabExtensionSetAttributePatch
+    {
+        public override List<Attribute> Attributes => new()
+        {
+            new Attribute("Additive", "107")
+        };
+    }
+    [PrefabExtension("ArmyManagementLeftPanel", "descendant::Constant[@Name='ArmyManagement.Sort.5.Width']")]
+    internal sealed class ArmyManagementLeftPanelSortAdditivePatch : PrefabExtensionSetAttributePatch
+    {
+        public override List<Attribute> Attributes => new()
+        {
+            new Attribute("Additive", "28")
+        };
+    }
+    [PrefabExtension("ArmyManagementLeftPanel", "descendant::BrushWidget[@Id='GatherArmyPartiesPanel']")]
+    internal sealed class ArmyManagementLeftPanelPrefabExtension : PrefabExtensionInsertPatch
+    {
+        public override InsertType Type => InsertType.Replace;
+
+        private readonly XmlDocument _document;
+
+        public ArmyManagementLeftPanelPrefabExtension()
+        {
+            _document = new XmlDocument();
+            if (SubModule.NavalDLC)
+            {
+                _document.LoadXml(@"<NavalArmyManagementLeftPanelCustom />");
+            }
         }
 
         [PrefabExtensionXmlDocument]

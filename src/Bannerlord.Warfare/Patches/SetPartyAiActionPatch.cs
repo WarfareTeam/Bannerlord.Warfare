@@ -36,7 +36,7 @@ namespace Warfare.Patches
         public static bool Prefix(MobileParty owner, Settlement settlement)
         {
             Army army;
-            if (!Settings.Current.ModifyArmyBesiegeAI || (army = owner.Army) == null || settlement.MapFaction.Fiefs.CountQ() < Settings.Current.ModifyArmyBesiegeAIMinimumFiefs || (owner.Ai.DefaultBehavior == AiBehavior.BesiegeSettlement && owner.TargetSettlement == settlement) || !settlement.IsFortification)
+            if (!Settings.Current.ModifyArmyBesiegeAI || (army = owner.Army) == null || settlement.MapFaction.Fiefs.CountQ() < Settings.Current.ModifyArmyBesiegeAIMinimumFiefs || (owner.DefaultBehavior == AiBehavior.BesiegeSettlement && owner.TargetSettlement == settlement) || !settlement.IsFortification)
             {
                 /*Use vanilla logic if:
                 1. modify army ai setting is disabled
@@ -58,8 +58,8 @@ namespace Warfare.Patches
                 }
                 partyAiActionQueue.Remove(action);
             }
-            float power = settlement.Parties.WhereQ(x => x.IsActive && !x.IsVillager && !x.IsCaravan).SumQ(x => x.Party.TotalStrength);
-            IEnumerable<float> totalStrength = owner.ActualClan.Kingdom.Armies.WhereQ(x => x.ArmyOwner != owner.LeaderHero && (x.LeaderParty.SiegeEvent != null || (x.AIBehavior == Army.AIBehaviorFlags.TravellingToAssignment && x.ArmyType == Army.ArmyTypes.Besieger)) && (Settlement)x.AiBehaviorObject != null && (Settlement)x.AiBehaviorObject == settlement).SelectQ(x => x.TotalStrength);
+            float power = settlement.Parties.WhereQ(x => x.IsActive && !x.IsVillager && !x.IsCaravan).SumQ(x => x.Party.EstimatedStrength);
+            IEnumerable<float> totalStrength = owner.ActualClan.Kingdom.Armies.WhereQ(x => x.ArmyOwner != owner.LeaderHero && (x.LeaderParty.SiegeEvent != null || x.ArmyType == Army.ArmyTypes.Besieger) && (Settlement)x.AiBehaviorObject != null && (Settlement)x.AiBehaviorObject == settlement).SelectQ(x => x.EstimatedStrength);
             if (power >= totalStrength.SumQ(x => x))
             {
                 //Force party attempting to siege to instead defend if one of their kingdoms fiefs are under attack
@@ -68,7 +68,7 @@ namespace Warfare.Patches
                 Settlement settlementToDefend;
                 if (!settlementsUnderSiege.IsEmpty() && (settlementToDefend = settlementsUnderSiege.First()) != null)
                 {
-                    SetPartyAiAction.GetActionForDefendingSettlement(owner, settlementToDefend);
+                    SetPartyAiAction.GetActionForDefendingSettlement(owner, settlementToDefend, MobileParty.NavigationType.Default, false, false);
                     AddToQueue(army, settlement);
                     return false;
                 }

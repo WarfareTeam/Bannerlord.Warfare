@@ -19,14 +19,14 @@ namespace Warfare.ViewModels.World
         private readonly Action<WorldWarItemVM> _onSelect;
         private readonly StanceLink _war;
         private readonly Action<WorldWarItemVM> _onAction;
-        private List<Hero> _prisonersCapturedByFaction1;
-        private List<Hero> _prisonersCapturedByFaction2;
-        private List<Settlement> _townsCapturedByFaction1;
-        private List<Settlement> _townsCapturedByFaction2;
-        private List<Settlement> _castlesCapturedByFaction1;
-        private List<Settlement> _castlesCapturedByFaction2;
-        private List<Settlement> _raidsMadeByFaction1;
-        private List<Settlement> _raidsMadeByFaction2;
+        private ExplainedNumber _warProgressOfFaction1;
+        private ExplainedNumber _warProgressOfFaction2;
+        private int _numberOfTownsCapturedByFaction1;
+        private int _numberOfTownsCapturedByFaction2;
+        private int _numberOfCastlesCapturedByFaction1;
+        private int _numberOfCastlesCapturedByFaction2;
+        private int _numberOfRaidsMadeByFaction1;
+        private int _numberOfRaidsMadeByFaction2;
         private string _warName;
         private string _numberOfDaysSinceWarBegan;
         private int _score;
@@ -40,15 +40,17 @@ namespace Warfare.ViewModels.World
         {
             _war = war;
             _onSelect = onSelect;
+            _onSelect = onSelect;
             IsBehaviorSelectionEnabled = Faction1.IsKingdomFaction && Faction1.Leader == Hero.MainHero;
-            _prisonersCapturedByFaction1 = DiplomacyHelper.GetPrisonersOfWarTakenByFaction(Faction1, Faction2);
-            _prisonersCapturedByFaction2 = DiplomacyHelper.GetPrisonersOfWarTakenByFaction(Faction2, Faction1);
-            _townsCapturedByFaction1 = DiplomacyHelper.GetSuccessfullSiegesInWarForFaction(Faction1, war, (Settlement x) => x.IsTown);
-            _townsCapturedByFaction2 = DiplomacyHelper.GetSuccessfullSiegesInWarForFaction(Faction2, war, (Settlement x) => x.IsTown);
-            _castlesCapturedByFaction1 = DiplomacyHelper.GetSuccessfullSiegesInWarForFaction(Faction1, war, (Settlement x) => x.IsCastle);
-            _castlesCapturedByFaction2 = DiplomacyHelper.GetSuccessfullSiegesInWarForFaction(Faction2, war, (Settlement x) => x.IsCastle);
-            _raidsMadeByFaction1 = DiplomacyHelper.GetRaidsInWar(Faction1, war);
-            _raidsMadeByFaction2 = DiplomacyHelper.GetRaidsInWar(Faction2, war);
+            StanceLink stanceWith = Faction1.GetStanceWith(Faction2);
+            _warProgressOfFaction1 = Campaign.Current.Models.DiplomacyModel.GetWarProgressScore(Faction1, Faction2, true);
+            _warProgressOfFaction2 = Campaign.Current.Models.DiplomacyModel.GetWarProgressScore(Faction2, Faction1, true);
+            _numberOfTownsCapturedByFaction1 = stanceWith.GetSuccessfulTownSieges(Faction1);
+            _numberOfTownsCapturedByFaction2 = stanceWith.GetSuccessfulTownSieges(Faction2);
+            _numberOfCastlesCapturedByFaction1 = stanceWith.GetSuccessfulSieges(Faction1) - _numberOfTownsCapturedByFaction1;
+            _numberOfCastlesCapturedByFaction2 = stanceWith.GetSuccessfulSieges(Faction2) - _numberOfTownsCapturedByFaction2;
+            _numberOfRaidsMadeByFaction1 = stanceWith.GetSuccessfulRaids(Faction1);
+            _numberOfRaidsMadeByFaction2 = stanceWith.GetSuccessfulRaids(Faction2);
             RefreshValues();
             WarLog = new MBBindingList<KingdomWarLogItemVM>();
             foreach (var (logEntry, effectorFaction, _) in DiplomacyHelper.GetLogsForWar(war))
@@ -85,12 +87,12 @@ namespace Warfare.ViewModels.World
             textObject.SetTextVariable("DAY", num.ToString());
             textObject.SetTextVariable("DAY_IS_PLURAL", (num > 1) ? 1 : 0);
             NumberOfDaysSinceWarBegan = textObject.ToString();
-            Stats.Add(new KingdomWarComparableStatVM((int)Faction1.TotalStrength, (int)Faction2.TotalStrength, GameTexts.FindText("str_total_strength"), _faction1Color, _faction2Color, 10000));
-            Stats.Add(new KingdomWarComparableStatVM(stanceWith.GetCasualties(Faction2), stanceWith.GetCasualties(Faction1), GameTexts.FindText("str_war_casualties_inflicted"), _faction1Color, _faction2Color, 5000));
-            Stats.Add(new KingdomWarComparableStatVM(_prisonersCapturedByFaction1.Count, _prisonersCapturedByFaction2.Count, GameTexts.FindText("str_party_category_prisoners_tooltip"), _faction1Color, _faction2Color, 10, new BasicTooltipViewModel(() => CampaignUIHelper.GetWarPrisonersTooltip(_prisonersCapturedByFaction1, Faction1.Name)), new BasicTooltipViewModel(() => CampaignUIHelper.GetWarPrisonersTooltip(_prisonersCapturedByFaction2, Faction2.Name))));
-            Stats.Add(new KingdomWarComparableStatVM(_faction1Towns.Count, _faction2Towns.Count, GameTexts.FindText("str_towns"), _faction1Color, _faction2Color, 25, new BasicTooltipViewModel(() => CampaignUIHelper.GetWarSuccessfulSiegesTooltip(_townsCapturedByFaction1, Faction1.Name, isTown: true)), new BasicTooltipViewModel(() => CampaignUIHelper.GetWarSuccessfulSiegesTooltip(_townsCapturedByFaction2, Faction2.Name, isTown: true))));
-            Stats.Add(new KingdomWarComparableStatVM(_faction1Castles.Count, _faction2Castles.Count, GameTexts.FindText("str_castles"), _faction1Color, _faction2Color, 25, new BasicTooltipViewModel(() => CampaignUIHelper.GetWarSuccessfulSiegesTooltip(_castlesCapturedByFaction1, Faction1.Name, isTown: false)), new BasicTooltipViewModel(() => CampaignUIHelper.GetWarSuccessfulSiegesTooltip(_castlesCapturedByFaction2, Faction2.Name, isTown: false))));
-            Stats.Add(new KingdomWarComparableStatVM(stanceWith.GetSuccessfulRaids(Faction1), stanceWith.GetSuccessfulRaids(Faction2), GameTexts.FindText("str_war_successful_raids"), _faction1Color, _faction2Color, 10, new BasicTooltipViewModel(() => CampaignUIHelper.GetWarSuccessfulRaidsTooltip(_raidsMadeByFaction1, Faction1.Name)), new BasicTooltipViewModel(() => CampaignUIHelper.GetWarSuccessfulRaidsTooltip(_raidsMadeByFaction2, Faction2.Name))));
+
+            Stats.Add(new KingdomWarComparableStatVM((int)Faction1.CurrentTotalStrength, (int)Faction2.CurrentTotalStrength, GameTexts.FindText("str_total_strength"), _faction1Color, _faction2Color, 10000));
+            Stats.Add(new KingdomWarComparableStatVM(stanceWith.GetCasualties(Faction2), stanceWith.GetCasualties(Faction1), GameTexts.FindText("str_war_casualties_inflicted"), _faction1Color, _faction2Color, 10000));
+            Stats.Add(new KingdomWarComparableStatVM(_numberOfTownsCapturedByFaction1, _numberOfTownsCapturedByFaction2, GameTexts.FindText("str_war_captured_towns", null), _faction1Color, _faction2Color, 25));
+            Stats.Add(new KingdomWarComparableStatVM(_numberOfCastlesCapturedByFaction1, _numberOfCastlesCapturedByFaction2, GameTexts.FindText("str_war_captured_castles", null), _faction1Color, _faction2Color, 25));
+            Stats.Add(new KingdomWarComparableStatVM(_numberOfRaidsMadeByFaction1, _numberOfRaidsMadeByFaction2, GameTexts.FindText("str_war_successful_raids", null), _faction1Color, _faction2Color, 10));
         }
         protected override void ExecuteAction()
         {

@@ -1,16 +1,17 @@
-﻿using System;
-
+﻿using Helpers;
+using System;
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.ComponentInterfaces;
+using TaleWorlds.CampaignSystem.Extensions;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Siege;
-using TaleWorlds.CampaignSystem.ViewModelCollection.Input;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
-using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.ViewModelCollection.Input;
 using TaleWorlds.Core;
+using TaleWorlds.Core.ViewModelCollection.ImageIdentifiers;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
-using TaleWorlds.CampaignSystem.Extensions;
 
 namespace Warfare.ViewModels.ArmyManagement
 {
@@ -34,9 +35,9 @@ namespace Warfare.ViewModels.ArmyManagement
 
         private InputKeyItemVM _removeInputKey;
 
-        private ImageIdentifierVM _clanBanner;
+        private BannerImageIdentifierVM _clanBanner;
 
-        private ImageIdentifierVM _lordFace;
+        private CharacterImageIdentifierVM _lordFace;
 
         private string _nameText;
 
@@ -82,13 +83,13 @@ namespace Warfare.ViewModels.ArmyManagement
             _onFocus = onFocus;
             Party = mobileParty;
             NewLeader = newLeader;
-            _eligibilityReason = TextObject.Empty;
-            ClanBanner = new ImageIdentifierVM(BannerCode.CreateFrom(mobileParty.LeaderHero.ClanBanner), nineGrid: true);
+            _eligibilityReason = TextObject.GetEmpty();
+            ClanBanner = new BannerImageIdentifierVM(mobileParty.LeaderHero.ClanBanner, nineGrid: true);
             CharacterCode characterCode = CampaignUIHelper.GetCharacterCode(mobileParty.LeaderHero.CharacterObject);
-            LordFace = new ImageIdentifierVM(characterCode);
+            LordFace = new CharacterImageIdentifierVM(characterCode);
             Relation = armyManagementCalculationModel.GetPartyRelation(mobileParty.LeaderHero);
             Strength = Party.MemberRoster.TotalManCount;
-            _distance = Campaign.Current.Models.MapDistanceModel.GetDistance(Party, newLeader == null ? MobileParty.MainParty : newLeader.PartyBelongedTo);
+            _distance = DistanceHelper.FindClosestDistanceFromMobilePartyToMobileParty(Party, newLeader == null ? MobileParty.MainParty : newLeader.PartyBelongedTo, Party.NavigationCapability);
             DistInTime = MathF.Ceiling(_distance / Party.Speed);
             Clan = mobileParty.LeaderHero.Clan;
             IsMainHero = mobileParty.IsMainParty;
@@ -177,7 +178,7 @@ namespace Warfare.ViewModels.ArmyManagement
             float num = armyManagementCalculationModel?.GetPartySizeScore(Party) ?? 0f;
             IDisbandPartyCampaignBehavior behavior = Campaign.Current.CampaignBehaviorManager.GetBehavior<IDisbandPartyCampaignBehavior>();
             bool isEligible = false;
-            _eligibilityReason = TextObject.Empty;
+            _eligibilityReason = TextObject.GetEmpty();
             if (!CanJoinBackWithoutCost)
             {
                 if (PlayerSiege.PlayerSiegeEvent != null)
@@ -218,7 +219,7 @@ namespace Warfare.ViewModels.ArmyManagement
                     {
                         _eligibilityReason = new TextObject("{=tFGM0yav}This party is disbanding.");
                     }
-                    else if (armyManagementCalculationModel != null && !armyManagementCalculationModel.CheckPartyEligibility(Party))
+                    else if (armyManagementCalculationModel != null && !armyManagementCalculationModel.CheckPartyEligibility(Party, out _eligibilityReason))
                     {
                         _eligibilityReason = new TextObject("{=nuK4Afnr}Party is not eligible to join the army.");
                     }
@@ -489,7 +490,7 @@ namespace Warfare.ViewModels.ArmyManagement
         }
 
         [DataSourceProperty]
-        public ImageIdentifierVM ClanBanner
+        public BannerImageIdentifierVM ClanBanner
         {
             get
             {
@@ -506,7 +507,7 @@ namespace Warfare.ViewModels.ArmyManagement
         }
 
         [DataSourceProperty]
-        public ImageIdentifierVM LordFace
+        public CharacterImageIdentifierVM LordFace
         {
             get
             {

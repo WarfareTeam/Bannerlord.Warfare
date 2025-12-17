@@ -38,12 +38,12 @@ namespace Warfare.Content.Contracts
                 contract.Expiration += CampaignTime.Days(days);
                 return contract;
             }
-            ChangeKingdomAction.ApplyByJoinFactionAsMercenary(mercenary, employer, 0, true);
+            ChangeKingdomAction.ApplyByJoinFactionAsMercenary(mercenary, employer, default, 0);
             foreach (WarPartyComponent p in mercenary.WarPartyComponents)
             {
                 if (p.MobileParty != null && p.MobileParty.CurrentSettlement == null)
                 {
-                    p.MobileParty.Ai.SetMoveModeHold();
+                    p.MobileParty.SetMoveModeHold();
                 }
             }
             contract = new Contract(employer, mercenary, expiration);
@@ -65,7 +65,7 @@ namespace Warfare.Content.Contracts
             {
                 if (p.MobileParty != null && p.MobileParty.CurrentSettlement == null)
                 {
-                    p.MobileParty.Ai.SetMoveModeHold();
+                    p.MobileParty.SetMoveModeHold();
                 }
             }
             _contracts.Remove(contract);

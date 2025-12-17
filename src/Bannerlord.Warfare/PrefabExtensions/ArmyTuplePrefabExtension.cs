@@ -5,7 +5,7 @@ using Bannerlord.UIExtenderEx.Prefabs2;
 
 namespace Warfare.PrefabExtensions
 {
-    [PrefabExtension("ArmyTuple", "descendant::ListPanel[@DoNotAcceptEvents='true']")]
+    /*[PrefabExtension("ArmyTuple", "descendant::ListPanel[@DoNotAcceptEvents='true']")]
     internal class ArmyTuplePrefabExtension : PrefabExtensionInsertPatch
     {
         public override InsertType Type => InsertType.Replace;
@@ -21,8 +21,8 @@ namespace Warfare.PrefabExtensions
                     <!--Leader Visual-->
                     <ButtonWidget DataSource='{Leader}' WidthSizePolicy='Fixed' HeightSizePolicy='Fixed' SuggestedWidth='112' SuggestedHeight='81' VerticalAlignment='Center' Command.Click='ExecuteLink' IsEnabled='false'>
                       <Children>
-                        <MaskedTextureWidget DataSource='{ClanBanner_9}' WidthSizePolicy='Fixed' HeightSizePolicy='Fixed' SuggestedWidth='!Banner.Width.Scaled' SuggestedHeight='!Banner.Height.Scaled' HorizontalAlignment='Right' VerticalAlignment='Top' PositionYOffset='-4' Brush='Flat.Tuple.Banner.Small.Hero' AdditionalArgs='@AdditionalArgs' ImageId='@Id' ImageTypeCode='@ImageTypeCode' IsDisabled='true'  />
-                        <ImageIdentifierWidget DataSource='{ImageIdentifier}' WidthSizePolicy='Fixed' HeightSizePolicy='Fixed' SuggestedWidth='100' SuggestedHeight='74' HorizontalAlignment='Center' VerticalAlignment='Center' AdditionalArgs='@AdditionalArgs' ImageId='@Id' ImageTypeCode='@ImageTypeCode' IsEnabled='false'/>
+                        <MaskedTextureWidget DataSource='{ClanBanner_9}' WidthSizePolicy='Fixed' HeightSizePolicy='Fixed' SuggestedWidth='!Banner.Width.Scaled' SuggestedHeight='!Banner.Height.Scaled' HorizontalAlignment='Right' VerticalAlignment='Top' PositionYOffset='-4' Brush='Flat.Tuple.Banner.Small.Hero' AdditionalArgs='@AdditionalArgs' ImageId='@Id' TextureProviderName='@TextureProviderName' IsDisabled='true'  />
+                        <ImageIdentifierWidget DataSource='{ImageIdentifier}' WidthSizePolicy='Fixed' HeightSizePolicy='Fixed' SuggestedWidth='100' SuggestedHeight='74' HorizontalAlignment='Center' VerticalAlignment='Center' AdditionalArgs='@AdditionalArgs' ImageId='@Id' TextureProviderName='@TextureProviderName' IsEnabled='false'/>
                         <HintWidget Command.HoverBegin='ExecuteBeginHint' Command.HoverEnd='ExecuteEndHint' WidthSizePolicy = 'StretchToParent' HeightSizePolicy = 'StretchToParent' IsEnabled='false'/>
                       </Children>
                     </ButtonWidget>
@@ -38,6 +38,21 @@ namespace Warfare.PrefabExtensions
 
         [PrefabExtensionXmlDocument]
         public XmlDocument GetPrefabExtension() => _document;
+    }*/
+    [PrefabExtension("ArmyTuple", "descendant::ButtonWidget[@IsSelected='@IsSelected']")]
+    internal class ArmyTuplePrefabExtension : PrefabExtensionInsertPatch
+    {
+        public override InsertType Type => InsertType.Replace;
 
+        private readonly XmlDocument _document;
+
+        public ArmyTuplePrefabExtension()
+        {
+            _document = new XmlDocument();
+            _document.LoadXml(@"<ArmyTupleCustom />");
+        }
+
+        [PrefabExtensionXmlDocument]
+        public XmlDocument GetPrefabExtension() => _document;
     }
 }

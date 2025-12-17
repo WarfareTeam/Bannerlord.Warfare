@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Helpers;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
+using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Party.PartyComponents;
 using TaleWorlds.Core;
 
@@ -31,7 +34,7 @@ namespace Warfare.Behaviors
                 {
                     continue;
                 }
-                IEnumerable<StanceLink> wars = kingdom.Stances.Where(y => y.IsAtWar && y.Faction1 is Kingdom && y.Faction2 is Kingdom);
+                IEnumerable<StanceLink> wars = FactionHelper.GetStances(kingdom).Where(y => y.IsAtWar && y.Faction1 is Kingdom && y.Faction2 is Kingdom);
                 int warCount = wars.Count();
                 if (warCount < Settings.Current.MinimumWarsToHireMercenaries)
                 {
@@ -50,7 +53,7 @@ namespace Warfare.Behaviors
                         continue;
                     }
                     float hireableMercenariesScore = hireableCount / 1200f;
-                    float oppositionStrengthScore = wars.Select(x => x.Faction1 == kingdom ? x.Faction2.TotalStrength - x.Faction1.TotalStrength : x.Faction1.TotalStrength - x.Faction2.TotalStrength).Sum() * 0.00004f;
+                    float oppositionStrengthScore = wars.Select(x => x.Faction1 == kingdom ? x.Faction2.CurrentTotalStrength - x.Faction1.CurrentTotalStrength : x.Faction1.CurrentTotalStrength - x.Faction2.CurrentTotalStrength).Sum() * 0.00004f;
                     float kingdomWarScore = warCount * 0.0025f + wars.Where(y => y.Faction2 == kingdom).Count() * 0.0225f;
                     float clanWealthScore = clan.Leader.Gold / 200_000_000f > 0.00001f ? clan.Leader.Gold / 200_000_000f : 0.00001f;
                     float clanHireMercenaryScore = hireableMercenariesScore + oppositionStrengthScore + kingdomWarScore + clanWealthScore;
@@ -65,7 +68,7 @@ namespace Warfare.Behaviors
                     if (RandomFloat < clanHireMercenaryScore)
                     {
                         SignContract(mercenary, kingdom);
-                        Hero armyLeader = (from x in clan.Heroes where x.PartyBelongedTo != null && x.PartyBelongedTo.Army != null orderby x.PartyBelongedTo.Army.TotalStrength descending select x).FirstOrDefault();
+                        Hero armyLeader = (from x in clan.Heroes where x.PartyBelongedTo != null && x.PartyBelongedTo.Army != null orderby x.PartyBelongedTo.Army.EstimatedStrength descending select x).FirstOrDefault();
                         if (armyLeader != null)
                         {
                             foreach (WarPartyComponent party in mercenary.WarPartyComponents)
@@ -75,7 +78,7 @@ namespace Warfare.Behaviors
                                     continue;
                                 }
                                 party.MobileParty.Army = armyLeader.PartyBelongedTo.Army;
-                                SetPartyAiAction.GetActionForEscortingParty(party.MobileParty, armyLeader.PartyBelongedTo.Army.LeaderParty);
+                                SetPartyAiAction.GetActionForEscortingParty(party.MobileParty, armyLeader.PartyBelongedTo.Army.LeaderParty, MobileParty.NavigationType.Default, false, false);
                                 ChangeClanInfluenceAction.Apply(clan, Campaign.Current.Models.ArmyManagementCalculationModel.CalculatePartyInfluenceCost(armyLeader.PartyBelongedTo, party.MobileParty));
                             }
                         }

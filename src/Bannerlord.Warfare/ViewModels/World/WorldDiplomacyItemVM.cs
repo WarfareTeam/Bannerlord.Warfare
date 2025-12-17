@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Helpers;
+using System.Collections.Generic;
 
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.CampaignSystem.ViewModelCollection.KingdomManagement;
 using TaleWorlds.CampaignSystem.ViewModelCollection.KingdomManagement.Diplomacy;
 using TaleWorlds.Core;
+using TaleWorlds.Core.ViewModelCollection.ImageIdentifiers;
 using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
@@ -24,8 +27,8 @@ namespace Warfare.ViewModels.World
         protected List<Settlement> _faction1Castles;
         protected List<Settlement> _faction2Castles;
         private MBBindingList<KingdomWarComparableStatVM> _stats;
-        private ImageIdentifierVM _faction1Visual;
-        private ImageIdentifierVM _faction2Visual;
+        private BannerImageIdentifierVM _faction1Visual;
+        private BannerImageIdentifierVM _faction2Visual;
         private HeroVM _faction1Leader;
         private HeroVM _faction2Leader;
         private string _faction1Name;
@@ -35,9 +38,13 @@ namespace Warfare.ViewModels.World
         private HintViewModel _faction1TributeHint;
         private HintViewModel _faction2TributeHint;
         private bool _isFaction2OtherWarsVisible;
+        private bool _isFaction2OtherTradeAgreementsVisible;
+        private bool _isFaction2OtherAlliancesVisible;
         private MBBindingList<KingdomDiplomacyFactionItemVM> _faction1OwnedClans;
         private MBBindingList<KingdomDiplomacyFactionItemVM> _faction2OwnedClans;
         private MBBindingList<KingdomDiplomacyFactionItemVM> _faction2OtherWars;
+        private MBBindingList<KingdomDiplomacyFactionItemVM> _faction2OtherTradeAgreements;
+        private MBBindingList<KingdomDiplomacyFactionItemVM> _faction2OtherAlliances;
 
         protected WorldDiplomacyItemVM(IFaction faction1, IFaction faction2)
         {
@@ -53,19 +60,22 @@ namespace Warfare.ViewModels.World
         protected virtual void UpdateDiplomacyProperties()
         {
             Stats.Clear();
-            Faction1Visual = new ImageIdentifierVM(BannerCode.CreateFrom(Faction1.Banner), nineGrid: true);
-            Faction2Visual = new ImageIdentifierVM(BannerCode.CreateFrom(Faction2.Banner), nineGrid: true);
-            int dailyTributePaid = Faction1.GetStanceWith(Faction2).GetDailyTributePaid(_playerKingdom);
-            TextObject textObject = new TextObject("{=SDhQWonF}Paying {DENAR}{GOLD_ICON} as tribute per day.");
-            textObject.SetTextVariable("DENAR", MathF.Abs(dailyTributePaid));
-            Faction1TributeText = ((dailyTributePaid > 0) ? textObject.ToString() : string.Empty);
-            Faction2TributeText = ((dailyTributePaid < 0) ? textObject.ToString() : string.Empty);
+            Faction1Visual = new BannerImageIdentifierVM(Faction1.Banner, true);
+            Faction2Visual = new BannerImageIdentifierVM(Faction2.Banner, true);
+            StanceLink stanceWith = _playerKingdom.GetStanceWith(Faction2);
+            int dailyTributeToPay = stanceWith.GetDailyTributeToPay(_playerKingdom);
+            int remainingTributePaymentCount = stanceWith.GetRemainingTributePaymentCount();
+			TextObject textObject = new TextObject("{=SDhQWonF}Paying {DENAR}{GOLD_ICON} as tribute per day, {TRIBUTE_PAYMENTS_REMAINING} days remaining.", null);
+            textObject.SetTextVariable("DENAR", MathF.Abs(dailyTributeToPay));
+            textObject.SetTextVariable("TRIBUTE_PAYMENTS_REMAINING", remainingTributePaymentCount);
+            Faction1TributeText = ((dailyTributeToPay > 0) ? textObject.ToString() : string.Empty);
+            Faction2TributeText = ((dailyTributeToPay < 0) ? textObject.ToString() : string.Empty);
             Faction1Name = Faction1.Name.ToString();
             Faction2Name = Faction2.Name.ToString();
-            TextObject textObject2 = new TextObject("{=OyyJSyIX}{FACTION_1} is paying {DENAR}{GOLD_ICON} as tribute to {FACTION_2}");
+            TextObject textObject2 = new TextObject("{=OyyJSyIX}{FACTION_1} is paying {DENAR}{GOLD_ICON} as tribute to {FACTION_2}, {TRIBUTE_PAYMENTS_REMAINING} days remaining.", null);
             TextObject textObject3 = textObject2.CopyTextObject();
-            Faction1TributeHint = ((dailyTributePaid > 0) ? new HintViewModel(textObject2.SetTextVariable("DENAR", MathF.Abs(dailyTributePaid)).SetTextVariable("FACTION_1", Faction1Name).SetTextVariable("FACTION_2", Faction2Name)) : new HintViewModel());
-            Faction2TributeHint = ((dailyTributePaid < 0) ? new HintViewModel(textObject3.SetTextVariable("DENAR", MathF.Abs(dailyTributePaid)).SetTextVariable("FACTION_1", Faction2Name).SetTextVariable("FACTION_2", Faction1Name)) : new HintViewModel());
+			Faction1TributeHint = ((dailyTributeToPay > 0) ? new HintViewModel(textObject2.SetTextVariable("DENAR", MathF.Abs(dailyTributeToPay)).SetTextVariable("TRIBUTE_PAYMENTS_REMAINING", remainingTributePaymentCount).SetTextVariable("FACTION_1", Faction1Name).SetTextVariable("FACTION_2", Faction2Name), null) : new HintViewModel());
+			Faction2TributeHint = ((dailyTributeToPay < 0) ? new HintViewModel(textObject3.SetTextVariable("DENAR", MathF.Abs(dailyTributeToPay)).SetTextVariable("TRIBUTE_PAYMENTS_REMAINING", remainingTributePaymentCount).SetTextVariable("FACTION_1", Faction2Name).SetTextVariable("FACTION_2", Faction1Name), null) : new HintViewModel());
             Faction1Leader = new HeroVM(Faction1.Leader);
             Faction2Leader = new HeroVM(Faction2.Leader);
             Faction1OwnedClans = new MBBindingList<KingdomDiplomacyFactionItemVM>();
@@ -87,7 +97,7 @@ namespace Warfare.ViewModels.World
             }
 
             Faction2OtherWars = new MBBindingList<KingdomDiplomacyFactionItemVM>();
-            foreach (StanceLink stance in Faction2.Stances)
+            foreach (StanceLink stance in FactionHelper.GetStances(Faction2))
             {
                 if (stance.IsAtWar && stance.Faction1 != Faction1 && stance.Faction2 != Faction1 && (stance.Faction1.IsKingdomFaction || stance.Faction1.Leader == Hero.MainHero) && (stance.Faction2.IsKingdomFaction || stance.Faction2.Leader == Hero.MainHero) && !stance.Faction1.IsRebelClan && !stance.Faction2.IsRebelClan && !stance.Faction1.IsBanditFaction && !stance.Faction2.IsBanditFaction)
                 {
@@ -96,6 +106,24 @@ namespace Warfare.ViewModels.World
             }
 
             IsFaction2OtherWarsVisible = Faction2OtherWars.Count > 0;
+            Faction2OtherTradeAgreements = new MBBindingList<KingdomDiplomacyFactionItemVM>();
+            foreach (IFaction faction3 in Campaign.Current.Factions)
+            {
+                if (faction3 != Faction1 && faction3 != Faction2 && faction3.IsKingdomFaction && Campaign.Current.GetCampaignBehavior<ITradeAgreementsCampaignBehavior>().HasTradeAgreement(faction3 as Kingdom, Faction2 as Kingdom))
+                {
+                    Faction2OtherTradeAgreements.Add(new KingdomDiplomacyFactionItemVM(faction3));
+                }
+            }
+            IsFaction2OtherTradeAgreementsVisible = (Faction2OtherTradeAgreements.Count > 0);
+            Faction2OtherAlliances = new MBBindingList<KingdomDiplomacyFactionItemVM>();
+            foreach (IFaction faction4 in Campaign.Current.Factions)
+            {
+                if (faction4 != Faction1 && faction4 != Faction2 && faction4.IsKingdomFaction && Campaign.Current.GetCampaignBehavior<IAllianceCampaignBehavior>().IsAllyWithKingdom(faction4 as Kingdom, Faction2 as Kingdom))
+                {
+                    Faction2OtherAlliances.Add(new KingdomDiplomacyFactionItemVM(faction4));
+                }
+            }
+            IsFaction2OtherAlliancesVisible = (Faction2OtherAlliances.Count > 0);
         }
 
         private void PopulateSettlements()
@@ -183,6 +211,40 @@ namespace Warfare.ViewModels.World
         }
 
         [DataSourceProperty]
+        public MBBindingList<KingdomDiplomacyFactionItemVM> Faction2OtherTradeAgreements
+        {
+            get
+            {
+                return _faction2OtherTradeAgreements;
+            }
+            set
+            {
+                if (value != _faction2OtherTradeAgreements)
+                {
+                    _faction2OtherTradeAgreements = value;
+                    OnPropertyChangedWithValue(value, "Faction2OtherTradeAgreements");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public MBBindingList<KingdomDiplomacyFactionItemVM> Faction2OtherAlliances
+        {
+            get
+            {
+                return _faction2OtherAlliances;
+            }
+            set
+            {
+                if (value != _faction2OtherAlliances)
+                {
+                    _faction2OtherAlliances = value;
+                    OnPropertyChangedWithValue(value, "Faction2OtherAlliances");
+                }
+            }
+        }
+
+        [DataSourceProperty]
         public MBBindingList<KingdomWarComparableStatVM> Stats
         {
             get
@@ -200,7 +262,7 @@ namespace Warfare.ViewModels.World
         }
 
         [DataSourceProperty]
-        public ImageIdentifierVM Faction1Visual
+        public BannerImageIdentifierVM Faction1Visual
         {
             get
             {
@@ -217,7 +279,7 @@ namespace Warfare.ViewModels.World
         }
 
         [DataSourceProperty]
-        public ImageIdentifierVM Faction2Visual
+        public BannerImageIdentifierVM Faction2Visual
         {
             get
             {
@@ -348,6 +410,40 @@ namespace Warfare.ViewModels.World
                 {
                     _isFaction2OtherWarsVisible = value;
                     OnPropertyChangedWithValue(value, "IsFaction2OtherWarsVisible");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool IsFaction2OtherTradeAgreementsVisible
+        {
+            get
+            {
+                return _isFaction2OtherTradeAgreementsVisible;
+            }
+            set
+            {
+                if (value != _isFaction2OtherTradeAgreementsVisible)
+                {
+                    _isFaction2OtherTradeAgreementsVisible = value;
+                    OnPropertyChangedWithValue(value, "IsFaction2OtherTradeAgreementsVisible");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool IsFaction2OtherAlliancesVisible
+        {
+            get
+            {
+                return _isFaction2OtherAlliancesVisible;
+            }
+            set
+            {
+                if (value != _isFaction2OtherAlliancesVisible)
+                {
+                    _isFaction2OtherAlliancesVisible = value;
+                    OnPropertyChangedWithValue(value, "IsFaction2OtherAlliancesVisible");
                 }
             }
         }

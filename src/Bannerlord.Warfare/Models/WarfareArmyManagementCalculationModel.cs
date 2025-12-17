@@ -3,6 +3,7 @@
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ComponentInterfaces;
 using TaleWorlds.CampaignSystem.Party;
+using TaleWorlds.Localization;
 
 namespace Warfare.Models
 {
@@ -34,6 +35,16 @@ namespace Warfare.Models
 
         public override int CohesionThresholdForDispersion => _model.CohesionThresholdForDispersion;
 
+        public override float AIMobilePartySizeRatioToCallToArmy => _model.AIMobilePartySizeRatioToCallToArmy;
+
+        public override float PlayerMobilePartySizeRatioToCallToArmy => _model.PlayerMobilePartySizeRatioToCallToArmy;
+
+        public override float MinimumNeededFoodInDaysToCallToArmy => _model.MinimumNeededFoodInDaysToCallToArmy;
+
+        public override float MaximumDistanceToCallToArmy => _model.MaximumDistanceToCallToArmy;
+
+        public override float MaximumWaitTime => _model.MaximumWaitTime;
+
         public override ExplainedNumber CalculateDailyCohesionChange(Army army, bool includeDescriptions = false)
         {
             if (!Settings.Current.EnableCohesionChange)
@@ -47,11 +58,9 @@ namespace Warfare.Models
 
         public override int CalculateTotalInfluenceCost(Army army, float percentage) => _model.CalculateTotalInfluenceCost(army, percentage);
 
-        public override bool CheckPartyEligibility(MobileParty party) => _model.CheckPartyEligibility(party);
+        public override bool CheckPartyEligibility(MobileParty party, out TextObject explanation) => _model.CheckPartyEligibility(party, out explanation);
 
         public override float DailyBeingAtArmyInfluenceAward(MobileParty armyMemberParty) => _model.DailyBeingAtArmyInfluenceAward(armyMemberParty);
-
-        public override int GetCohesionBoostGoldCost(Army army, float percentageToBoost = 100) => _model.GetCohesionBoostGoldCost(army, percentageToBoost);
 
         public override int GetCohesionBoostInfluenceCost(Army army, int percentageToBoost = 100) => _model.GetCohesionBoostInfluenceCost(army, percentageToBoost);
 
@@ -61,6 +70,6 @@ namespace Warfare.Models
 
         public override float GetPartySizeScore(MobileParty party) => _model.GetPartySizeScore(party);
 
-        public override int GetPartyStrength(PartyBase party) => _model.GetPartyStrength(party);
+        public override bool CanPlayerCreateArmy(out TextObject disabledReason) => _model.CanPlayerCreateArmy(out disabledReason);
     }
 }
