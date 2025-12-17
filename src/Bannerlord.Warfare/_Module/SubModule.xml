@@ -1,7 +1,7 @@
 <Module>
 	<Id value="Bannerlord.Warfare"/>
 	<Name value="Warfare"/>
-	<Version value="v1.0.5.1" />
+	<Version value="v1.0.6.1" />
 	<DefaultModule value="false"/>
 	<ModuleCategory value="Singleplayer"/>
 	<Official value="false"/>
