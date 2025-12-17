@@ -113,7 +113,7 @@
             <Widget  WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
               <Children>
 
-                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="540" SuggestedHeight="923" HorizontalAlignment="Right" VerticalAlignment="Bottom" PositionYOffset="80" Sprite="background_illustration_armies" AlphaFactor="0.7"/>
+                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="540" SuggestedHeight="923" HorizontalAlignment="Right" VerticalAlignment="Bottom" PositionYOffset="80" Sprite="SPGeneral\background_illustration_armies" AlphaFactor="0.7"/>
 				<!-- Army parties-->
                 <ListPanel WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="20" MarginLeft="15" IsVisible="@ShowArmies">
                   <Children>
@@ -163,46 +163,73 @@
 							<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginTop="20">
 							  <Children>
 								<!--Army Strength Text-->
-								<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" MarginRight="250" Brush="Kingdom.CurrentArmyValues.Text" IsDisabled="true" Text="@StrengthLabel" />
+								<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" MarginRight="250" Brush="Kingdom.CurrentArmyValues.Text" IsDisabled="true" Text="@StrengthLabel" />
 
 								<!--Army Cohesion Text-->
-								<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" MarginLeft="250" Brush="Kingdom.CurrentArmyValues.Text" IsDisabled="true" Text="@CohesionLabel" />
+								<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" MarginLeft="250" Brush="Kingdom.CurrentArmyValues.Text" IsDisabled="true" Text="@CohesionLabel" />
+								
+								<ValueBasedVisibilityWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" WatchType="BiggerThan" IndexToWatch="@ShipCount" IndexToBeVisible="0">
+									<Children>									
+										<!--Ship Count Text-->
+										<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="30" MarginRight="250" Brush="Kingdom.CurrentArmyValues.Text" IsDisabled="true" Text="@ShipCountLabel" AutoHideIfEmpty="true" />
+									</Children>
+								</ValueBasedVisibilityWidget>
+
 							  </Children>
 							</Widget>
 						  </Children>
 						</ListPanel>
 
 						<!--Show On Map-->
-						<NavigationScopeTargeter ScopeID="KingdomArmyShowOnMapButtonScope" ScopeParent="..\ShowOnMapButton" ExtendDiscoveryAreaLeft="200" ExtendDiscoveryAreaRight="200" />
-						<ButtonWidget Id="ShowOnMapButton" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" MarginBottom="0" HeightSizePolicy="CoverChildren"  HorizontalAlignment="Center"  Command.Click="ExecuteShowOnMap" UpdateChildrenStates="true" IsEnabled="@CanShowLocationOfCurrentArmy" GamepadNavigationIndex="0">
+						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginTop="10" UpdateChildrenStates="true" IsVisible="@CanShowLocationOfCurrentArmy">
 						  <Children>
-							<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren"  HorizontalAlignment="Center" VerticalAlignment="Bottom" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginTop="10" UpdateChildrenStates="true" IsVisible="@CanShowLocationOfCurrentArmy">
+							<!--Show On Map Button-->
+							<RichTextWidget DataSource="{CurrentSelectedArmy}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Brush="Kingdom.Army.Location.Text" Text="@Behavior" UpdateChildrenStates="true" HorizontalAlignment="Center" Command.LinkClick="ExecuteLink" />
+							<NavigationScopeTargeter ScopeID="KingdomArmyShowOnMapButtonScope" ScopeParent="..\ShowOnMapButton" ExtendDiscoveryAreaLeft="200" ExtendDiscoveryAreaRight="200" />
+							<ButtonWidget Id="ShowOnMapButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="33" SuggestedHeight="19" HorizontalAlignment="Center" VerticalAlignment="Center" MarginLeft="10" Brush="ShowOnMap.Button" Command.Click="ExecuteShowOnMap" IsEnabled="@CanShowLocationOfCurrentArmy" GamepadNavigationIndex="0" />
+						  </Children>
+						</ListPanel>
+
+						<ScrollablePanel WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="760" SuggestedHeight="520" HorizontalAlignment="Center" AutoHideScrollBars="true" ClipRect="InnerContainer\ClipRect" InnerPanel="InnerContainer\ClipRect\PartiesGrid" VerticalScrollbar="InnerContainer\VerticalScrollbar" >
+						  <Children>
+							<ListPanel Id="InnerContainer" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalLeftToRight">
+
+																																																			   
 							  <Children>
-								<!--Show On Map Button-->
-								<RichTextWidget DataSource="{CurrentSelectedArmy}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Brush="Kingdom.Army.Location.Text" Text="@Location"  UpdateChildrenStates="true" HorizontalAlignment="Center" />
-								<BrushWidget Id="ShowOnMapButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="33" SuggestedHeight="19" HorizontalAlignment="Center" VerticalAlignment="Center" MarginLeft="10" Brush="ShowOnMap.Button" />
+								
+								<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="15" MarginTop="15" MarginRight="15" MarginBottom="15" ClipContents="true">
+								  <Children>
+
+									<NavigationScopeTargeter ScopeID="ArmyMembersGridScope" ScopeParent="..\PartiesGrid" ScopeMovements="Horizontal" AlternateScopeMovements="Vertical" AlternateMovementStepSize="6" HasCircularMovement="false" />
+									<NavigatableGridWidget Id="PartiesGrid" DataSource="{CurrentSelectedArmy\Parties}" WidthSizePolicy = "CoverChildren" HeightSizePolicy = "CoverChildren" DefaultCellWidth="120" DefaultCellHeight="120" HorizontalAlignment="Center" MarginLeft="0" ColumnCount="6" LayoutImp.VerticalLayoutMethod="TopToBottom" >
+									  <ItemTemplate>
+
+										<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="120" SuggestedHeight="120" Brush.ValueFactor="-50" ClipContents="false" Command.Click="ExecuteLink">
+										  <Children>
+											<ImageIdentifierWidget DataSource="{Visual}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="98" SuggestedHeight="74" HorizontalAlignment="Center" VerticalAlignment="Center" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName" IsEnabled="false"/>
+											<HintWidget Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" WidthSizePolicy = "StretchToParent" HeightSizePolicy = "StretchToParent" IsEnabled="false"/>
+											<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="110" HeightSizePolicy="CoverChildren" MaxHeight="45" HorizontalAlignment="Center" PositionYOffset="100" Text="@Name" ClipContents="false" Brush="Kingdom.ParagraphSmall.Text" />
+										  </Children>
+										</ButtonWidget>
+
+									  </ItemTemplate>
+									</NavigatableGridWidget>
+
+								  </Children>
+								</Widget>
+
+								<ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="8" HorizontalAlignment="Right" VerticalAlignment="Top" MarginTop="6" MarginBottom="5" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0" >
+								  <Children>
+									<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" Color="#5a4033FF" AlphaFactor="0.2" />
+									<ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="10" SuggestedWidth="8" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+								  </Children>
+								</ScrollbarWidget>
+								
 							  </Children>
 							</ListPanel>
+
 						  </Children>
-						</ButtonWidget>
-
-						<!--Parties Divider-->
-						<KingdomDivider Id="PartiesDivider" MarginRight="50" MarginLeft="40" Parameter.Title="@PartiesText" Parameter.ItemList="..\ArmyMembersGridWidget" GamepadNavigationIndex="0" />
-
-						<NavigationScopeTargeter ScopeID="ArmyMembersGridScope" ScopeParent="..\ArmyMembersGridWidget" ScopeMovements="Horizontal" AlternateScopeMovements="Vertical" AlternateMovementStepSize="6" HasCircularMovement="false" />
-						<NavigatableGridWidget Id="ArmyMembersGridWidget" DataSource="{CurrentSelectedArmy\Parties}" WidthSizePolicy = "CoverChildren" HeightSizePolicy = "CoverChildren" SuggestedWidth="350" SuggestedHeight="350" DefaultCellWidth="120" DefaultCellHeight="120" HorizontalAlignment="Center" MarginLeft="0" ColumnCount="10" LayoutImp.VerticalLayoutMethod="TopToBottom" >
-						  <ItemTemplate>
-
-							<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="120" SuggestedHeight="120" Brush.ValueFactor="-50" ClipContents="false" Command.Click="ExecuteLink">
-							  <Children>
-								<ImageIdentifierWidget DataSource="{Visual}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="98" SuggestedHeight="74" HorizontalAlignment="Center" VerticalAlignment="Center" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" IsEnabled="false"/>
-								<HintWidget Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" WidthSizePolicy = "StretchToParent" HeightSizePolicy = "StretchToParent" IsEnabled="false"/>
-								<TextWidget WidthSizePolicy = "Fixed" SuggestedWidth="110" HeightSizePolicy = "CoverChildren" HorizontalAlignment="Center" PositionYOffset="100" Text="@Name" ClipContents="false" Brush="Kingdom.ParagraphSmall.Text" />
-							  </Children>
-							</ButtonWidget>
-
-						  </ItemTemplate>
-						</NavigatableGridWidget>
+						</ScrollablePanel>
 					  </Children>
 					</ListPanel>
                   </Children>
@@ -249,7 +276,7 @@
 
 							<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="120" SuggestedHeight="120" Brush.ValueFactor="-50" ClipContents="false" Command.Click="ExecuteLink">
 							  <Children>
-								<ImageIdentifierWidget DataSource="{Visual}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="98" SuggestedHeight="74" HorizontalAlignment="Center" VerticalAlignment="Center" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" IsEnabled="false"/>
+								<ImageIdentifierWidget DataSource="{Visual}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="98" SuggestedHeight="74" HorizontalAlignment="Center" VerticalAlignment="Center" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName" IsEnabled="false"/>
 								<HintWidget Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" WidthSizePolicy = "StretchToParent" HeightSizePolicy = "StretchToParent" IsEnabled="false"/>
 								<TextWidget WidthSizePolicy = "Fixed" SuggestedWidth="110" HeightSizePolicy = "CoverChildren" HorizontalAlignment="Center" PositionYOffset="100" Text="@Name" ClipContents="false" Brush="Kingdom.ParagraphSmall.Text" />
 							  </Children>
@@ -271,7 +298,7 @@
 						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" IsVisible="@ShowWarStrategy">
 						  <Children>
 							<TextWidget DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Kingdom.TitleMedium.Text" Brush.FontSize="24" ClipContents="false" Text="@StrategySelectionTitle" />
-							<DropdownWidget DataSource="{StrategySelection}" Id="DropdownParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginTop="2" ListPanel="SelectionList" Button="DropdownButton" CurrentSelectedIndex="@SelectedIndex" RichTextWidget="DropdownButton\SelectedTextWidget">
+							<DropdownWidget DataSource="{StrategySelection}" Id="DropdownParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginTop="2" ListPanel="SelectionList" Button="DropdownButton" CurrentSelectedIndex="@SelectedIndex" TextWidget="DropdownButton\SelectedTextWidget">
 							  <Children>
 								<ButtonWidget Id="DropdownButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="35" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Kingdom.Wars.BehaviorSelection">
 								  <Children>
@@ -350,7 +377,7 @@
 							  </Children>
 							</Widget>
 
-							<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" IsHidden="@IsMainArmy">
+							<ListPanel DoNotAcceptEvents="true" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" IsHidden="@IsMainArmy">
 							  <Children>
 								<TextWidget DataSource="{..}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Kingdom.GeneralButtons.Text" IntText="@DisbandCost" IsEnabled="@CanDisbandCurrentArmy" />
 								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="17" SuggestedHeight="27" HorizontalAlignment="Right" VerticalAlignment="Center" Sprite="SPKingdom\influence_icon_small" />
@@ -369,7 +396,7 @@
 							<!--Manage Button-->
 							<NavigationScopeTargeter ScopeID="KingdomArmyManageButtonScope" ScopeParent="..\KingdomArmyManageButton" ScopeMovements="Horizontal" ExtendDiscoveryAreaLeft="250" ExtendDiscoveryAreaRight="530" DiscoveryAreaOffsetY="-10" />
 							<Widget Id="KingdomArmyManageButton" DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="227" SuggestedHeight="40" HorizontalAlignment="Center">
-							  <Children>
+							  <Children> 
 
 								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="227" SuggestedHeight="40" HorizontalAlignment="Center" Brush="ButtonBrush2" Command.Click="ExecuteManageArmy" IsEnabled="@CanManageCurrentArmy" UpdateChildrenStates="true" GamepadNavigationIndex="0">
 								  <Children>
