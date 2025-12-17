@@ -1,19 +1,19 @@
-﻿using System.Reflection;
-
+﻿using Bannerlord.UIExtenderEx.Attributes;
+using Bannerlord.UIExtenderEx.ViewModels;
+using HarmonyLib;
+using System.Reflection;
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection.KingdomManagement;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
-
-using Bannerlord.UIExtenderEx.Attributes;
-using Bannerlord.UIExtenderEx.ViewModels;
-
 using Warfare.Helpers;
 using Warfare.ViewModels.Military;
 using Warfare.ViewModels.World;
 
 namespace Warfare.ViewModelMixins
 {
-    [ViewModelMixin(nameof(KingdomManagementVM))]
+
+    [ViewModelMixin("RefreshValues", true)]
     public class KingdomManagementVMMixin : BaseViewModelMixin<KingdomManagementVM>
     {
         private string _militaryText;
@@ -31,13 +31,13 @@ namespace Warfare.ViewModelMixins
         [DataSourceMethod]
         public void ExecuteShowMilitary()
         {
-            ViewModel!.GetType().GetMethod("SetSelectedCategory", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ViewModel, new object[] { 3 });
+            AccessTools.Method(typeof(KingdomManagementVM), "SetSelectedCategory").Invoke(ViewModel, new object[] { 3 });
         }
 
         [DataSourceMethod]
         public void ExecuteShowWorld()
         {
-            ViewModel!.GetType().GetMethod("SetSelectedCategory", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ViewModel, new object[] { 5 });
+            AccessTools.Method(typeof(KingdomManagementVM), "SetSelectedCategory").Invoke(ViewModel, new object[] { 5 });
         }
 
         [DataSourceProperty]

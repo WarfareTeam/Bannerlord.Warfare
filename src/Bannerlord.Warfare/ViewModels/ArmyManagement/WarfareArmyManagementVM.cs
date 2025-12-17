@@ -119,6 +119,8 @@ namespace Warfare.ViewModels.ArmyManagement
 
         private string _strengthText;
 
+        private string _shipCountText;
+
         private string _lordsText;
 
         private string _distanceText;
@@ -279,6 +281,7 @@ namespace Warfare.ViewModels.ArmyManagement
             NameText = GameTexts.FindText("str_sort_by_name_label").ToString();
             OwnerText = GameTexts.FindText("str_party").ToString();
             DisbandArmyText = GameTexts.FindText("str_disband_army").ToString();
+            ShipCountText = new TextObject("{=7Q8ufo5X}Ships", null).ToString();
             DisbandCost = Army != null && (Hero.MainHero == Hero.MainHero.MapFaction.Leader || Army.LeaderParty == MobileParty.MainParty) ? 0 : Campaign.Current.Models.DiplomacyModel.GetInfluenceCostOfDisbandingArmy();
             CanDisbandArmy = GetCanDisbandArmyWithReason(out var disabledReason);
             DisbandArmyHint.HintText = disabledReason;
@@ -301,15 +304,15 @@ namespace Warfare.ViewModels.ArmyManagement
 
         public void OnFrameTick(GauntletLayer gauntlet)
         {
-            if (gauntlet.Input.IsHotKeyDownAndReleased("Exit"))
+            if (gauntlet.Input.IsHotKeyPressed("Exit"))
             {
                 ExecuteCancel();
             }
-            else if (gauntlet.Input.IsHotKeyDownAndReleased("Confirm"))
+            else if (gauntlet.Input.IsHotKeyPressed("Confirm"))
             {
                 ExecuteDone();
             }
-            else if (gauntlet.Input.IsHotKeyDownAndReleased("Reset"))
+            else if (gauntlet.Input.IsHotKeyPressed("Reset"))
             {
                 ExecuteReset();
             }
@@ -443,7 +446,7 @@ namespace Warfare.ViewModels.ArmyManagement
 
         private void OnRefresh()
         {
-            TotalStrength = (from x in PartiesInCart select Campaign.Current.Models.ArmyManagementCalculationModel.GetPartyStrength(x.Party.Party)).Sum();
+            TotalStrength = (from x in PartiesInCart select MathF.Round(x.Party.Party.EstimatedStrength)).Sum();
             GameTexts.SetVariable("LEFT", GameTexts.FindText("str_total_cost").ToString());
             TotalCostText = GameTexts.FindText("str_LEFT_colon").ToString();
             GameTexts.SetVariable("LEFT", CampaignUIHelper.GetAbbreviatedValueTextFromValue(TotalGoldCost));
@@ -520,7 +523,7 @@ namespace Warfare.ViewModels.ArmyManagement
                 return false;
             }
 
-            disabledReason = TextObject.Empty;
+            disabledReason = TextObject.GetEmpty();
             return true;
         }
 
@@ -585,8 +588,8 @@ namespace Warfare.ViewModels.ArmyManagement
                     {
                         if (item.Party != LeaderParty)
                         {
-                            item.Party.Army = Army;
-                            SetPartyAiAction.GetActionForEscortingParty(item.Party, LeaderParty);
+                            item.Party.Army = LeaderParty.Army;
+                            SetPartyAiAction.GetActionForEscortingParty(item.Party, LeaderParty, MobileParty.NavigationType.Default, false, false);
                         }
                     }
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, -TotalGoldCost);
@@ -633,7 +636,7 @@ namespace Warfare.ViewModels.ArmyManagement
                     {
                         GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, TotalGoldCost / 2);
                         ChangeClanInfluenceAction.Apply(LeaderParty.ActualClan, TotalInfluenceCost / 2);
-                    };
+                    }
                     NewLeader.Clan.Kingdom.CreateArmy(NewLeader, (from p in PartiesInCart select p.Party).ToList());
                     if (_onFinalize != null)
                     {
@@ -950,6 +953,23 @@ namespace Warfare.ViewModels.ArmyManagement
                 {
                     _lordsText = value;
                     OnPropertyChangedWithValue(value, "LordsText");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public string ShipCountText
+        {
+            get
+            {
+                return _shipCountText;
+            }
+            set
+            {
+                if (value != _shipCountText)
+                {
+                    _shipCountText = value;
+                    OnPropertyChangedWithValue(value, "ShipCountText");
                 }
             }
         }

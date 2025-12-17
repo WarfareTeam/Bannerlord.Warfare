@@ -7,24 +7,26 @@ using TaleWorlds.CampaignSystem;
 
 namespace Warfare.Patches
 {
-    [HarmonyPatch(typeof(MobileParty), "FillPartyStacks")]
-    public static class FillPartyStacksPatch
+    [HarmonyPatch(typeof(MobileParty), "InitializeMobilePartyWithPartyTemplate")]
+    public static class InitializeMobilePartyWithPartyTemplatePatch
     {
         public static bool Prefix(MobileParty __instance)
         {
             //We manually add troops to each mercenary party roster in code to ensure compatibiility with overhauls and other mods changing spclans.xml without using xslt
+            
             return __instance == null || !__instance.IsActive || !__instance.IsLordParty || !__instance.ActualClan.IsMinorFaction || __instance == MobileParty.MainParty;
         }
     }
 
-    [HarmonyPatch(typeof(MobileParty), "LimitedPartySize", MethodType.Getter)]
-    public static class LimitedPartySizePatch
+    [HarmonyPatch(typeof(PartyBase), "PartySizeLimit", MethodType.Getter)]
+    public static class PartySizeLimitPatch
     {
-        public static void Postfix(MobileParty __instance, ref int __result)
+        public static void Postfix(PartyBase __instance, ref int __result)
         {
-            if (__instance.ActualClan != null && __instance.IsLordParty && __instance.ActualClan.IsMinorFaction && __instance != MobileParty.MainParty)
+            MobileParty party = __instance.MobileParty;
+            if (party.ActualClan != null && party.IsLordParty && party.ActualClan.IsMinorFaction && party != MobileParty.MainParty)
             {
-                __result = __instance.ActualClan.GetRosterLimit();
+                __result = party.ActualClan.GetRosterLimit();
             }
         }
     }

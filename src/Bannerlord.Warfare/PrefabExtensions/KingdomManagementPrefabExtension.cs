@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace Warfare.PrefabExtensions
 {
-    [PrefabExtension("KingdomManagement", "descendant::Constant[@Name='Header.Tab.Center.Width.Scaled']")]
+    /*[PrefabExtension("KingdomManagement", "descendant::Constant[@Name='Header.Tab.Center.Width.Scaled']")]
     [UsedImplicitly]
     internal sealed class KingdomManagementScalingPatch : PrefabExtensionSetAttributePatch
     {
@@ -37,12 +37,10 @@ namespace Warfare.PrefabExtensions
         public override List<Attribute> Attributes => new()
         {
             new Attribute("MarginLeft", "5"),
-            new Attribute("MarginLeft", "5"),
             new Attribute("SuggestedWidth", "!Header.Tab.Center.Width.Scaled"),
             new Attribute("SuggestedHeight", "!Header.Tab.Center.Height.Scaled"),
             new Attribute("PositionYOffset", "2"),
             new Attribute("Position", "5"),
-            new Attribute("MarginLeft", "5"),
             new Attribute("Brush", "Header.Tab.Center"),
         };
     }
@@ -93,6 +91,22 @@ namespace Warfare.PrefabExtensions
             _document = new XmlDocument();
             _document.LoadXml(@"<WorldPanel Id='WorldPanel' DataSource='{World}' MarginTop='188' MarginBottom='75' />");
         }
+        [PrefabExtensionXmlDocument]
+        public XmlDocument GetPrefabExtension() => _document;
+    }*/
+    [PrefabExtension("KingdomManagement", "descendant::Widget[@HeightSizePolicy='StretchToParent']")]
+    internal class KingdomManagementPrefabExtension : PrefabExtensionInsertPatch
+    {
+        public override InsertType Type => InsertType.Replace;
+
+        private readonly XmlDocument _document;
+
+        public KingdomManagementPrefabExtension()
+        {
+            _document = new XmlDocument();
+            _document.LoadXml(@"<KingdomManagementCustom />");
+        }
+
         [PrefabExtensionXmlDocument]
         public XmlDocument GetPrefabExtension() => _document;
     }

@@ -6,6 +6,7 @@ using Bannerlord.UIExtenderEx.Prefabs2;
 
 namespace Warfare.PrefabExtensions
 {
+    /*
     [PrefabExtension("GatherArmyTuple", "descendant::ListPanel[@WidthSizePolicy='CoverChildren']")]
     internal sealed class GatherArmyTuplePrefabExtension : PrefabExtensionInsertPatch
     {
@@ -25,6 +26,27 @@ namespace Warfare.PrefabExtensions
                   </Children>
                 </ListPanel>");
         }
+        [PrefabExtensionXmlDocument]
+        public XmlDocument GetPrefabExtension() => _document;
+    }*/
+    [PrefabExtension("GatherArmyTuple", "descendant::GatherArmyTupleButtonWidget[@IsEligible='@IsEligible']")]
+    internal sealed class GatherArmyTuplePrefabExtension : PrefabExtensionInsertPatch
+    {
+        public override InsertType Type => InsertType.Replace;
+
+        private readonly XmlDocument _document;
+
+        public GatherArmyTuplePrefabExtension()
+        {
+            _document = new XmlDocument();
+            if (SubModule.NavalDLC)
+            {
+                _document.LoadXml(@"<NavalGatherArmyTupleCustom />");
+                return;
+            }
+            _document.LoadXml(@"<GatherArmyTupleCustom />");
+        }
+
         [PrefabExtensionXmlDocument]
         public XmlDocument GetPrefabExtension() => _document;
     }

@@ -7,6 +7,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.Party;
+using TaleWorlds.CampaignSystem.Party.PartyComponents;
 using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -69,7 +70,7 @@ namespace Warfare.Behaviors
                     }
                     if (!Settings.Current.MaintainVanillaNames)
                     {
-                        clan.GetType().GetProperty("EncyclopediaText", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(clan, new TextObject());
+                        clan.GetType().GetProperty("EncyclopediaText", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(clan, new TextObject(""));
                         ChangeClanName(clan);
                     }
                     if (Settings.Current.MaintainVanillaProperties)
@@ -94,20 +95,23 @@ namespace Warfare.Behaviors
                         Clan clan = Clan.CreateClan("WF_" + Clan.All.Count);
                         IEnumerable<Settlement> settlements = from x in Settlement.All where x.Culture == culture && x.IsFortification select x;
                         Settlement settlement = settlements.IsEmpty() || settlements.FirstOrDefault() == null ? backupSettlement : settlements.FirstOrDefault();
-                        Vec2 centerPosition = MobilePartyHelper.FindReachablePointAroundPosition(settlement.GatePosition, 250f, 25f);
-                        clan.InitializeClan(clan.Name, clan.Name, culture, Banner.CreateRandomClanBanner(MBRandom.RandomInt()), centerPosition);
+                        CampaignVec2 centerPosition = NavigationHelper.FindReachablePointAroundPosition(settlement.GatePosition, MobileParty.NavigationType.Default, 250f, 25f);
+                        clan.ChangeClanName(clan.Name, clan.Name);
+                        clan.Culture = culture;
+                        clan.Banner = Banner.CreateRandomClanBanner(MBRandom.RandomInt());
                         clan.GetType().GetProperty("IsMinorFaction", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(clan, true);
                         clan.GetType().GetField("_minorFactionCharacterTemplates", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(clan, template);
                         HeroSpawnCampaignBehavior behavior = Campaign.Current.GetCampaignBehavior<HeroSpawnCampaignBehavior>();
                         behavior.GetType().GetMethod("SpawnMinorFactionHeroes", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).Invoke(behavior, new object[] { clan, true });
                         behavior.GetType().GetMethod("CheckAndAssignClanLeader", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).Invoke(behavior, new object[] { clan });
                         ChangeClanName(clan);
-                        clan.UpdateHomeSettlement(null);
+                        clan.SetInitialHomeSettlement(settlement);
                         clan.AddRenown(GetStartingRenown(clan));
                         foreach (Hero hero in clan.Heroes)
                         {
                             GiveGoldAction.ApplyBetweenCharacters(null, hero, GetStartingGold());
-                            clan.CreateNewMobileParty(hero).Ai.SetMoveModeHold();
+                            MobileParty party = LordPartyComponent.CreateLordParty(hero.CharacterObject.StringId, hero, centerPosition, 3f, settlement, hero);
+                            party.SetMoveModeHold();
                         }
                         if (!Settings.Current.UseVanillaRecruitment)
                         {
@@ -180,7 +184,7 @@ namespace Warfare.Behaviors
             {
                 return;
             }
-            int limit = newGame ? clan.GetRosterLimit() - clan.GetRosterSize() : MathF.Min(clan.GetRosterLimit() - clan.GetRosterSize(), 10 + (int)Campaign.Current.CampaignStartTime.ElapsedSeasonsUntilNow);
+            int limit = newGame ? clan.GetRosterLimit() - clan.GetRosterSize() : MathF.Min(clan.GetRosterLimit() - clan.GetRosterSize(), 10 + (int)Campaign.Current.Models.CampaignTimeModel.CampaignStartTime.ElapsedSeasonsUntilNow);
             for (int i = 0; i < limit; i++)
             {
                 IEnumerable<Hero> heroes = clan.WarPartyComponents.Where(x => (newGame || (x.Leader != null && x.Leader.IsActive && x.Leader.IsPartyLeader && x.MobileParty != null)) && x.MobileParty.IsActive && x.MobileParty.MapEvent == null && x.MobileParty.SiegeEvent == null).OrderBy(x => x.Party.NumberOfAllMembers).Select(x => x.Leader);

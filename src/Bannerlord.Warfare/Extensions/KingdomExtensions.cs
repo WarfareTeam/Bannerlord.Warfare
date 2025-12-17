@@ -17,23 +17,25 @@ namespace Warfare.Extensions
     {
         internal static void CreateArmy(this Kingdom kingdom, Hero leader, List<MobileParty> parties, bool disorganize = true)
         {
-            Army army = new Army(kingdom, leader.PartyBelongedTo, Army.ArmyTypes.Patrolling)
-            {
-                AIBehavior = Army.AIBehaviorFlags.Gathering
-            };
-            army.GetType().GetField("_armyGatheringTime", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(army, Campaign.CurrentTime);
+            Army army = new Army(kingdom, leader.PartyBelongedTo, Army.ArmyTypes.Patrolling);
+            Settlement gatheringPoint = null;
             if (army.LeaderParty != MobileParty.MainParty)
             {
-                army.AiBehaviorObject = (IMapPoint)army.GetType().GetMethod("FindBestInitialGatheringSettlement", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(army, new object[] { leader.HomeSettlement });
-                Settlement settlement = (Settlement)army.AiBehaviorObject;
-                Vec2 centerPosition = (settlement.IsFortification ? settlement.GatePosition : settlement.Position2D);
-                army.LeaderParty.GetType().GetMethod("SendPartyToReachablePointAroundPosition", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(army.LeaderParty, new object[] { centerPosition, 6f, 3f });
+                army.GetType().GetMethod("FindBestGatheringSettlementAndMoveTheLeader", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(army, new object[] { leader.HomeSettlement });
             }
             else
             {
-                army.AiBehaviorObject = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsFortification || x.IsVillage);
+
+                Settlement settlement = SettlementHelper.FindNearestSettlementToMobileParty(leader.PartyBelongedTo, leader.PartyBelongedTo.NavigationCapability, (Settlement x) => x.IsFortification || x.IsVillage);
+                if (settlement == null)
+                {
+                    CampaignVec2 point = MobileParty.MainParty.Position;
+                    settlement = SettlementHelper.FindNearestSettlementToPoint(in point);
+                }
+
+                gatheringPoint = settlement;
             }
-            GatherArmyAction.Apply(army.LeaderParty, (Settlement)army.AiBehaviorObject);
+            GatherArmyAction.Apply(army.LeaderParty, gatheringPoint);
             kingdom.GetType().GetProperty("LastArmyCreationDay", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(kingdom, (int)CampaignTime.Now.ToDays);
             CampaignEventDispatcher.Instance.OnArmyCreated(army);
             if (leader == Hero.MainHero)
@@ -47,11 +49,11 @@ namespace Warfare.Extensions
                 {
                     party.Army = leader.PartyBelongedTo.Army;
                     CampaignEventDispatcher.Instance.OnPartyJoinedArmy(party);
-                    SetPartyAiAction.GetActionForEscortingParty(party, leader.PartyBelongedTo);
+                    SetPartyAiAction.GetActionForEscortingParty(party, leader.PartyBelongedTo, MobileParty.NavigationType.Default, false, false);
                 }
                 if (party.AttachedTo == party.Army.LeaderParty)
                 {
-                    party.GetType().GetField("_disorganizedUntilTime", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(party, disorganize ? CampaignTime.HoursFromNow(Campaign.Current.Models.PartyImpairmentModel.GetDisorganizedStateDuration(party)) : CampaignTime.Now);
+                    party.GetType().GetField("_disorganizedUntilTime", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(party, disorganize ? CampaignTime.HoursFromNow(Campaign.Current.Models.PartyImpairmentModel.GetDisorganizedStateDuration(party).ResultNumber) : CampaignTime.Now);
                     party.GetType().GetField("_isDisorganized", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(party, disorganize);
                 }
             }

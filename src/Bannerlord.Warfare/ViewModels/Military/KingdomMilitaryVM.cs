@@ -32,6 +32,7 @@ using Warfare.Content.Contracts;
 using Warfare.Extensions;
 using Warfare.GauntletUI;
 using Warfare.ViewModels.ArmyManagement;
+using TaleWorlds.Core.ImageIdentifiers;
 
 namespace Warfare.ViewModels.Military
 {
@@ -431,7 +432,7 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
-            disabledReason = TextObject.Empty;
+            disabledReason = TextObject.GetEmpty();
             return true;
         }
 
@@ -449,7 +450,7 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
-            disabledReason = TextObject.Empty;
+            disabledReason = TextObject.GetEmpty();
             return true;
         }
 
@@ -468,7 +469,7 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
-            if (GameStateManager.Current?.GameStates.Any((x) => x.IsMission) ?? false)
+            if (CampaignMission.Current != null)
             {
                 disabledReason = new TextObject("{=FdzsOvDq}This action is disabled while in a mission.");
                 return false;
@@ -511,7 +512,7 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
-            disabledReason = TextObject.Empty;
+            disabledReason = TextObject.GetEmpty();
             return true;
         }
 
@@ -530,7 +531,7 @@ namespace Warfare.ViewModels.Military
                 GameTexts.SetVariable("LEFT", "{=J1G2EXsn}Contract Cost");
                 GameTexts.SetVariable("RIGHT", HireCost);
                 HireCostLabel = GameTexts.FindText("str_LEFT_colon_RIGHT_wSpaceAfterColon").ToString();
-                TextObject remainingContractTime = TextObject.Empty;
+                TextObject remainingContractTime = TextObject.GetEmpty();
                 if (item.IsHired)
                 {
                     Contract contract = _behavior.FindContract(item.Clan);
@@ -614,7 +615,7 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
-            disabledReason = TextObject.Empty;
+            disabledReason = TextObject.GetEmpty();
             return true;
         }
 
@@ -662,7 +663,7 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
-            disabledReason = TextObject.Empty;
+            disabledReason = TextObject.GetEmpty();
             return true;
         }
 
@@ -714,7 +715,7 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
-            disabledReason = TextObject.Empty;
+            disabledReason = TextObject.GetEmpty();
             return true;
         }
 
@@ -733,7 +734,7 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
-            IEnumerable<Hero> partyLeaders = clan.Lords.Where((h) => h.IsPartyLeader);
+            IEnumerable<Hero> partyLeaders = clan.AliveLords.Where((h) => h.IsPartyLeader);
             if (!partyLeaders.Where((h) => h.PartyBelongedTo.MapEvent != null).IsEmpty())
             {
                 disabledReason = new TextObject("{=nDwqp7GZ}You cannot manage contracts while a target clan party is in a map event.");
@@ -746,13 +747,13 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
-            if (GameStateManager.Current?.GameStates.Any((x) => x.IsMission) ?? false)
+            if (CampaignMission.Current != null)
             {
                 disabledReason = new TextObject("{=FdzsOvDq}This action is disabled while in a mission.");
                 return false;
             }
 
-            disabledReason = TextObject.Empty;
+            disabledReason = TextObject.GetEmpty();
             return true;
         }
 
@@ -865,19 +866,19 @@ namespace Warfare.ViewModels.Military
         {
             foreach (Hero item in Clan.PlayerClan.Kingdom.Heroes.Where((h) => h.IsPartyLeader && (h.IsActive || h.IsReleased || h.IsFugitive || h.IsTraveling) && !h.IsChild && h.CanLeadParty() && h != CurrentSelectedArmy.Army.LeaderParty.LeaderHero && !h.Clan.IsUnderMercenaryService))
             {
-                yield return new ClanCardSelectionItemInfo(item, item.Name, new ImageIdentifier(CampaignUIHelper.GetCharacterCode(item.CharacterObject)), CardSelectionItemSpriteType.None, null, null, GetArmyLeaderCandidateProperties(item), !IsFactionMemberAvailableForArmyLeaderChange(item, CurrentSelectedArmy.Army, out TextObject explanation), explanation, null);
+                yield return new ClanCardSelectionItemInfo(item, item.Name, new CharacterImageIdentifier(CampaignUIHelper.GetCharacterCode(item.CharacterObject)), CardSelectionItemSpriteType.None, null, null, GetArmyLeaderCandidateProperties(item), !IsFactionMemberAvailableForArmyLeaderChange(item, CurrentSelectedArmy.Army, out TextObject explanation), explanation, null);
             }
         }
 
         private IEnumerable<ClanCardSelectionItemPropertyInfo> GetArmyLeaderCandidateProperties(Hero hero)
         {
-            TextObject skillsText = TextObject.Empty;
+            TextObject skillsText = TextObject.GetEmpty();
             foreach (SkillObject skill in new List<SkillObject> { DefaultSkills.Engineering, DefaultSkills.Tactics, DefaultSkills.Leadership, DefaultSkills.Medicine, DefaultSkills.Scouting })
             {
                 TextObject valueText = new TextObject("{=!}{SKILL_VALUE}");
                 valueText.SetTextVariable("SKILL_VALUE", hero.GetSkillValue(skill));
                 TextObject labeledText = ClanCardSelectionItemPropertyInfo.CreateLabeledValueText(skill.Name, valueText);
-                skillsText = skillsText == TextObject.Empty ? labeledText : GameTexts.FindText("str_string_newline_newline_string").SetTextVariable("STR1", skillsText).SetTextVariable("STR2", labeledText);
+                skillsText = skillsText == TextObject.GetEmpty() ? labeledText : GameTexts.FindText("str_string_newline_newline_string").SetTextVariable("STR1", skillsText).SetTextVariable("STR2", labeledText);
             }
             yield return new ClanCardSelectionItemPropertyInfo(GameTexts.FindText("str_skills"), skillsText);
         }
@@ -932,7 +933,7 @@ namespace Warfare.ViewModels.Military
                 explanation.SetCharacterProperties("HERO", hero.CharacterObject);
                 return false;
             }
-            explanation = TextObject.Empty;
+            explanation = TextObject.GetEmpty();
             return true;
         }
 
@@ -976,9 +977,9 @@ namespace Warfare.ViewModels.Military
         {
             if (_gauntlet != null && CurrentSelectedArmy != null)
             {
-                Vec2 position2D = CurrentSelectedArmy.Army.LeaderParty.Position2D;
+                CampaignVec2 position2D = CurrentSelectedArmy.Army.LeaderParty.Position;
                 Game.Current.GameStateManager.PopState(0);
-                MapScreen.Instance.FastMoveCameraToPosition(position2D);
+                MapScreen.Instance.FastMoveCameraToPosition(CurrentSelectedArmy.Army.LeaderParty.Position);
             }
         }
 

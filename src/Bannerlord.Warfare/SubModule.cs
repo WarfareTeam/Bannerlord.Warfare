@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Bannerlord.UIExtenderEx;
+using HarmonyLib;
+using System;
 using System.IO;
-
+using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ComponentInterfaces;
 using TaleWorlds.Core;
+using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
-
-using Bannerlord.UIExtenderEx;
-using HarmonyLib;
-
 using Warfare.Behaviors;
 using Warfare.Models;
 
@@ -16,9 +15,13 @@ namespace Warfare
 {
     public class SubModule : MBSubModuleBase
     {
+        public static bool NavalDLC = false;
+
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
+
+            NavalDLC = Utilities.GetModulesNames().Contains("NavalDLC");
 
             var extender = UIExtender.Create("bannerlord.warfare");
             extender.Register(typeof(SubModule).Assembly);
@@ -26,6 +29,7 @@ namespace Warfare
 
             var harmony = new Harmony("bannerlord.warfare.patches");
             harmony.PatchAll();
+
         }
 
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
@@ -56,12 +60,12 @@ namespace Warfare
 
         public static void Log(string message)
         {
-            string text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Mount and Blade II Bannerlord", "Logs");
+            string text = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Mount and Blade II Bannerlord", "Logs");
             if (!Directory.Exists(text))
             {
                 Directory.CreateDirectory(text);
             }
-            string path = Path.Combine(text, "Warfare.txt");
+            string path = System.IO.Path.Combine(text, "Warfare.txt");
             using (StreamWriter streamWriter = new StreamWriter(path, true))
             {
                 streamWriter.WriteLine("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] " + message);

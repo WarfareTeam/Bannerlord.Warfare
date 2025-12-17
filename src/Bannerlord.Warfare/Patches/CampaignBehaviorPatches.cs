@@ -52,7 +52,7 @@ namespace Warfare.Patches
         {
             if (_village != null)
             {
-                MapScreen.Instance.FastMoveCameraToPosition(_village.Settlement.Position2D);
+                MapScreen.Instance.FastMoveCameraToPosition(_village.Settlement.Position);
             }
         }
     }
@@ -137,7 +137,7 @@ namespace Warfare.Patches
         {
             if (_army != null)
             {
-                MapScreen.Instance.FastMoveCameraToPosition(_army.LeaderParty.Position2D);
+                MapScreen.Instance.FastMoveCameraToPosition(_army.LeaderParty.Position);
             }
         }
     }
@@ -220,7 +220,7 @@ namespace Warfare.Patches
         {
             if (_settlement != null)
             {
-                MapScreen.Instance.FastMoveCameraToPosition(_settlement.Position2D);
+                MapScreen.Instance.FastMoveCameraToPosition(_settlement.Position);
             }
         }
     }
@@ -239,15 +239,6 @@ namespace Warfare.Patches
         public static bool Prefix()
         {
             //Mercenaries do not defect while under contract with this mod.
-            return false;
-        }
-    }
-    [HarmonyPatch(typeof(OutlawClansCampaignBehavior), "MakeOutlawFactionsEnemyToKingdomFactions")]
-    public static class OutlawClansCampaignBehaviorPatch
-    {
-        public static bool Prefix()
-        {
-            //Mercenaries do not go to war independently with this mod.
             return false;
         }
     }

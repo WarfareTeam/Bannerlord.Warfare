@@ -20,7 +20,7 @@ namespace Warfare
             {
                 return "Format is \"campaign.party_food [HeroName]\".";
             }
-            Hero hero = CampaignCheats.GetHero(strings[0]);
+            CampaignCheats.TryGetObject(strings[0], out Hero hero, out string str, (Hero x) => x.IsAlive);
             if (hero == null)
             {
                 return "Hero is not found";
@@ -50,7 +50,7 @@ namespace Warfare
             {
                 return "Format is \"campaign.hero_gold [HeroName]\".";
             }
-            Hero hero = CampaignCheats.GetHero(strings[0]);
+            CampaignCheats.TryGetObject(strings[0], out Hero hero, out string str, (Hero x) => x.IsAlive);
             if (hero == null)
             {
                 return "Hero is not found";

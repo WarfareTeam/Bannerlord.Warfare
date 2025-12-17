@@ -1,5 +1,5 @@
 ﻿using System;
-
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Map.MapNotificationTypes;
 using TaleWorlds.Library;
@@ -16,12 +16,12 @@ namespace Warfare.Notifications
             NotificationIdentifier = "settlementundersiege";
             _onInspect = delegate ()
             {
-                Action<Vec2> fastMoveCameraToPosition = FastMoveCameraToPosition;
+                Action<CampaignVec2> fastMoveCameraToPosition = FastMoveCameraToPosition;
                 if (fastMoveCameraToPosition == null)
                 {
                     return;
                 }
-                fastMoveCameraToPosition(_village.Settlement.Position2D);
+                fastMoveCameraToPosition(_village.Settlement.Position);
             };
         }
     }

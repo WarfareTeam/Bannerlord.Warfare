@@ -21,7 +21,7 @@ namespace Warfare.Extensions
 
         internal static int GetRosterLimit(this Clan clan)
         {
-            float elapsedWeeksUntilNow = Campaign.Current.CampaignStartTime.ElapsedWeeksUntilNow;
+            float elapsedWeeksUntilNow = Campaign.Current.Models.CampaignTimeModel.CampaignStartTime.ElapsedWeeksUntilNow;
             return (int)(clan.WarPartyComponents.Select(x => Campaign.Current.Models.PartySizeLimitModel.GetPartyMemberSizeLimit(x.Party).ResultNumber).Sum() + elapsedWeeksUntilNow);
         }
     }
