@@ -88,6 +88,7 @@
 		<string id="0XYI6M3o" text="{LEADER_NAME} had their army near {SETTLEMENT} disbanded since they are dead." />
 		<string id="tX7SnH06" text="{LEADER_NAME} disbanded their army near {SETTLEMENT}." />
 		<string id="f3acvV05" text="{LEADER_NAME} disbanded their army near {SETTLEMENT} since they were taken as a prisoner." />
+		<string id="B9Be9n7r" text="World" />
 		<!--Settings-->
 		<string id="Wa3DouAN" text="Warfare" />
 		<string id="EtmesuQ7" text="General" />
@@ -118,6 +119,8 @@
 		<string id="I30BnKHt" text="The multiplier to the vanilla daily change in cohesion for armies. Default: 1.0" />
 		<string id="hqpPZFf2" text="Minimum Wars To Hire Mercenaries" />
 		<string id="JIHCDNcu" text="The minimum amount of wars for AI clans to hire mercenaries. Default: 1" />
+		<string id="JrsHuJB0" text="Mercenary Clans Per Culture" />
+		<string id="b1YjXBJA" text="Spawns more mercenary clans for each culture until the selected threshold is reached. Default: 5" />
 		<string id="rjjUIti9" text="Spawn Additional Mercenaries" />
 		<string id="qTfVx8hh" text="Spawns more mercenaries when starting a new game than vanilla includes. This will make the world livelier and give more contract possiblities. The mod is balanced around this being enabled. Default: Enabled" />
 		<string id="rmugSIvK" text="Maintain Vanilla Names" />
@@ -183,6 +186,6 @@
 		<string id="oA1ePGVL" text="All Kingdoms" />
 		<string id="krUuhA7I" text="Other" />
 		<string id="MUSHsQr8" text="Logging" />
-		<string id="Wa3DouAN" text="Enables logs for testing and reporting purposes. Enable this only if Author requests a log during issue reproduction. Default: Disabled" />
+		<string id="1hNL7XjJ" text="Enables logs for testing and reporting purposes. Enable this only if Author requests a log during issue reproduction. Default: Disabled" />
 	</strings>
 </base>

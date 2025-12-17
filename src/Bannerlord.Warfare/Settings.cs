@@ -185,7 +185,7 @@ namespace Warfare
         [SettingPropertyGroup(NotificationsHeader, GroupOrder = 30)]
         public Dropdown<string> WarNotificationScope { get; } = new(new string[] { "{=Wu20hUsM}Player Kingdom", "{=oA1ePGVL}All Kingdoms" }, 0);
 
-        [SettingPropertyBool("{=MUSHsQr8}Logging", Order = 0, RequireRestart = false, HintText = "{=Wa3DouAN}Enables logs for testing and reporting purposes. Enable this only if Author requests a log during issue reproduction. Default: Disabled")]
+        [SettingPropertyBool("{=MUSHsQr8}Logging", Order = 0, RequireRestart = false, HintText = "{=1hNL7XjJ}Enables logs for testing and reporting purposes. Enable this only if Author requests a log during issue reproduction. Default: Disabled")]
         [SettingPropertyGroup(OtherHeader, GroupOrder = 100)]
         public bool Logging { get; set; } = false;
 

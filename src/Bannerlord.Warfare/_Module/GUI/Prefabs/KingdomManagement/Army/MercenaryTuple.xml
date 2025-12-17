@@ -37,7 +37,7 @@
             <!--Clan Banner-->
             <Widget DataSource="{Leader}" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="!Kingdom.Clans.Sort.1.Width" SuggestedHeight="81" VerticalAlignment="Center">
               <Children>
-                <MaskedTextureWidget DataSource="{ClanBanner_9}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Banner.Width.Scaled" SuggestedHeight="!Banner.Height.Scaled" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Flat.Tuple.Banner.Small" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" IsDisabled="true"  />
+                <MaskedTextureWidget DataSource="{ClanBanner_9}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Banner.Width.Scaled" SuggestedHeight="!Banner.Height.Scaled" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Flat.Tuple.Banner.Small" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName" IsDisabled="true"  />
               </Children>
             </Widget>
           </Children>

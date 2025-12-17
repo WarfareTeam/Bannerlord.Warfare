@@ -17,7 +17,7 @@
         <ListPanel DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="20" MarginRight="20">
           <Children>
             <!--Faction1 Banner-->
-            <MaskedTextureWidget DataSource="{Faction1Visual}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Banner.Width.Scaled" SuggestedHeight="!Banner.Height.Scaled" HorizontalAlignment="Center" VerticalAlignment="Top" MarginLeft="0" Brush="Flat.Tuple.Banner.Small" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" IsDisabled="true" />
+            <MaskedTextureWidget DataSource="{Faction1Visual}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Banner.Width.Scaled" SuggestedHeight="!Banner.Height.Scaled" HorizontalAlignment="Center" VerticalAlignment="Top" MarginLeft="0" Brush="Flat.Tuple.Banner.Small" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName" IsDisabled="true" />
             <!--Faction1 Name-->
             <RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" Brush="ArmyManagement.Army.Tuple.Name" IsEnabled="false" Text="@Faction1Name" />
             <!--Versus Icon-->
@@ -25,7 +25,7 @@
             <!--Faction2 Name-->
             <RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" Brush="ArmyManagement.Army.Tuple.Name" IsEnabled="false" Text="@Faction2Name" />
             <!--Faction2 Banner-->
-            <MaskedTextureWidget DataSource="{Faction2Visual}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Banner.Width.Scaled" SuggestedHeight="!Banner.Height.Scaled" HorizontalAlignment="Center" VerticalAlignment="Top" MarginRight="0" Brush="Flat.Tuple.Banner.Small" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" IsDisabled="true" />
+            <MaskedTextureWidget DataSource="{Faction2Visual}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Banner.Width.Scaled" SuggestedHeight="!Banner.Height.Scaled" HorizontalAlignment="Center" VerticalAlignment="Top" MarginRight="0" Brush="Flat.Tuple.Banner.Small" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName" IsDisabled="true" />
           </Children>
         </ListPanel>
 
