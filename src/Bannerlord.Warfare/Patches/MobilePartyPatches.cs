@@ -24,7 +24,8 @@ namespace Warfare.Patches
         public static void Postfix(PartyBase __instance, ref int __result)
         {
             MobileParty party = __instance.MobileParty;
-            if (party.ActualClan != null && party.IsLordParty && party.ActualClan.IsMinorFaction && party != MobileParty.MainParty)
+            
+            if (party.ActualClan != null && party.IsLordParty && party.ActualClan.IsMinorFaction && party.ActualClan != Clan.PlayerClan)
             {
                 __result = party.ActualClan.GetRosterLimit();
             }
