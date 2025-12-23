@@ -70,7 +70,6 @@ namespace Warfare.Behaviors
                     }
                     if (!Settings.Current.MaintainVanillaNames)
                     {
-                        clan.GetType().GetProperty("EncyclopediaText", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(clan, new TextObject(""));
                         ChangeClanName(clan);
                     }
                     if (Settings.Current.MaintainVanillaProperties)
@@ -79,6 +78,7 @@ namespace Warfare.Behaviors
                         {
                             clan.Culture = culture;
                         }
+                        clan.GetType().GetProperty("EncyclopediaText", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(clan, new TextObject(""));
                         clan.ResetClanRenown();
                         clan.AddRenown(GetStartingRenown(clan));
                         if (!Settings.Current.UseVanillaRecruitment)
