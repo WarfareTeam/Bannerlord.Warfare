@@ -41,12 +41,12 @@ namespace Warfare.Behaviors
             //Build initial mercenary clans & rosters on game start.
             //Has to be done after CampaignEvents.OnNewGameCreated and CampaignEvents.OnNewGameCreatedPartialFollowUpEvent
             //because the original method is done in the latter, and we need all WarPartyComponents initialized first.
-            IEnumerable<CultureObject> cultures = from x in Campaign.Current.ObjectManager.GetObjectTypeList<CultureObject>() where !x.IsBandit && x.StringId != "neutral_culture" && x.StringId != "darshi" && x.StringId != "vakken" && x.StringId != "nord" select x;
+            IEnumerable<CultureObject> cultures = from x in Campaign.Current.ObjectManager.GetObjectTypeList<CultureObject>() where !x.IsBandit && x.StringId != "neutral_culture" && x.StringId != "darshi" && x.StringId != "vakken" && (SubModule.NavalDLC || x.StringId != "nord") select x;
             for (int i = 0; i < cultures.Count(); i++)
             {
                 CultureObject culture = cultures.ElementAt(i);
                 string stringId = culture.StringId;
-                CultureObject minorCulture = stringId == "aserai" ? Campaign.Current.ObjectManager.GetObject<CultureObject>("darshi") : stringId == "battania" ? Campaign.Current.ObjectManager.GetObject<CultureObject>("vakken") : stringId == "sturgia" ? Campaign.Current.ObjectManager.GetObject<CultureObject>("nord") : null!;
+                CultureObject minorCulture = stringId == "aserai" ? Campaign.Current.ObjectManager.GetObject<CultureObject>("darshi") : stringId == "battania" ? Campaign.Current.ObjectManager.GetObject<CultureObject>("vakken") : !SubModule.NavalDLC && stringId == "sturgia" ? Campaign.Current.ObjectManager.GetObject<CultureObject>("nord") : null!;
                 IEnumerable<Clan> clans = from x in Clan.NonBanditFactions where (x.Culture == culture || x.Culture == minorCulture) && !x.IsEliminated && x.IsMinorFaction && x != Clan.PlayerClan select x;
                 for (int j = 0; j < clans.Count(); j++)
                 {
