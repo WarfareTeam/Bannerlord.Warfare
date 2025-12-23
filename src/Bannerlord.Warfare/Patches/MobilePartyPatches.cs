@@ -13,7 +13,6 @@ namespace Warfare.Patches
         public static bool Prefix(MobileParty __instance)
         {
             //We manually add troops to each mercenary party roster in code to ensure compatibiility with overhauls and other mods changing spclans.xml without using xslt
-            
             return __instance == null || !__instance.IsActive || !__instance.IsLordParty || !__instance.ActualClan.IsMinorFaction || __instance == MobileParty.MainParty;
         }
     }
@@ -24,7 +23,8 @@ namespace Warfare.Patches
         public static void Postfix(PartyBase __instance, ref int __result)
         {
             MobileParty party = __instance.MobileParty;
-            if (party.ActualClan != null && party.IsLordParty && party.ActualClan.IsMinorFaction && party != MobileParty.MainParty)
+            
+            if (party.ActualClan != null && party.IsLordParty && party.ActualClan.IsMinorFaction && party.ActualClan != Clan.PlayerClan)
             {
                 __result = party.ActualClan.GetRosterLimit();
             }

@@ -115,7 +115,7 @@ namespace Warfare.Patches
             if (Settings.Current.EnableNotifications)
             {
                 KingdomState? state = Game.Current.GameStateManager.GameStates.FirstOrDefaultQ((GameState s) => s is KingdomState) as KingdomState;
-                if ((state == null || !state.IsActive) && Settings.Current.EnableNotifications && army.LeaderParty.MapFaction == MobileParty.MainParty.MapFaction && army.LeaderParty != MobileParty.MainParty)
+                if ((state == null || !state.IsActive) && army.LeaderParty.MapFaction == MobileParty.MainParty.MapFaction && army.LeaderParty != MobileParty.MainParty)
                 {
                     int index = Settings.Current.ArmyCreatedNotifications.SelectedIndex;
                     TextObject text = new ArmyCreationLogEntry(army).GetEncyclopediaText();
@@ -149,7 +149,7 @@ namespace Warfare.Patches
             if (Settings.Current.EnableNotifications)
             {
                 KingdomState? state = Game.Current.GameStateManager.GameStates.FirstOrDefaultQ((GameState s) => s is KingdomState) as KingdomState;
-                if ((state == null || !state.IsActive) && army.ArmyOwner != null && army.Kingdom == Clan.PlayerClan.Kingdom && !army.Parties.Contains(MobileParty.MainParty) && !isPlayersArmy)
+                if ((state == null || !state.IsActive) && army.LeaderParty.MapFaction == Hero.MainHero.MapFaction && !army.Parties.Contains(MobileParty.MainParty) && !isPlayersArmy)
                 {
                     int index = Settings.Current.ArmyDispersedNotifications.SelectedIndex;
                     TextObject text = GetEncyclopediaText(army.ArmyOwner, reason);
