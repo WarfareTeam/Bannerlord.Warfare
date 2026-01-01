@@ -1025,7 +1025,8 @@ namespace Warfare.ViewModels.Military
         {
             if (Hero.MainHero.MapFaction.IsKingdomFaction && Hero.MainHero.MapFaction.Leader == Hero.MainHero && CurrentSelectedArmy != null)
             {
-                if (s.SelectedIndex > 0)
+                int selectedIndex = Campaign.Current.GetCampaignBehavior<StrategyBehavior>().GetPriority(CurrentSelectedArmy.Army.ArmyOwner);
+                if (s.SelectedIndex > 0 || selectedIndex > 0)
                 {
                     Campaign.Current.GetCampaignBehavior<StrategyBehavior>().SetPriority(CurrentSelectedArmy.Army.ArmyOwner, s.SelectedIndex);
                 }

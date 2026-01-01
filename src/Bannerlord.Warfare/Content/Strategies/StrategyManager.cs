@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.SaveSystem;
 using TaleWorlds.LinQuick;
-using Warfare.Content.Contracts;
+using TaleWorlds.SaveSystem;
 
 namespace Warfare.Content.Strategies
 {
