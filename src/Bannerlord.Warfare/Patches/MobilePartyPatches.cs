@@ -7,16 +7,6 @@ using TaleWorlds.CampaignSystem;
 
 namespace Warfare.Patches
 {
-    [HarmonyPatch(typeof(MobileParty), "InitializeMobilePartyWithPartyTemplate")]
-    public static class InitializeMobilePartyWithPartyTemplatePatch
-    {
-        public static bool Prefix(MobileParty __instance)
-        {
-            //We manually add troops to each mercenary party roster in code to ensure compatibiility with overhauls and other mods changing spclans.xml without using xslt
-            return __instance == null || !__instance.IsActive || !__instance.IsLordParty || !__instance.ActualClan.IsMinorFaction || __instance == MobileParty.MainParty;
-        }
-    }
-
     [HarmonyPatch(typeof(PartyBase), "PartySizeLimit", MethodType.Getter)]
     public static class PartySizeLimitPatch
     {
