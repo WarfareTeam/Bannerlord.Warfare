@@ -98,7 +98,7 @@ namespace Warfare.PrefabExtensions
     {
         public override List<Attribute> Attributes => new()
         {
-            new Attribute("Additive", "107")
+            new Attribute("Additive", "28")
         };
     }
     [PrefabExtension("ArmyManagementLeftPanel", "descendant::Constant[@Name='ArmyManagement.Sort.5.Width']")]

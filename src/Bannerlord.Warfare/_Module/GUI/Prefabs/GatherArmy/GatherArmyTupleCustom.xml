@@ -1,7 +1,7 @@
 <Prefab>
   <Constants>
 
-    <Constant Name="ArmyManagement.Army.Tuple.Width" BrushLayer="Default" BrushName="ArmyManagement.Army.Tuple" BrushValueType="Width" />
+    <Constant Name="ArmyManagement.Army.Tuple.Width" BrushLayer="Default" BrushName="ArmyManagement.Army.Tuple" BrushValueType="Width" Additive="28" />
     <Constant Name="ArmyManagement.Army.Tuple.Height" BrushLayer="Default" BrushName="ArmyManagement.Army.Tuple" BrushValueType="Height" />
 
     <Constant Name="Banner.Width" BrushLayer="Default" BrushName="Flat.Tuple.Banner.Small" BrushValueType="Width" />
