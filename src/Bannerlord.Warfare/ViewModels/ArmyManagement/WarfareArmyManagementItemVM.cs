@@ -4,6 +4,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.ComponentInterfaces;
 using TaleWorlds.CampaignSystem.Extensions;
+using TaleWorlds.CampaignSystem.GameComponents;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Siege;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
@@ -13,6 +14,7 @@ using TaleWorlds.Core.ViewModelCollection.ImageIdentifiers;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using Warfare.Extensions;
+using static TaleWorlds.MountAndBlade.Launcher.Library.NativeMessageBox;
 
 namespace Warfare.ViewModels.ArmyManagement
 {
@@ -220,13 +222,33 @@ namespace Warfare.ViewModels.ArmyManagement
                     {
                         _eligibilityReason = new TextObject("{=tFGM0yav}This party is disbanding.");
                     }
-                    else if (armyManagementCalculationModel != null && !armyManagementCalculationModel.CheckPartyEligibility(Party, out _eligibilityReason))
-                    {
-                        _eligibilityReason = new TextObject("{=nuK4Afnr}Party is not eligible to join the army.");
-                    }
                     else
                     {
-                        isEligible = true;
+                        IDisbandPartyCampaignBehavior campaignBehavior = Campaign.Current.GetCampaignBehavior<IDisbandPartyCampaignBehavior>();
+                        if (campaignBehavior == null || !campaignBehavior.IsPartyWaitingForDisband(Party))
+                        {
+                            float landRatio;
+                            if (MobileParty.MainParty.IsCurrentlyAtSea)
+                            {
+                                _eligibilityReason = ((!Party.HasNavalNavigationCapability) ? new TextObject("{=nqq84Dzq}Party cannot reach your army since it has no ships.") : new TextObject("{=gFixGQsr}You cannot call a party to your army while your party is at sea."));
+                            }
+                            else if (Party.IsInRaftState)
+                            {
+                                _eligibilityReason = new TextObject("{=TbXDmh3t}This party is lost at sea.");
+                            }
+                            else if (DistanceHelper.FindClosestDistanceFromMobilePartyToMobileParty(Party, MobileParty.MainParty, Party.NavigationCapability, out landRatio) > Campaign.Current.Models.ArmyManagementCalculationModel.MaximumDistanceToCallToArmy)
+                            {
+                                _eligibilityReason = new TextObject("{=UINgZDN5}You can not call a party that is far away.");
+                            }
+                            else
+                            {
+                                isEligible = true;
+                            }
+                        }
+                        else
+                        {
+                            isEligible = true;
+                        }
                     }
                 }
                 else if (Party.Army != null && Party.Army.LeaderParty == Party.LeaderHero.PartyBelongedTo)
