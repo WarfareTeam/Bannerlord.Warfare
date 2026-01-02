@@ -23,6 +23,9 @@
 - Fully replenish cohesion of all active armies in the kingdom from the map, paid by player.
 - Armies can deteriorate allowing room for nomads and other migrants to proliferate and take over regions ? Similar to the migration of the Visigoths / Huns around the fall of Rome
 - Improve create army button in the bottom right on the map to make it stick out more.
+- The player should be able to earn gold daily by being in an army as a way to bridge the gap between being a mercenary and being a vassal with a fief.
+- Parties of clans without fiefs should be treated similarly to mercenary parties by being paid in gold instead of influence to join armies, and be exempt from the 40% party size limitation. These parties could also seek to join an army of their own accord - for less but liveable payment - in order to survive when they are in dire straits.
+- Poor clans will take wealth into account when making new parties, preferring to put their resources into one or a few powerful parties rather than many weak ones that will easily be destroyed. They will do this by merging their parties if necessary as well.
 
 ## Army Overhaul
 - ~~Automatic cohesion maintenance for individual armies, paid by player.~~ Added in 1.0.4
