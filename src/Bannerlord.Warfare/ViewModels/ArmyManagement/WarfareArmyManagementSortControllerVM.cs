@@ -229,10 +229,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int DistanceState
         {
-            get
-            {
-                return _distanceState;
-            }
+            get => _distanceState;
             set
             {
                 if (value != _distanceState)
@@ -246,10 +243,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int CostState
         {
-            get
-            {
-                return _costState;
-            }
+            get => _costState;
             set
             {
                 if (value != _costState)
@@ -263,10 +257,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int StrengthState
         {
-            get
-            {
-                return _strengthState;
-            }
+            get => _strengthState;
             set
             {
                 if (value != _strengthState)
@@ -280,10 +271,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int NameState
         {
-            get
-            {
-                return _nameState;
-            }
+            get => _nameState;
             set
             {
                 if (value != _nameState)
@@ -297,10 +285,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int ClanState
         {
-            get
-            {
-                return _clanState;
-            }
+            get => _clanState;
             set
             {
                 if (value != _clanState)
@@ -314,10 +299,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsNameSelected
         {
-            get
-            {
-                return _isNameSelected;
-            }
+            get => _isNameSelected;
             set
             {
                 if (value != _isNameSelected)
@@ -331,10 +313,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsCostSelected
         {
-            get
-            {
-                return _isCostSelected;
-            }
+            get => _isCostSelected;
             set
             {
                 if (value != _isCostSelected)
@@ -348,10 +327,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsStrengthSelected
         {
-            get
-            {
-                return _isStrengthSelected;
-            }
+            get => _isStrengthSelected;
             set
             {
                 if (value != _isStrengthSelected)
@@ -365,10 +341,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsDistanceSelected
         {
-            get
-            {
-                return _isDistanceSelected;
-            }
+            get => _isDistanceSelected;
             set
             {
                 if (value != _isDistanceSelected)
@@ -382,10 +355,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsClanSelected
         {
-            get
-            {
-                return _isClanSelected;
-            }
+            get => _isClanSelected;
             set
             {
                 if (value != _isClanSelected)

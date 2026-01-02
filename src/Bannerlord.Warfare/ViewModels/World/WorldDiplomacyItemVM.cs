@@ -162,10 +162,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public MBBindingList<KingdomDiplomacyFactionItemVM> Faction1OwnedClans
         {
-            get
-            {
-                return _faction1OwnedClans;
-            }
+            get => _faction1OwnedClans;
             set
             {
                 if (value != _faction1OwnedClans)
@@ -179,10 +176,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public MBBindingList<KingdomDiplomacyFactionItemVM> Faction2OwnedClans
         {
-            get
-            {
-                return _faction2OwnedClans;
-            }
+            get => _faction2OwnedClans;
             set
             {
                 if (value != _faction2OwnedClans)
@@ -196,10 +190,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public MBBindingList<KingdomDiplomacyFactionItemVM> Faction2OtherWars
         {
-            get
-            {
-                return _faction2OtherWars;
-            }
+            get => _faction2OtherWars;
             set
             {
                 if (value != _faction2OtherWars)
@@ -213,10 +204,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public MBBindingList<KingdomDiplomacyFactionItemVM> Faction2OtherTradeAgreements
         {
-            get
-            {
-                return _faction2OtherTradeAgreements;
-            }
+            get => _faction2OtherTradeAgreements;
             set
             {
                 if (value != _faction2OtherTradeAgreements)
@@ -230,10 +218,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public MBBindingList<KingdomDiplomacyFactionItemVM> Faction2OtherAlliances
         {
-            get
-            {
-                return _faction2OtherAlliances;
-            }
+            get => _faction2OtherAlliances;
             set
             {
                 if (value != _faction2OtherAlliances)
@@ -247,10 +232,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public MBBindingList<KingdomWarComparableStatVM> Stats
         {
-            get
-            {
-                return _stats;
-            }
+            get => _stats;
             set
             {
                 if (value != _stats)
@@ -264,10 +246,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public BannerImageIdentifierVM Faction1Visual
         {
-            get
-            {
-                return _faction1Visual;
-            }
+            get => _faction1Visual;
             set
             {
                 if (value != _faction1Visual)
@@ -281,10 +260,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public BannerImageIdentifierVM Faction2Visual
         {
-            get
-            {
-                return _faction2Visual;
-            }
+            get => _faction2Visual;
             set
             {
                 if (value != _faction2Visual)
@@ -298,10 +274,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public string Faction1Name
         {
-            get
-            {
-                return _faction1Name;
-            }
+            get => _faction1Name;
             set
             {
                 if (value != _faction1Name)
@@ -315,10 +288,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public string Faction2Name
         {
-            get
-            {
-                return _faction2Name;
-            }
+            get => _faction2Name;
             set
             {
                 if (value != _faction2Name)
@@ -332,10 +302,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public string Faction1TributeText
         {
-            get
-            {
-                return _faction1TributeText;
-            }
+            get => _faction1TributeText;
             set
             {
                 if (value != _faction1TributeText)
@@ -349,10 +316,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public string Faction2TributeText
         {
-            get
-            {
-                return _faction2TributeText;
-            }
+            get => _faction2TributeText;
             set
             {
                 if (value != _faction2TributeText)
@@ -366,10 +330,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public HintViewModel Faction1TributeHint
         {
-            get
-            {
-                return _faction1TributeHint;
-            }
+            get => _faction1TributeHint;
             set
             {
                 if (value != _faction1TributeHint)
@@ -383,10 +344,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public HintViewModel Faction2TributeHint
         {
-            get
-            {
-                return _faction2TributeHint;
-            }
+            get => _faction2TributeHint;
             set
             {
                 if (value != _faction2TributeHint)
@@ -400,10 +358,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public bool IsFaction2OtherWarsVisible
         {
-            get
-            {
-                return _isFaction2OtherWarsVisible;
-            }
+            get => _isFaction2OtherWarsVisible;
             set
             {
                 if (value != _isFaction2OtherWarsVisible)
@@ -417,10 +372,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public bool IsFaction2OtherTradeAgreementsVisible
         {
-            get
-            {
-                return _isFaction2OtherTradeAgreementsVisible;
-            }
+            get => _isFaction2OtherTradeAgreementsVisible;
             set
             {
                 if (value != _isFaction2OtherTradeAgreementsVisible)
@@ -434,10 +386,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public bool IsFaction2OtherAlliancesVisible
         {
-            get
-            {
-                return _isFaction2OtherAlliancesVisible;
-            }
+            get => _isFaction2OtherAlliancesVisible;
             set
             {
                 if (value != _isFaction2OtherAlliancesVisible)
@@ -451,10 +400,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public HeroVM Faction1Leader
         {
-            get
-            {
-                return _faction1Leader;
-            }
+            get => _faction1Leader;
             set
             {
                 if (value != _faction1Leader)
@@ -468,10 +414,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public HeroVM Faction2Leader
         {
-            get
-            {
-                return _faction2Leader;
-            }
+            get => _faction2Leader;
             set
             {
                 if (value != _faction2Leader)

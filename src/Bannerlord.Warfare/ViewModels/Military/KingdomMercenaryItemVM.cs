@@ -129,10 +129,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public HeroVM Leader
         {
-            get
-            {
-                return _leader;
-            }
+            get => _leader;
             set
             {
                 if (value != _leader)
@@ -145,10 +142,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string ClanName
         {
-            get
-            {
-                return _clanName;
-            }
+            get => _clanName;
             set
             {
                 if (value != _clanName)
@@ -161,10 +155,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public int InfantryCount
         {
-            get
-            {
-                return _infantryCount;
-            }
+            get => _infantryCount;
             set
             {
                 if (value != _infantryCount)
@@ -177,10 +168,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public int RangedCount
         {
-            get
-            {
-                return _rangedCount;
-            }
+            get => _rangedCount;
             set
             {
                 if (value != _rangedCount)
@@ -193,10 +181,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public int CavalryCount
         {
-            get
-            {
-                return _cavalryCount;
-            }
+            get => _cavalryCount;
             set
             {
                 if (value != _cavalryCount)
@@ -209,10 +194,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public int HorseArcherCount
         {
-            get
-            {
-                return _horseArcherCount;
-            }
+            get => _horseArcherCount;
             set
             {
                 if (value != _horseArcherCount)
@@ -225,10 +207,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public int TotalManCount
         {
-            get
-            {
-                return _totalManCount;
-            }
+            get => _totalManCount;
             set
             {
                 if (value != _totalManCount)
@@ -241,10 +220,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string TotalManCountLabel
         {
-            get
-            {
-                return _totalManCountLabel;
-            }
+            get => _totalManCountLabel;
             set
             {
                 if (value != _totalManCountLabel)
@@ -257,10 +233,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public int HireCost
         {
-            get
-            {
-                return _hireCost;
-            }
+            get => _hireCost;
             set
             {
                 if (value != _hireCost)
@@ -274,10 +247,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string BrushText
         {
-            get
-            {
-                return _brushText;
-            }
+            get => _brushText;
             set
             {
                 if (value != _brushText)
@@ -290,10 +260,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string HiredText
         {
-            get
-            {
-                return _hiredText;
-            }
+            get => _hiredText;
             set
             {
                 _hiredText = value;
@@ -304,10 +271,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool IsHired
         {
-            get
-            {
-                return _isHired;
-            }
+            get => _isHired;
             set
             {
                 if (value != _isHired)
@@ -320,10 +284,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool IsMainClan
         {
-            get
-            {
-                return _isMainClan;
-            }
+            get => _isMainClan;
             set
             {
                 if (value != _isMainClan)
@@ -336,10 +297,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public MBBindingList<KingdomArmyPartyItemVM> Parties
         {
-            get
-            {
-                return _parties;
-            }
+            get => _parties;
             set
             {
                 if (value != _parties)

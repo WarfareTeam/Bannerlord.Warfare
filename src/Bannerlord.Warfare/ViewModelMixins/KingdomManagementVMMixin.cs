@@ -43,10 +43,7 @@ namespace Warfare.ViewModelMixins
         [DataSourceProperty]
         public KingdomMilitaryVM Military
         {
-            get
-            {
-                return VMHelper.Military!;
-            }
+            get => VMHelper.Military!;
             set
             {
                 if (value != VMHelper.Military)
@@ -60,10 +57,7 @@ namespace Warfare.ViewModelMixins
         [DataSourceProperty]
         public KingdomWorldVM World
         {
-            get
-            {
-                return VMHelper.World!;
-            }
+            get => VMHelper.World!;
             set
             {
                 if (value != VMHelper.World)
@@ -77,10 +71,7 @@ namespace Warfare.ViewModelMixins
         [DataSourceProperty]
         public string MilitaryText
         {
-            get
-            {
-                return _militaryText;
-            }
+            get => _militaryText;
             set
             {
                 if (value != _militaryText)
@@ -94,10 +85,7 @@ namespace Warfare.ViewModelMixins
         [DataSourceProperty]
         public string WorldText
         {
-            get
-            {
-                return _worldText;
-            }
+            get => _worldText;
             set
             {
                 if (value != _worldText)

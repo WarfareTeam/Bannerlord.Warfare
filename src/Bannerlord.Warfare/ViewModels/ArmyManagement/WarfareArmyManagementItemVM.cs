@@ -306,10 +306,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string CostText
         {
-            get
-            {
-                return _costText;
-            }
+            get => _costText;
             set
             {
                 if (value != _costText)
@@ -323,10 +320,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsInfluenceCost
         {
-            get
-            {
-                return _isInfluenceCost;
-            }
+            get => _isInfluenceCost;
             set
             {
                 if (value != _isInfluenceCost)
@@ -340,10 +334,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public InputKeyItemVM RemoveInputKey
         {
-            get
-            {
-                return _removeInputKey;
-            }
+            get => _removeInputKey;
             set
             {
                 if (value != _removeInputKey)
@@ -357,10 +348,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsEligible
         {
-            get
-            {
-                return _isEligible;
-            }
+            get => _isEligible;
             set
             {
                 if (value != _isEligible)
@@ -374,10 +362,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsInCart
         {
-            get
-            {
-                return _isInCart;
-            }
+            get => _isInCart;
             set
             {
                 if (value != _isInCart)
@@ -391,10 +376,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsMainHero
         {
-            get
-            {
-                return _isMainHero;
-            }
+            get => _isMainHero;
             set
             {
                 if (value != _isMainHero)
@@ -408,10 +390,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int Strength
         {
-            get
-            {
-                return _strength;
-            }
+            get => _strength;
             set
             {
                 if (value != _strength)
@@ -425,10 +404,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string DistanceText
         {
-            get
-            {
-                return _distanceText;
-            }
+            get => _distanceText;
             set
             {
                 if (value != _distanceText)
@@ -442,10 +418,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string InArmyText
         {
-            get
-            {
-                return _inArmyText;
-            }
+            get => _inArmyText;
             set
             {
                 if (value != _inArmyText)
@@ -459,10 +432,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int Cost
         {
-            get
-            {
-                return _cost;
-            }
+            get => _cost;
             set
             {
                 if (value != _cost)
@@ -476,10 +446,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int Relation
         {
-            get
-            {
-                return _relation;
-            }
+            get => _relation;
             set
             {
                 if (value != _relation)
@@ -493,10 +460,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public BannerImageIdentifierVM ClanBanner
         {
-            get
-            {
-                return _clanBanner;
-            }
+            get => _clanBanner;
             set
             {
                 if (value != _clanBanner)
@@ -510,10 +474,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public CharacterImageIdentifierVM LordFace
         {
-            get
-            {
-                return _lordFace;
-            }
+            get => _lordFace;
             set
             {
                 if (value != _lordFace)
@@ -527,10 +488,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string NameText
         {
-            get
-            {
-                return _nameText;
-            }
+            get => _nameText;
             set
             {
                 if (value != _nameText)
@@ -544,10 +502,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsAlreadyWithPlayer
         {
-            get
-            {
-                return _isAlreadyWithPlayer;
-            }
+            get => _isAlreadyWithPlayer;
             set
             {
                 if (value != _isAlreadyWithPlayer)
@@ -561,10 +516,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsTransferDisabled
         {
-            get
-            {
-                return _isTransferDisabled;
-            }
+            get => _isTransferDisabled;
             set
             {
                 if (value != _isTransferDisabled)
@@ -578,10 +530,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string LeaderNameText
         {
-            get
-            {
-                return _leaderNameText;
-            }
+            get => _leaderNameText;
             set
             {
                 if (value != _leaderNameText)
@@ -595,10 +544,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsFocused
         {
-            get
-            {
-                return _isFocused;
-            }
+            get => _isFocused;
             set
             {
                 if (value != _isFocused)
