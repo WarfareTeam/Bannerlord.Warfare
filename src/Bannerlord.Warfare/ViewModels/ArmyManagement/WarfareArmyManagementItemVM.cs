@@ -12,6 +12,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.ImageIdentifiers;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
+using Warfare.Extensions;
 
 namespace Warfare.ViewModels.ArmyManagement
 {
@@ -211,7 +212,7 @@ namespace Warfare.ViewModels.ArmyManagement
                     {
                         _eligibilityReason = new TextObject("{=Vq8yavES}Already in army.");
                     }
-                    else if (num <= 0.4f)
+                    else if (num <= 0.4f && !Party.ActualClan.IsMinorFaction)
                     {
                         _eligibilityReason = new TextObject("{=SVJlOYCB}Party has less men than 40% of it's party size limit.");
                     }
