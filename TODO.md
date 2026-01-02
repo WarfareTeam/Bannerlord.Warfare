@@ -22,9 +22,11 @@
 - MCM Options: Armies besiege AI, Additional mercenary clans
 - Fully replenish cohesion of all active armies in the kingdom from the map, paid by player.
 - Armies can deteriorate allowing room for nomads and other migrants to proliferate and take over regions ? Similar to the migration of the Visigoths / Huns around the fall of Rome
+- Improve create army button in the bottom right on the map to make it stick out more.
 
 ## Army Overhaul
 - ~~Automatic cohesion maintenance for individual armies, paid by player.~~ Added in 1.0.4
+- Detachment parties using clan members as commanders, which you can order to follow you or send to recruit troops.
 
 ## Battle Overhaul
 - Arrows should pierce through shields in certain conditions, with some damage dealt to the character and the possibility to stagger them.
@@ -34,6 +36,8 @@
 - Mercenaries should not declare wars on factions over time, currently they do for unknown reasons but do not on game start as intended.
 - Ability to form a mercenary company.
 - Ability to join a mercenary company.
+- Automatic mercenary contract renewal.
+- Name list for mercenaries.
 - ~~Slider for mercenary clan spawns on game start.~~ Added in 1.0.3
 - ~~Add remaining contract time to the Mercenary panel.~~ Added in 1.0.3
 
