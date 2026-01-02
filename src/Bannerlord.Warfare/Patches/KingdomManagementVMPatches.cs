@@ -17,7 +17,7 @@ namespace Warfare.Patches
     })]
     public class KingdomManagementVMPatch
     {
-        private static void Postfix(int ____categoryCount)
+        private static void Postfix(ref int ____categoryCount)
         {
             ____categoryCount = 6;
         }
@@ -60,7 +60,7 @@ namespace Warfare.Patches
     [HarmonyPatch(typeof(KingdomManagementVM), "SetSelectedCategory")]
     public static class SetSelectedCategoryPatch
     {
-        public static void Postfix(KingdomManagementVM __instance, int index)
+        public static void Postfix(KingdomManagementVM __instance, ref int ____currentCategory, int index)
         {
             VMHelper.Military.Show = index == 3;
             VMHelper.World.Show = index == 5;
@@ -72,6 +72,7 @@ namespace Warfare.Patches
                 __instance.Army.Show = false;
                 __instance.Diplomacy.Show = false;
             }
+            ____currentCategory = index;
         }
     }
 }

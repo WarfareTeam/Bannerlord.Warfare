@@ -790,10 +790,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public ElementNotificationVM TutorialNotification
         {
-            get
-            {
-                return _tutorialNotification;
-            }
+            get => _tutorialNotification;
             set
             {
                 if (value != _tutorialNotification)
@@ -807,10 +804,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public WarfareArmyManagementSortControllerVM SortControllerVM
         {
-            get
-            {
-                return _sortControllerVM;
-            }
+            get => _sortControllerVM;
             set
             {
                 if (value != _sortControllerVM)
@@ -824,10 +818,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string BoostTitleText
         {
-            get
-            {
-                return _boostTitleText;
-            }
+            get => _boostTitleText;
             set
             {
                 if (value != _boostTitleText)
@@ -841,10 +832,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string DisbandArmyText
         {
-            get
-            {
-                return _disbandArmyText;
-            }
+            get => _disbandArmyText;
             set
             {
                 if (value != _disbandArmyText)
@@ -858,10 +846,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string CohesionBoostAmountText
         {
-            get
-            {
-                return _cohesionBoostAmountText;
-            }
+            get => _cohesionBoostAmountText;
             set
             {
                 if (value != _cohesionBoostAmountText)
@@ -875,10 +860,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string DistanceText
         {
-            get
-            {
-                return _distanceText;
-            }
+            get => _distanceText;
             set
             {
                 if (value != _distanceText)
@@ -892,10 +874,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string CostText
         {
-            get
-            {
-                return _costText;
-            }
+            get => _costText;
             set
             {
                 if (value != _costText)
@@ -909,10 +888,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string OwnerText
         {
-            get
-            {
-                return _ownerText;
-            }
+            get => _ownerText;
             set
             {
                 if (value != _ownerText)
@@ -926,10 +902,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string StrengthText
         {
-            get
-            {
-                return _strengthText;
-            }
+            get => _strengthText;
             set
             {
                 if (value != _strengthText)
@@ -943,10 +916,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string LordsText
         {
-            get
-            {
-                return _lordsText;
-            }
+            get => _lordsText;
             set
             {
                 if (value != _lordsText)
@@ -960,10 +930,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string ShipCountText
         {
-            get
-            {
-                return _shipCountText;
-            }
+            get => _shipCountText;
             set
             {
                 if (value != _shipCountText)
@@ -977,10 +944,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string TotalInfluence
         {
-            get
-            {
-                return _totalInfluence;
-            }
+            get => _totalInfluence;
             set
             {
                 if (value != _totalInfluence)
@@ -994,10 +958,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int TotalStrength
         {
-            get
-            {
-                return _totalStrength;
-            }
+            get => _totalStrength;
             set
             {
                 if (value != _totalStrength)
@@ -1011,10 +972,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int TotalGoldCost
         {
-            get
-            {
-                return _totalGoldCost;
-            }
+            get => _totalGoldCost;
             set
             {
                 if (value != _totalGoldCost)
@@ -1029,10 +987,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int TotalInfluenceCost
         {
-            get
-            {
-                return _totalInfluenceCost;
-            }
+            get => _totalInfluenceCost;
             set
             {
                 if (value != _totalInfluenceCost)
@@ -1047,10 +1002,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string TotalLords
         {
-            get
-            {
-                return _totalLords;
-            }
+            get => _totalLords;
             set
             {
                 if (value != _totalLords)
@@ -1064,10 +1016,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool CanCreateArmy
         {
-            get
-            {
-                return _canCreateArmy;
-            }
+            get => _canCreateArmy;
             set
             {
                 if (value != _canCreateArmy)
@@ -1081,10 +1030,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool CanBoostCohesion
         {
-            get
-            {
-                return _canBoostCohesion;
-            }
+            get => _canBoostCohesion;
             set
             {
                 if (value != _canBoostCohesion)
@@ -1098,10 +1044,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool CanDisbandArmy
         {
-            get
-            {
-                return _canDisbandArmy;
-            }
+            get => _canDisbandArmy;
             set
             {
                 if (value != _canDisbandArmy)
@@ -1115,10 +1058,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool CanAffordGoldCost
         {
-            get
-            {
-                return _canAffordGoldCost;
-            }
+            get => _canAffordGoldCost;
             set
             {
                 if (value != _canAffordGoldCost)
@@ -1132,10 +1072,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool CanAffordInfluenceCost
         {
-            get
-            {
-                return _canAffordInfluenceCost;
-            }
+            get => _canAffordInfluenceCost;
             set
             {
                 if (value != _canAffordInfluenceCost)
@@ -1149,10 +1086,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string TitleText
         {
-            get
-            {
-                return _titleText;
-            }
+            get => _titleText;
             set
             {
                 if (value != _titleText)
@@ -1166,10 +1100,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string ClanText
         {
-            get
-            {
-                return _clanText;
-            }
+            get => _clanText;
             set
             {
                 if (value != _clanText)
@@ -1183,10 +1114,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string NameText
         {
-            get
-            {
-                return _nameText;
-            }
+            get => _nameText;
             set
             {
                 if (value != _nameText)
@@ -1200,10 +1128,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string CancelText
         {
-            get
-            {
-                return _cancelText;
-            }
+            get => _cancelText;
             set
             {
                 if (value != _cancelText)
@@ -1217,10 +1142,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string DoneText
         {
-            get
-            {
-                return _doneText;
-            }
+            get => _doneText;
             set
             {
                 if (value != _doneText)
@@ -1234,10 +1156,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public WarfareArmyManagementItemVM FocusedItem
         {
-            get
-            {
-                return _focusedItem;
-            }
+            get => _focusedItem;
             set
             {
                 if (value != _focusedItem)
@@ -1251,10 +1170,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public MBBindingList<WarfareArmyManagementItemVM> PartyList
         {
-            get
-            {
-                return _partyList;
-            }
+            get => _partyList;
             set
             {
                 if (value != _partyList)
@@ -1268,10 +1184,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public MBBindingList<WarfareArmyManagementItemVM> PartiesInCart
         {
-            get
-            {
-                return _partiesInCart;
-            }
+            get => _partiesInCart;
             set
             {
                 if (value != _partiesInCart)
@@ -1285,10 +1198,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string TotalStrengthText
         {
-            get
-            {
-                return _totalStrengthText;
-            }
+            get => _totalStrengthText;
             set
             {
                 if (value != _totalStrengthText)
@@ -1302,10 +1212,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string TotalCostText
         {
-            get
-            {
-                return _totalCostText;
-            }
+            get => _totalCostText;
             set
             {
                 if (value != _totalCostText)
@@ -1319,10 +1226,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string TotalGoldCostNumbersText
         {
-            get
-            {
-                return _totalGoldCostNumbersText;
-            }
+            get => _totalGoldCostNumbersText;
             set
             {
                 if (value != _totalGoldCostNumbersText)
@@ -1336,10 +1240,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string TotalInfluenceCostNumbersText
         {
-            get
-            {
-                return _totalInfluenceCostNumbersText;
-            }
+            get => _totalInfluenceCostNumbersText;
             set
             {
                 if (value != _totalInfluenceCostNumbersText)
@@ -1353,10 +1254,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string CohesionText
         {
-            get
-            {
-                return _cohesionText;
-            }
+            get => _cohesionText;
             set
             {
                 if (value != _cohesionText)
@@ -1370,10 +1268,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int Cohesion
         {
-            get
-            {
-                return _cohesion;
-            }
+            get => _cohesion;
             set
             {
                 if (value != _cohesion)
@@ -1387,10 +1282,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int CohesionBoostCost
         {
-            get
-            {
-                return _cohesionBoostCost;
-            }
+            get => _cohesionBoostCost;
             set
             {
                 if (value != _cohesionBoostCost)
@@ -1404,10 +1296,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool PlayerHasArmy
         {
-            get
-            {
-                return _playerHasArmy;
-            }
+            get => _playerHasArmy;
             set
             {
                 if (value != _playerHasArmy)
@@ -1421,10 +1310,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string MoraleText
         {
-            get
-            {
-                return _moraleText;
-            }
+            get => _moraleText;
             set
             {
                 if (value != _moraleText)
@@ -1438,10 +1324,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public string FoodText
         {
-            get
-            {
-                return _foodText;
-            }
+            get => _foodText;
             set
             {
                 if (value != _foodText)
@@ -1455,10 +1338,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int NewCohesion
         {
-            get
-            {
-                return _newCohesion;
-            }
+            get => _newCohesion;
             set
             {
                 if (value != _newCohesion)
@@ -1472,10 +1352,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public BasicTooltipViewModel CohesionHint
         {
-            get
-            {
-                return _cohesionHint;
-            }
+            get => _cohesionHint;
             set
             {
                 if (value != _cohesionHint)
@@ -1489,10 +1366,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public HintViewModel MoraleHint
         {
-            get
-            {
-                return _moraleHint;
-            }
+            get => _moraleHint;
             set
             {
                 if (value != _moraleHint)
@@ -1506,10 +1380,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public HintViewModel BoostCohesionHint
         {
-            get
-            {
-                return _boostCohesionHint;
-            }
+            get => _boostCohesionHint;
             set
             {
                 if (value != _boostCohesionHint)
@@ -1523,10 +1394,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public HintViewModel DisbandArmyHint
         {
-            get
-            {
-                return _disbandArmyHint;
-            }
+            get => _disbandArmyHint;
             set
             {
                 if (value != _disbandArmyHint)
@@ -1540,10 +1408,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public HintViewModel DoneHint
         {
-            get
-            {
-                return _doneHint;
-            }
+            get => _doneHint;
             set
             {
                 if (value != _doneHint)
@@ -1557,10 +1422,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public HintViewModel FoodHint
         {
-            get
-            {
-                return _foodHint;
-            }
+            get => _foodHint;
             set
             {
                 if (value != _foodHint)
@@ -1574,10 +1436,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public int DisbandCost
         {
-            get
-            {
-                return _disbandCost;
-            }
+            get => _disbandCost;
             set
             {
                 if (value != _disbandCost)
@@ -1591,10 +1450,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public InputKeyItemVM ResetInputKey
         {
-            get
-            {
-                return _resetInputKey;
-            }
+            get => _resetInputKey;
             set
             {
                 if (value != _resetInputKey)
@@ -1608,10 +1464,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public InputKeyItemVM CancelInputKey
         {
-            get
-            {
-                return _cancelInputKey;
-            }
+            get => _cancelInputKey;
             set
             {
                 if (value != _cancelInputKey)
@@ -1625,10 +1478,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public InputKeyItemVM DoneInputKey
         {
-            get
-            {
-                return _doneInputKey;
-            }
+            get => _doneInputKey;
             set
             {
                 if (value != _doneInputKey)
@@ -1642,10 +1492,7 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public InputKeyItemVM RemoveInputKey
         {
-            get
-            {
-                return _removeInputKey;
-            }
+            get => _removeInputKey;
             set
             {
                 if (value == _removeInputKey)
@@ -1665,19 +1512,13 @@ namespace Warfare.ViewModels.ArmyManagement
         [DataSourceProperty]
         public bool IsDisbandWithCost
         {
-            get
-            {
-                return LeaderParty == null || LeaderParty == MobileParty.MainParty;
-            }
+            get => LeaderParty == null || LeaderParty == MobileParty.MainParty;
         }
 
         [DataSourceProperty]
         public bool IsSplitArmy
         {
-            get
-            {
-                return _isSplitArmy;
-            }
+            get => _isSplitArmy;
             set
             {
                 if (value != _isSplitArmy)

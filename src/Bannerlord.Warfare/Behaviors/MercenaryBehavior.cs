@@ -63,6 +63,10 @@ namespace Warfare.Behaviors
                             hero.Gold = 0;
                             GiveGoldAction.ApplyBetweenCharacters(null, hero, GetStartingGold());
                         }
+                        Settlement settlement = clan.HomeSettlement;
+                        CampaignVec2 centerPosition = NavigationHelper.FindReachablePointAroundPosition(settlement.GatePosition, MobileParty.NavigationType.Default, 250f, 25f);
+                        MobileParty party = LordPartyComponent.CreateLordParty(hero.CharacterObject.StringId, hero, centerPosition, 3f, settlement, hero);
+                        party.SetMoveModeHold();
                     }
                     if (!Settings.Current.MaintainVanillaBanners)
                     {

@@ -102,10 +102,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public string WarName
         {
-            get
-            {
-                return _warName;
-            }
+            get => _warName;
             set
             {
                 if (value != _warName)
@@ -118,10 +115,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public string NumberOfDaysSinceWarBegan
         {
-            get
-            {
-                return _numberOfDaysSinceWarBegan;
-            }
+            get => _numberOfDaysSinceWarBegan;
             set
             {
                 if (value != _numberOfDaysSinceWarBegan)
@@ -134,10 +128,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public bool IsBehaviorSelectionEnabled
         {
-            get
-            {
-                return _isBehaviorSelectionEnabled;
-            }
+            get => _isBehaviorSelectionEnabled;
             set
             {
                 if (value != _isBehaviorSelectionEnabled)
@@ -150,10 +141,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public int Score
         {
-            get
-            {
-                return _score;
-            }
+            get => _score;
             set
             {
                 if (value != _score)
@@ -166,10 +154,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public int CasualtiesOfFaction1
         {
-            get
-            {
-                return _casualtiesOfFaction1;
-            }
+            get => _casualtiesOfFaction1;
             set
             {
                 if (value != _casualtiesOfFaction1)
@@ -182,10 +167,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public int CasualtiesOfFaction2
         {
-            get
-            {
-                return _casualtiesOfFaction2;
-            }
+            get => _casualtiesOfFaction2;
             set
             {
                 if (value != _casualtiesOfFaction2)
@@ -198,10 +180,7 @@ namespace Warfare.ViewModels.World
         [DataSourceProperty]
         public MBBindingList<KingdomWarLogItemVM> WarLog
         {
-            get
-            {
-                return _warLog;
-            }
+            get => _warLog;
             set
             {
                 if (value != _warLog)

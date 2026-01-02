@@ -1025,7 +1025,8 @@ namespace Warfare.ViewModels.Military
         {
             if (Hero.MainHero.MapFaction.IsKingdomFaction && Hero.MainHero.MapFaction.Leader == Hero.MainHero && CurrentSelectedArmy != null)
             {
-                if (s.SelectedIndex > 0)
+                int selectedIndex = Campaign.Current.GetCampaignBehavior<StrategyBehavior>().GetPriority(CurrentSelectedArmy.Army.ArmyOwner);
+                if (s.SelectedIndex > 0 || selectedIndex > 0)
                 {
                     Campaign.Current.GetCampaignBehavior<StrategyBehavior>().SetPriority(CurrentSelectedArmy.Army.ArmyOwner, s.SelectedIndex);
                 }
@@ -1053,10 +1054,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string NoMercenarySelectedText
         {
-            get
-            {
-                return _noMercenarySelectedText;
-            }
+            get => _noMercenarySelectedText;
             set
             {
                 if (value != _noMercenarySelectedText)
@@ -1070,10 +1068,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string DisbandActionExplanationText
         {
-            get
-            {
-                return _disbandActionExplanationText;
-            }
+            get => _disbandActionExplanationText;
             set
             {
                 if (value != _disbandActionExplanationText)
@@ -1087,10 +1082,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string ManageActionExplanationText
         {
-            get
-            {
-                return _manageActionExplanationText;
-            }
+            get => _manageActionExplanationText;
             set
             {
                 if (value != _manageActionExplanationText)
@@ -1104,10 +1096,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string HireActionExplanationText
         {
-            get
-            {
-                return _hireActionExplanationText;
-            }
+            get => _hireActionExplanationText;
             set
             {
                 if (value != _hireActionExplanationText)
@@ -1121,10 +1110,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string ExtendActionExplanationText
         {
-            get
-            {
-                return _extendActionExplanationText;
-            }
+            get => _extendActionExplanationText;
             set
             {
                 if (value != _extendActionExplanationText)
@@ -1138,10 +1124,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string FireActionExplanationText
         {
-            get
-            {
-                return _fireActionExplanationText;
-            }
+            get => _fireActionExplanationText;
             set
             {
                 if (value != _fireActionExplanationText)
@@ -1155,10 +1138,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public KingdomArmyItemVM CurrentSelectedArmy
         {
-            get
-            {
-                return _currentSelectedArmy;
-            }
+            get => _currentSelectedArmy;
             set
             {
                 if (value != _currentSelectedArmy)
@@ -1172,10 +1152,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public HintViewModel ChangeLeaderHint
         {
-            get
-            {
-                return _changeLeaderHint;
-            }
+            get => _changeLeaderHint;
             set
             {
                 if (value != _changeLeaderHint)
@@ -1189,10 +1166,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public HintViewModel SplitArmyHint
         {
-            get
-            {
-                return _splitArmyHint;
-            }
+            get => _splitArmyHint;
             set
             {
                 if (value != _splitArmyHint)
@@ -1206,10 +1180,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public HintViewModel ManageArmyHint
         {
-            get
-            {
-                return _manageArmyHint;
-            }
+            get => _manageArmyHint;
             set
             {
                 if (value != _manageArmyHint)
@@ -1223,10 +1194,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string MilitaryText
         {
-            get
-            {
-                return _militaryText;
-            }
+            get => _militaryText;
             set
             {
                 if (value != _militaryText)
@@ -1240,10 +1208,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string ArmiesText
         {
-            get
-            {
-                return _armiesText;
-            }
+            get => _armiesText;
             set
             {
                 if (value != _armiesText)
@@ -1257,10 +1222,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string MercenariesText
         {
-            get
-            {
-                return _mercenariesText;
-            }
+            get => _mercenariesText;
             set
             {
                 if (value != _mercenariesText)
@@ -1274,10 +1236,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string PartiesText
         {
-            get
-            {
-                return _partiesText;
-            }
+            get => _partiesText;
             set
             {
                 if (value != _partiesText)
@@ -1291,10 +1250,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string HireText
         {
-            get
-            {
-                return _hireText;
-            }
+            get => _hireText;
             set
             {
                 if (value != _hireText)
@@ -1308,10 +1264,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string ExtendText
         {
-            get
-            {
-                return _extendText;
-            }
+            get => _extendText;
             set
             {
                 if (value != _extendText)
@@ -1325,10 +1278,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string FireText
         {
-            get
-            {
-                return _fireText;
-            }
+            get => _fireText;
             set
             {
                 if (value != _fireText)
@@ -1342,10 +1292,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public MBBindingList<KingdomArmyItemVM> Armies
         {
-            get
-            {
-                return _armies;
-            }
+            get => _armies;
             set
             {
                 if (value != _armies)
@@ -1359,10 +1306,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool CanDisbandCurrentArmy
         {
-            get
-            {
-                return _canDisbandCurrentArmy;
-            }
+            get => _canDisbandCurrentArmy;
             set
             {
                 if (value != _canDisbandCurrentArmy)
@@ -1376,10 +1320,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool CanManageCurrentArmy
         {
-            get
-            {
-                return _canManageCurrentArmy;
-            }
+            get => _canManageCurrentArmy;
             set
             {
                 if (value != _canManageCurrentArmy)
@@ -1393,10 +1334,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool CanShowLocationOfCurrentArmy
         {
-            get
-            {
-                return _canShowLocationOfCurrentArmy;
-            }
+            get => _canShowLocationOfCurrentArmy;
             set
             {
                 if (value != _canShowLocationOfCurrentArmy)
@@ -1410,10 +1348,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string DisbandText
         {
-            get
-            {
-                return _disbandText;
-            }
+            get => _disbandText;
             set
             {
                 if (value != _disbandText)
@@ -1427,10 +1362,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string ManageText
         {
-            get
-            {
-                return _manageText;
-            }
+            get => _manageText;
             set
             {
                 if (value != _manageText)
@@ -1444,10 +1376,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public int DisbandCost
         {
-            get
-            {
-                return _disbandCost;
-            }
+            get => _disbandCost;
             set
             {
                 if (value != _disbandCost)
@@ -1461,10 +1390,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public int MinimumArmyCost
         {
-            get
-            {
-                return _minimumArmyCost;
-            }
+            get => _minimumArmyCost;
             set
             {
                 if (value != _minimumArmyCost)
@@ -1478,10 +1404,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string MinimumArmyCostLabel
         {
-            get
-            {
-                return _minimumArmyCostLabel;
-            }
+            get => _minimumArmyCostLabel;
             set
             {
                 if (value != _minimumArmyCostLabel)
@@ -1495,10 +1418,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public int TotalArmyCost
         {
-            get
-            {
-                return _totalArmyCost;
-            }
+            get => _totalArmyCost;
             set
             {
                 if (value != _totalArmyCost)
@@ -1512,10 +1432,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string TotalArmyCostLabel
         {
-            get
-            {
-                return _totalArmyCostLabel;
-            }
+            get => _totalArmyCostLabel;
             set
             {
                 if (value != _totalArmyCostLabel)
@@ -1529,10 +1446,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public HintViewModel DisbandHint
         {
-            get
-            {
-                return _disbandHint;
-            }
+            get => _disbandHint;
             set
             {
                 if (value != _disbandHint)
@@ -1546,10 +1460,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool ShowArmies
         {
-            get
-            {
-                return _showArmies;
-            }
+            get => _showArmies;
             set
             {
                 if (value != _showArmies)
@@ -1563,10 +1474,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool ShowMercenaries
         {
-            get
-            {
-                return _showMercenaries;
-            }
+            get => _showMercenaries;
             set
             {
                 if (value != _showMercenaries)
@@ -1580,10 +1488,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool ShowChangeArmyLeader
         {
-            get
-            {
-                return _showChangeArmyLeader;
-            }
+            get => _showChangeArmyLeader;
             set
             {
                 if (value != _showChangeArmyLeader)
@@ -1597,10 +1502,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool ShowSplitArmy
         {
-            get
-            {
-                return _showSplitArmy;
-            }
+            get => _showSplitArmy;
             set
             {
                 if (value != _showSplitArmy)
@@ -1614,10 +1516,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool ShowMaintainCohesion
         {
-            get
-            {
-                return _showMaintainCohesion;
-            }
+            get => _showMaintainCohesion;
             set
             {
                 if (value != _showMaintainCohesion)
@@ -1631,10 +1530,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool ShowWarStrategy
         {
-            get
-            {
-                return _showWarStrategy;
-            }
+            get => _showWarStrategy;
             set
             {
                 if (value != _showWarStrategy)
@@ -1648,10 +1544,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public ClanCardSelectionPopupVM CardSelectionPopup
         {
-            get
-            {
-                return _cardSelectionPopup;
-            }
+            get => _cardSelectionPopup;
             set
             {
                 if (value != _cardSelectionPopup)
@@ -1665,10 +1558,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public MBBindingList<KingdomMercenaryItemVM> Mercenaries
         {
-            get
-            {
-                return _mercenaries;
-            }
+            get => _mercenaries;
             set
             {
                 if (value != _mercenaries)
@@ -1682,10 +1572,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public KingdomMercenaryItemVM CurrentSelectedMercenary
         {
-            get
-            {
-                return _currentSelectedMercenary;
-            }
+            get => _currentSelectedMercenary;
             set
             {
                 if (value != _currentSelectedMercenary)
@@ -1699,10 +1586,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public HintViewModel HireHint
         {
-            get
-            {
-                return _hireHint;
-            }
+            get => _hireHint;
             set
             {
                 if (value != _hireHint)
@@ -1716,10 +1600,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public HintViewModel ExtendHint
         {
-            get
-            {
-                return _extendHint;
-            }
+            get => _extendHint;
             set
             {
                 if (value != _extendHint)
@@ -1733,10 +1614,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public HintViewModel FireHint
         {
-            get
-            {
-                return _fireHint;
-            }
+            get => _fireHint;
             set
             {
                 if (value != _fireHint)
@@ -1750,10 +1628,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool CanChangeCurrentArmyLeader
         {
-            get
-            {
-                return _canChangeCurrentArmyLeader;
-            }
+            get => _canChangeCurrentArmyLeader;
             set
             {
                 if (value != _canChangeCurrentArmyLeader)
@@ -1767,10 +1642,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool CanSplitCurrentArmy
         {
-            get
-            {
-                return _canSplitCurrentArmy;
-            }
+            get => _canSplitCurrentArmy;
             set
             {
                 if (value != _canSplitCurrentArmy)
@@ -1784,10 +1656,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool CanHireCurrentMercenary
         {
-            get
-            {
-                return _canHireCurrentMercenary;
-            }
+            get => _canHireCurrentMercenary;
             set
             {
                 if (value != _canHireCurrentMercenary)
@@ -1801,10 +1670,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool CanExtendCurrentMercenary
         {
-            get
-            {
-                return _canExtendCurrentMercenary;
-            }
+            get => _canExtendCurrentMercenary;
             set
             {
                 if (value != _canExtendCurrentMercenary)
@@ -1818,10 +1684,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool ShouldExtendCurrentMercenary
         {
-            get
-            {
-                return _shouldExtendCurrentMercenary;
-            }
+            get => _shouldExtendCurrentMercenary;
             set
             {
                 if (value != _shouldExtendCurrentMercenary)
@@ -1835,10 +1698,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool CanFireCurrentMercenary
         {
-            get
-            {
-                return _canFireCurrentMercenary;
-            }
+            get => _canFireCurrentMercenary;
             set
             {
                 if (value != _canFireCurrentMercenary)
@@ -1852,10 +1712,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool IsAcceptableMercenarySelected
         {
-            get
-            {
-                return _isAcceptableMercenarySelected;
-            }
+            get => _isAcceptableMercenarySelected;
             set
             {
                 if (value != _isAcceptableMercenarySelected)
@@ -1868,10 +1725,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool IsSelectionEnabled
         {
-            get
-            {
-                return _isSelectionEnabled;
-            }
+            get => _isSelectionEnabled;
             set
             {
                 if (value != _isSelectionEnabled)
@@ -1884,10 +1738,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public int HireCost
         {
-            get
-            {
-                return _hireCost;
-            }
+            get => _hireCost;
             set
             {
                 if (value != _hireCost)
@@ -1901,10 +1752,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string HireCostLabel
         {
-            get
-            {
-                return _hireCostLabel;
-            }
+            get => _hireCostLabel;
             set
             {
                 if (value != _hireCostLabel)
@@ -1917,10 +1765,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string RemainingContractTimeLabel
         {
-            get
-            {
-                return _remainingContractTimeLabel;
-            }
+            get => _remainingContractTimeLabel;
             set
             {
                 if (value != _remainingContractTimeLabel)
@@ -1934,10 +1779,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string StrategySelectionTitle
         {
-            get
-            {
-                return _strategySelectionTitle;
-            }
+            get => _strategySelectionTitle;
             set
             {
                 if (value != _strategySelectionTitle)
@@ -1951,10 +1793,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public SelectorVM<SelectorItemVM> StrategySelection
         {
-            get
-            {
-                return _strategySelection;
-            }
+            get => _strategySelection;
             set
             {
                 if (value != _strategySelection)
@@ -1968,10 +1807,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool CanMaintainCohesion
         {
-            get
-            {
-                return _canMaintainCohesion;
-            }
+            get => _canMaintainCohesion;
             set
             {
                 if (value != _canMaintainCohesion)
@@ -1985,10 +1821,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public bool IsMaintainCohesionSelected
         {
-            get
-            {
-                return _isMaintainCohesionSelected;
-            }
+            get => _isMaintainCohesionSelected;
             set
             {
                 if (value != _isMaintainCohesionSelected)
@@ -2002,10 +1835,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public HintViewModel MaintainCohesionHint
         {
-            get
-            {
-                return _maintainCohesionHint;
-            }
+            get => _maintainCohesionHint;
             set
             {
                 if (value != _maintainCohesionHint)
@@ -2019,10 +1849,7 @@ namespace Warfare.ViewModels.Military
         [DataSourceProperty]
         public string MaintainCohesionText
         {
-            get
-            {
-                return _maintainCohesionText;
-            }
+            get => _maintainCohesionText;
             set
             {
                 if (value != _maintainCohesionText)
