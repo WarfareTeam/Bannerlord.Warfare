@@ -170,23 +170,23 @@ namespace Warfare.Patches
         {
             TextObject textObject = reason switch
             {
-                Army.ArmyDispersionReason.DismissalRequestedWithInfluence => new TextObject("{=2yRoDSFv}{LEADER_NAME} has disbanded their army near {SETTLEMENT} since dismissal is requested.", null),
-                Army.ArmyDispersionReason.NotEnoughParty => new TextObject("{=jAZDcWDs}{LEADER_NAME} disbanded their army near {SETTLEMENT} since other parties have left the army.", null),
-                Army.ArmyDispersionReason.KingdomChanged => new TextObject("{=qT7EdgVA}{LEADER_NAME} disbanded their army near {SETTLEMENT} since kingdom has been changed.", null),
-                Army.ArmyDispersionReason.CohesionDepleted => new TextObject("{=VxIbrdlv}{LEADER_NAME} disbanded their army near {SETTLEMENT} since cohesion has been depleted.", null),
-                Army.ArmyDispersionReason.ObjectiveFinished => new TextObject("{=g7A0NEoi}{LEADER_NAME} disbanded their army near {SETTLEMENT} since the objective is finished.", null),
-                Army.ArmyDispersionReason.LeaderPartyRemoved => new TextObject("{=tT13MvdK}{LEADER_NAME} disbanded their army near {SETTLEMENT} since they have left the army.", null),
-                Army.ArmyDispersionReason.CannotElectNewLeader => new TextObject("{=FpyapN2t}{LEADER_NAME} disbanded their army near {SETTLEMENT} since a new leader cannot be selected.", null),
-                Army.ArmyDispersionReason.LeaderCannotArrivePointOnTime => new TextObject("{=YQ88av6Z}{LEADER_NAME} disbanded their army near {SETTLEMENT} since they couldn't arrive to the point on time.", null),
-                Army.ArmyDispersionReason.ArmyLeaderIsDead => new TextObject("{=0XYI6M3o}{LEADER_NAME} had their army near {SETTLEMENT} disbanded since they are dead.", null),
-                _ => new TextObject("{=tX7SnH06}{LEADER_NAME} disbanded their army near {SETTLEMENT}.", null),
+                Army.ArmyDispersionReason.DismissalRequestedWithInfluence => new TextObject("{=2yRoDSFv}{LEADER_NAME} has disbanded their army since dismissal is requested.", null),
+                Army.ArmyDispersionReason.NotEnoughParty => new TextObject("{=jAZDcWDs}{LEADER_NAME} disbanded their army since other parties have left the army.", null),
+                Army.ArmyDispersionReason.KingdomChanged => new TextObject("{=qT7EdgVA}{LEADER_NAME} disbanded their army since kingdom has been changed.", null),
+                Army.ArmyDispersionReason.CohesionDepleted => new TextObject("{=VxIbrdlv}{LEADER_NAME} disbanded their army since cohesion has been depleted.", null),
+                Army.ArmyDispersionReason.ObjectiveFinished => new TextObject("{=g7A0NEoi}{LEADER_NAME} disbanded their army since the objective is finished.", null),
+                Army.ArmyDispersionReason.LeaderPartyRemoved => new TextObject("{=tT13MvdK}{LEADER_NAME} disbanded their army since they have left the army.", null),
+                Army.ArmyDispersionReason.CannotElectNewLeader => new TextObject("{=FpyapN2t}{LEADER_NAME} disbanded their army since a new leader cannot be selected.", null),
+                Army.ArmyDispersionReason.LeaderCannotArrivePointOnTime => new TextObject("{=YQ88av6Z}{LEADER_NAME} disbanded their army since they couldn't arrive to the point on time.", null),
+                Army.ArmyDispersionReason.ArmyLeaderIsDead => new TextObject("{=0XYI6M3o}{LEADER_NAME} had their army disbanded since they are dead.", null),
+			    Army.ArmyDispersionReason.NoShipToUse => new TextObject("{=0000}{LEADER_NAME} had their army disbanded since they no longer have any ships to carry their men.", null),
+                _ => new TextObject("{=tX7SnH06}{LEADER_NAME} disbanded their army.", null),
             };
             if (hero.IsPrisoner)
             {
-                textObject = new TextObject("{=f3acvV05}{LEADER_NAME} disbanded their army near {SETTLEMENT} since they were taken as a prisoner.", null);
+                textObject = new TextObject("{=f3acvV05}{LEADER_NAME} disbanded their army since they were taken as a prisoner.", null);
             }
             textObject.SetTextVariable("LEADER_NAME", hero.Name);
-            textObject.SetTextVariable("SETTLEMENT", HeroHelper.GetClosestSettlement(hero).Name);
             return textObject;
         }
     }

@@ -1,10 +1,10 @@
-﻿using Helpers;
-using System;
+﻿using System;
+
+using Helpers;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.ComponentInterfaces;
 using TaleWorlds.CampaignSystem.Extensions;
-using TaleWorlds.CampaignSystem.GameComponents;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Siege;
 using TaleWorlds.CampaignSystem.ViewModelCollection;
@@ -13,8 +13,6 @@ using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.ImageIdentifiers;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
-using Warfare.Extensions;
-using static TaleWorlds.MountAndBlade.Launcher.Library.NativeMessageBox;
 
 namespace Warfare.ViewModels.ArmyManagement
 {
