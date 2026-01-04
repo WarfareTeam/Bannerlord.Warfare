@@ -17,12 +17,6 @@
     <BaseOutputPath></BaseOutputPath>
   </PropertyGroup>
 
-	<PropertyGroup>
-		<GameFolder Condition="!Exists($(GameFolder)) AND $(OS) == 'Windows_NT'">$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 261550@InstallLocation)</GameFolder>
-		<GameFolder Condition="!Exists($(GameFolder)) AND $(OS) == 'Windows_NT'">C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord</GameFolder>
-		<GameFolder Condition="!Exists($(GameFolder)) AND $(OS) == 'Unix'">~/.steam/root/steamapps/common/Mount &amp; Blade II Bannerlord</GameFolder>
-	</PropertyGroup>
-
   <ItemGroup>
     <Reference Include="$(GameFolder)\bin\$(GameBinariesFolder)\TaleWorlds.*.dll" Exclude="$(GameFolder)\bin\$(GameBinariesFolder)\TaleWorlds.Native.dll">
       <HintPath>%(Identity)</HintPath>
@@ -152,4 +146,8 @@
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="xcopy /Y &quot;C:\Users\kille\Desktop\Modding\Bannerlord\Bannerlord Repos\Bannerlord.Warfare\src\Bannerlord.Warfare\bin\x64\Debug\netstandard2.0\Bannerlord.Warfare.dll&quot; &quot;C:\Program Files\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\Bannerlord.Warfare\bin\Win64_Shipping_Client\Bannerlord.Warfare.dll&quot;" />
+	</Target>
 </Project>
