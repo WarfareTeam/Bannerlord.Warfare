@@ -12,6 +12,7 @@ using TaleWorlds.CampaignSystem.ViewModelCollection.Input;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.ImageIdentifiers;
 using TaleWorlds.Library;
+using TaleWorlds.LinQuick;
 using TaleWorlds.Localization;
 
 namespace Warfare.ViewModels.ArmyManagement
@@ -27,8 +28,6 @@ namespace Warfare.ViewModels.ArmyManagement
         public readonly MobileParty Party;
 
         public readonly Hero NewLeader;
-
-        private const float _minimumPartySizeScoreNeeded = 0.4f;
 
         public bool CanJoinBackWithoutCost;
 
@@ -175,9 +174,6 @@ namespace Warfare.ViewModels.ArmyManagement
 
         public void UpdateEligibility()
         {
-            ArmyManagementCalculationModel armyManagementCalculationModel = Campaign.Current.Models?.ArmyManagementCalculationModel;
-            float num = armyManagementCalculationModel?.GetPartySizeScore(Party) ?? 0f;
-            IDisbandPartyCampaignBehavior behavior = Campaign.Current.CampaignBehaviorManager.GetBehavior<IDisbandPartyCampaignBehavior>();
             bool isEligible = false;
             _eligibilityReason = TextObject.GetEmpty();
             if (!CanJoinBackWithoutCost)
@@ -212,29 +208,31 @@ namespace Warfare.ViewModels.ArmyManagement
                     {
                         _eligibilityReason = new TextObject("{=Vq8yavES}Already in army.");
                     }
-                    else if (num <= 0.4f && !Party.ActualClan.IsMinorFaction)
+                    else if ((Campaign.Current.Models?.ArmyManagementCalculationModel?.GetPartySizeScore(Party) ?? 0f) <= 0.4f && !Party.ActualClan.IsMinorFaction && Party.ActualClan.Fiefs.CountQ() > 0)
                     {
                         _eligibilityReason = new TextObject("{=SVJlOYCB}Party has less men than 40% of it's party size limit.");
                     }
-                    else if (Party.IsDisbanding || (behavior != null && behavior.IsPartyWaitingForDisband(Party)))
-                    {
-                        _eligibilityReason = new TextObject("{=tFGM0yav}This party is disbanding.");
-                    }
-                    else
+                    else if (!Party.IsDisbanding)
                     {
                         IDisbandPartyCampaignBehavior campaignBehavior = Campaign.Current.GetCampaignBehavior<IDisbandPartyCampaignBehavior>();
                         if (campaignBehavior == null || !campaignBehavior.IsPartyWaitingForDisband(Party))
                         {
-                            float landRatio;
                             if (MobileParty.MainParty.IsCurrentlyAtSea)
                             {
-                                _eligibilityReason = ((!Party.HasNavalNavigationCapability) ? new TextObject("{=nqq84Dzq}Party cannot reach your army since it has no ships.") : new TextObject("{=gFixGQsr}You cannot call a party to your army while your party is at sea."));
+                                if (!Party.HasNavalNavigationCapability)
+                                {
+                                    _eligibilityReason = new TextObject("{=nqq84Dzq}Party cannot reach your army since it has no ships.");
+                                }
+                                else
+                                {
+                                    _eligibilityReason = new TextObject("{=gFixGQsr}You cannot call a party to your army while your party is at sea.");
+                                }
                             }
                             else if (Party.IsInRaftState)
                             {
                                 _eligibilityReason = new TextObject("{=TbXDmh3t}This party is lost at sea.");
                             }
-                            else if (DistanceHelper.FindClosestDistanceFromMobilePartyToMobileParty(Party, MobileParty.MainParty, Party.NavigationCapability, out landRatio) > Campaign.Current.Models.ArmyManagementCalculationModel.MaximumDistanceToCallToArmy)
+                            else if (DistanceHelper.FindClosestDistanceFromMobilePartyToMobileParty(Party, MobileParty.MainParty, Party.NavigationCapability, out float num) > Campaign.Current.Models.ArmyManagementCalculationModel.MaximumDistanceToCallToArmy)
                             {
                                 _eligibilityReason = new TextObject("{=UINgZDN5}You can not call a party that is far away.");
                             }
@@ -247,6 +245,10 @@ namespace Warfare.ViewModels.ArmyManagement
                         {
                             isEligible = true;
                         }
+                    }
+                    else
+                    {
+                        _eligibilityReason = new TextObject("{=tFGM0yav}This party is disbanding.");
                     }
                 }
                 else if (Party.Army != null && Party.Army.LeaderParty == Party.LeaderHero.PartyBelongedTo)
