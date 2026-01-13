@@ -127,16 +127,6 @@ namespace Warfare.Behaviors
             }
         }
 
-        public int GetStartingGold()
-        {
-            return MBRandom.RandomFloat < 0.5f ? MBRandom.RandomInt(5000, 30000) : MBRandom.RandomInt(30000, 120000);
-        }
-
-        public int GetStartingRenown(Clan clan)
-        {
-            return MBRandom.RandomInt(clan.Heroes.Count() * 125, clan.Heroes.Count() * 800);
-        }
-
         public void OnHourlyTickClan(Clan clan)
         {
             if (Settings.Current.UseVanillaRecruitment || queue.IsEmpty() || !queue.Contains(clan))
@@ -156,7 +146,7 @@ namespace Warfare.Behaviors
             RecruitTroops(clan);
         }
 
-        private void OnBeforeHeroKilled(Hero victim, Hero killer, KillCharacterAction.KillCharacterActionDetail detai, bool showNotification = true)
+        private void OnBeforeHeroKilled(Hero victim, Hero killer, KillCharacterAction.KillCharacterActionDetail detail, bool showNotification = true)
         {
             if (victim == null || victim.Clan == null || !victim.Clan.IsMinorFaction || victim.Clan == Clan.PlayerClan || victim.Clan.Heroes.IsEmpty() || !victim.Clan.GetHeirApparents().IsEmpty())
             {
@@ -172,6 +162,16 @@ namespace Warfare.Behaviors
                 return;
             }
             ChangeClanName(newLeader.Clan);
+        }
+
+        public int GetStartingGold()
+        {
+            return MBRandom.RandomFloat < 0.5f ? MBRandom.RandomInt(5000, 30000) : MBRandom.RandomInt(30000, 120000);
+        }
+
+        public int GetStartingRenown(Clan clan)
+        {
+            return MBRandom.RandomInt(clan.Heroes.Count() * 125, clan.Heroes.Count() * 800);
         }
 
         public void ChangeClanName(Clan clan)
