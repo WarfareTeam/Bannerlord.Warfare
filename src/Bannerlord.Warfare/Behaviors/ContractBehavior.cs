@@ -30,7 +30,7 @@ namespace Warfare.Behaviors
         public void OnDailyTick()
         {
             foreach (Kingdom kingdom in Kingdom.All)
-            {   
+            {
                 if (kingdom.IsEliminated || kingdom.Leader == Hero.MainHero)
                 {
                     continue;
@@ -69,7 +69,7 @@ namespace Warfare.Behaviors
                     if (RandomFloat < clanHireMercenaryScore)
                     {
                         SignContract(mercenary, kingdom);
-                        Hero armyLeader = (from x in clan.Heroes where x.PartyBelongedTo != null && x.PartyBelongedTo.Army != null orderby x.PartyBelongedTo.Army.EstimatedStrength descending select x).FirstOrDefault();
+                        Hero armyLeader = ((from x in clan.Heroes where x.PartyBelongedTo != null && x.PartyBelongedTo.Army != null orderby x.PartyBelongedTo.Army.EstimatedStrength descending select x) ?? (from x in kingdom.Armies select x.ArmyOwner)).FirstOrDefault();
                         if (armyLeader != null)
                         {
                             foreach (WarPartyComponent party in mercenary.WarPartyComponents)
