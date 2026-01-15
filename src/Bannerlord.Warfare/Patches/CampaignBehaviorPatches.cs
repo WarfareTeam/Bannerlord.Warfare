@@ -61,7 +61,7 @@ namespace Warfare.Patches
     {
         public static bool Prefix(IFaction faction1, IFaction faction2, DeclareWarAction.DeclareWarDetail detail)
         {
-            if (Settings.Current.EnableNotifications)
+            if (Settings.Current.EnableNotifications && faction2 is Kingdom)
             {
                 if (faction2 == Hero.MainHero.MapFaction || (faction1 != Hero.MainHero.MapFaction && detail != DeclareWarAction.DeclareWarDetail.CausedByKingdomDecision) || (Settings.Current.WarNotificationScope.SelectedIndex == 1 && faction2 != Hero.MainHero.MapFaction && faction1 != Hero.MainHero.MapFaction))
                 {
@@ -86,7 +86,7 @@ namespace Warfare.Patches
     {
         public static bool Prefix(IFaction faction1, IFaction faction2, MakePeaceAction.MakePeaceDetail detail)
         {
-            if (Settings.Current.EnableNotifications)
+            if (Settings.Current.EnableNotifications && faction2 is Kingdom)
             {
                 if (faction2 == Hero.MainHero.MapFaction || (faction1 != Hero.MainHero.MapFaction && detail != MakePeaceAction.MakePeaceDetail.ByKingdomDecision) || (Settings.Current.PeaceNotificationScope.SelectedIndex == 1 && faction2 != Hero.MainHero.MapFaction && faction1 != Hero.MainHero.MapFaction))
                 {
