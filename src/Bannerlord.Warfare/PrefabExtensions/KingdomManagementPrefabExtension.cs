@@ -6,13 +6,28 @@ using System.Xml;
 
 namespace Warfare.PrefabExtensions
 {
-    /*[PrefabExtension("KingdomManagement", "descendant::Constant[@Name='Header.Tab.Center.Width.Scaled']")]
+    [PrefabExtension("KingdomManagement", "descendant::Constant[@Name='Header.Tab.Center.Width.Scaled']")]
     [UsedImplicitly]
-    internal sealed class KingdomManagementScalingPatch : PrefabExtensionSetAttributePatch
+    internal sealed class KingdomManagementCenterScalingPatch : PrefabExtensionSetAttributePatch
     {
         public override List<Attribute> Attributes => new()
         {
             new Attribute("MultiplyResult", "0.60")
+        };
+    }
+    [PrefabExtension("KingdomManagement", "descendant::Constant[@Name='Header.Tab.Right.Width.Scaled']")]
+    [UsedImplicitly]
+    internal sealed class KingdomManagementRightScalingPatch : PrefabExtensionSetAttributePatch
+    {
+        public override List<Attribute> Attributes => SubModule.Diplomacy ? new() { new Attribute("MultiplyResult", "0.80") } : new();
+    }
+    [PrefabExtension("KingdomManagement", "descendant::KingdomTabControlListPanel")]
+    internal sealed class KingdomManagementKingdomTabControlListPanelPrefabExtension : PrefabExtensionSetAttributePatch
+    {
+        public override List<Attribute> Attributes => new()
+        {
+            new Attribute("WorldButton", "WorldTabButton"),
+            new Attribute("WorldPanel", "..\\..\\WorldPanel")
         };
     }
     [PrefabExtension("KingdomManagement", "descendant::ButtonWidget[@Id='ArmiesTabButton']")]
@@ -36,28 +51,18 @@ namespace Warfare.PrefabExtensions
     {
         public override List<Attribute> Attributes => new()
         {
-            new Attribute("MarginLeft", "5"),
             new Attribute("SuggestedWidth", "!Header.Tab.Center.Width.Scaled"),
             new Attribute("SuggestedHeight", "!Header.Tab.Center.Height.Scaled"),
+            new Attribute("Brush", "Header.Tab.Center"),
+            new Attribute("MarginLeft", "5"),
             new Attribute("PositionYOffset", "2"),
             new Attribute("Position", "5"),
-            new Attribute("Brush", "Header.Tab.Center"),
         };
     }
-    [PrefabExtension("KingdomManagement", "descendant::KingdomTabControlListPanel")]
-    internal sealed class KingdomManagementKingdomTabControlListPanelPrefabExtension : PrefabExtensionSetAttributePatch
-    {
-        public override List<Attribute> Attributes => new()
-        {
-            new Attribute("WorldButton", "WorldTabButton"),
-            new Attribute("WorldPanel", "..\\..\\WorldPanel")
-        };
-    }
-    [PrefabExtension("KingdomManagement", "descendant::KingdomTabControlListPanel/Children")]
+    [PrefabExtension("KingdomManagement", "descendant::ButtonWidget[@Id='DiplomacyTabButton']")]
     internal sealed class KingdomManagementWorldTabButtonPrefabExtension : PrefabExtensionInsertPatch
     {
-        public override InsertType Type => InsertType.Child;
-        public override int Index => 5;
+        public override InsertType Type => InsertType.Append;
         private readonly XmlDocument _document;
         public KingdomManagementWorldTabButtonPrefabExtension()
         {
@@ -91,22 +96,6 @@ namespace Warfare.PrefabExtensions
             _document = new XmlDocument();
             _document.LoadXml(@"<WorldPanel Id='WorldPanel' DataSource='{World}' MarginTop='188' MarginBottom='75' />");
         }
-        [PrefabExtensionXmlDocument]
-        public XmlDocument GetPrefabExtension() => _document;
-    }*/
-    [PrefabExtension("KingdomManagement", "descendant::Widget[@HeightSizePolicy='StretchToParent']")]
-    internal class KingdomManagementPrefabExtension : PrefabExtensionInsertPatch
-    {
-        public override InsertType Type => InsertType.Replace;
-
-        private readonly XmlDocument _document;
-
-        public KingdomManagementPrefabExtension()
-        {
-            _document = new XmlDocument();
-            _document.LoadXml(@"<KingdomManagementCustom />");
-        }
-
         [PrefabExtensionXmlDocument]
         public XmlDocument GetPrefabExtension() => _document;
     }

@@ -15,12 +15,14 @@ namespace Warfare
 {
     public class SubModule : MBSubModuleBase
     {
+        public static bool Diplomacy = false;
         public static bool NavalDLC = false;
 
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
 
+            Diplomacy = Utilities.GetModulesNames().Contains("Bannerlord.Diplomacy");
             NavalDLC = Utilities.GetModulesNames().Contains("NavalDLC");
 
             var extender = UIExtender.Create("bannerlord.warfare");
