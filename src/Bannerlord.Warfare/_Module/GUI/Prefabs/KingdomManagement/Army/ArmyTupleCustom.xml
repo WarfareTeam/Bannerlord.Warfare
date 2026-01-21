@@ -26,7 +26,7 @@
 
         <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="29" SuggestedWidth="29" Sprite="Quest\text_ball_ring" Color="#FCC537FF" AlphaFactor="0.8" PositionXOffset="15" VerticalAlignment="Center" IsEnabled="false" IsVisible="@IsNew"/>
 
-        <ListPanel HeightSizePolicy ='StretchToParent' WidthSizePolicy='StretchToParent' DoNotAcceptEvents='true'>
+        <ListPanel HeightSizePolicy ="StretchToParent" WidthSizePolicy="StretchToParent" DoNotAcceptEvents="true">
 		  <Children>
 			<!--Leader Visual-->
 			<ButtonWidget DataSource='{Leader}' WidthSizePolicy='Fixed' HeightSizePolicy='Fixed' SuggestedWidth='112' SuggestedHeight='81' VerticalAlignment='Center' Command.Click='ExecuteLink' IsEnabled='false'>

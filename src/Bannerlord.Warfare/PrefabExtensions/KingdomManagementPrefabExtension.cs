@@ -8,12 +8,18 @@ namespace Warfare.PrefabExtensions
 {
     [PrefabExtension("KingdomManagement", "descendant::Constant[@Name='Header.Tab.Center.Width.Scaled']")]
     [UsedImplicitly]
-    internal sealed class KingdomManagementScalingPatch : PrefabExtensionSetAttributePatch
+    internal sealed class KingdomManagementCenterScalingPatch : PrefabExtensionSetAttributePatch
     {
         public override List<Attribute> Attributes => new()
         {
             new Attribute("MultiplyResult", "0.60")
         };
+    }
+    [PrefabExtension("KingdomManagement", "descendant::Constant[@Name='Header.Tab.Right.Width.Scaled']")]
+    [UsedImplicitly]
+    internal sealed class KingdomManagementRightScalingPatch : PrefabExtensionSetAttributePatch
+    {
+        public override List<Attribute> Attributes => SubModule.Diplomacy ? new() { new Attribute("MultiplyResult", "0.80") } : new();
     }
     [PrefabExtension("KingdomManagement", "descendant::KingdomTabControlListPanel")]
     internal sealed class KingdomManagementKingdomTabControlListPanelPrefabExtension : PrefabExtensionSetAttributePatch
@@ -53,11 +59,10 @@ namespace Warfare.PrefabExtensions
             new Attribute("Position", "5"),
         };
     }
-    [PrefabExtension("KingdomManagement", "descendant::KingdomTabControlListPanel/Children")]
+    [PrefabExtension("KingdomManagement", "descendant::ButtonWidget[@Id='DiplomacyTabButton']")]
     internal sealed class KingdomManagementWorldTabButtonPrefabExtension : PrefabExtensionInsertPatch
     {
-        public override InsertType Type => InsertType.Child;
-        public override int Index => 5;
+        public override InsertType Type => InsertType.Append;
         private readonly XmlDocument _document;
         public KingdomManagementWorldTabButtonPrefabExtension()
         {
