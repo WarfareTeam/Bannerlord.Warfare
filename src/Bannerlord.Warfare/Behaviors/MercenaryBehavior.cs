@@ -30,8 +30,13 @@ namespace Warfare.Behaviors
             CampaignEvents.BeforeHeroKilledEvent.AddNonSerializedListener(this, OnBeforeHeroKilled);
             CampaignEvents.OnClanLeaderChangedEvent.AddNonSerializedListener(this, OnClanLeaderChanged);
         }
-
-        public void OnNewGameCreatedPartialFollowUpEnd(CampaignGameStarter starter)
+        public void ChangeClanName(Clan clan)
+        {
+            string suffix = new string[] { "{=dxkaEIqK}Band", "{=eVDDsEed}Companions", "{=BfSQxgPM}Company", "{=h6b2NEHU}Followers", "{=5E9aDuRC}Wanderers" }.GetRandomElement();
+            TextObject name = new TextObject("{=eFauEP8r}{LEADER}'s {SUFFIX}").SetTextVariable("LEADER", clan.Leader.Name.ToString().Split(' ').FirstOrDefault()).SetTextVariable("SUFFIX", suffix);
+            clan.ChangeClanName(name, name);
+        }
+        private void OnNewGameCreatedPartialFollowUpEnd(CampaignGameStarter starter)
         {
             // Used in case a minor faction template couldn't be found
             // Prevents crashes on Europe 1100 (and possibly other total conversions) due to cultures without any clans / minor factions
@@ -126,8 +131,7 @@ namespace Warfare.Behaviors
                 }
             }
         }
-
-        public void OnHourlyTickClan(Clan clan)
+        private void OnHourlyTickClan(Clan clan)
         {
             if (Settings.Current.UseVanillaRecruitment || queue.IsEmpty() || !queue.Contains(clan))
             {
@@ -136,8 +140,7 @@ namespace Warfare.Behaviors
             RecruitTroops(clan);
             queue.Remove(clan);
         }
-
-        public void OnDailyTickClan(Clan clan)
+        private void OnDailyTickClan(Clan clan)
         {
             if (Settings.Current.UseVanillaRecruitment || (!queue.IsEmpty() && queue.Contains(clan)))
             {
@@ -145,7 +148,6 @@ namespace Warfare.Behaviors
             }
             RecruitTroops(clan);
         }
-
         private void OnBeforeHeroKilled(Hero victim, Hero killer, KillCharacterAction.KillCharacterActionDetail detail, bool showNotification = true)
         {
             if (victim == null || victim.Clan == null || !victim.Clan.IsMinorFaction || victim.Clan == Clan.PlayerClan || victim.Clan.Heroes.IsEmpty() || !victim.Clan.GetHeirApparents().IsEmpty())
@@ -154,7 +156,6 @@ namespace Warfare.Behaviors
             }
             ChangeClanLeaderAction.ApplyWithSelectedNewLeader(victim.Clan, victim.Clan.Heroes.Where(x => !x.IsChild && x != victim && x.IsAlive && x.IsLord).GetRandomElementInefficiently());
         }
-
         private void OnClanLeaderChanged(Hero oldLeader, Hero newLeader)
         {
             if (newLeader == null || newLeader.Clan == null || !newLeader.Clan.IsMinorFaction || newLeader.Clan == Clan.PlayerClan)
@@ -163,25 +164,15 @@ namespace Warfare.Behaviors
             }
             ChangeClanName(newLeader.Clan);
         }
-
-        public int GetStartingGold()
+        private int GetStartingGold()
         {
             return MBRandom.RandomFloat < 0.5f ? MBRandom.RandomInt(5000, 30000) : MBRandom.RandomInt(30000, 120000);
         }
-
-        public int GetStartingRenown(Clan clan)
+        private int GetStartingRenown(Clan clan)
         {
             return MBRandom.RandomInt(clan.Heroes.Count() * 125, clan.Heroes.Count() * 800);
         }
-
-        public void ChangeClanName(Clan clan)
-        {
-            string suffix = new string[] { "{=dxkaEIqK}Band", "{=eVDDsEed}Companions", "{=BfSQxgPM}Company", "{=h6b2NEHU}Followers", "{=5E9aDuRC}Wanderers" }.GetRandomElement();
-            TextObject name = new TextObject("{=eFauEP8r}{LEADER}'s {SUFFIX}").SetTextVariable("LEADER", clan.Leader.Name.ToString().Split(' ').FirstOrDefault()).SetTextVariable("SUFFIX", suffix);
-            clan.ChangeClanName(name, name);
-        }
-
-        public void RecruitTroops(Clan clan, bool newGame = false)
+        private void RecruitTroops(Clan clan, bool newGame = false)
         {
             IEnumerable<CharacterObject> mercenaryObjects = CharacterObject.FindAll(c => c != null && c.Occupation == Occupation.Mercenary);
             if (clan == null || clan.IsEliminated || !clan.IsMinorFaction || clan == Clan.PlayerClan)
@@ -204,7 +195,6 @@ namespace Warfare.Behaviors
                 }
             }
         }
-
         public override void SyncData(IDataStore dataStore) { }
     }
 }

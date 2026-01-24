@@ -15,6 +15,9 @@ namespace Warfare
 {
     public class SubModule : MBSubModuleBase
     {
+        internal static CohesionBoostBehavior CohesionBoostBehavior;
+        internal static ContractBehavior ContractBehavior;
+        internal static MercenaryBehavior MercenaryBehavior;
         internal static StrategyBehavior StrategyBehavior;
         public static bool Diplomacy = false;
         public static bool NavalDLC = false;
@@ -39,10 +42,10 @@ namespace Warfare
         {
             if (gameStarterObject is CampaignGameStarter starter)
             {
-                starter.AddBehavior(new ContractBehavior());
-                starter.AddBehavior(new CohesionBoostBehavior());
-                starter.AddBehavior(new MercenaryBehavior());
                 //starter.AddBehavior(new PrisonerBehavior());
+                starter.AddBehavior(CohesionBoostBehavior = new CohesionBoostBehavior());
+                starter.AddBehavior(ContractBehavior = new ContractBehavior());
+                starter.AddBehavior(MercenaryBehavior =new MercenaryBehavior());
                 starter.AddBehavior(StrategyBehavior = new StrategyBehavior());
                 starter.AddModel(new WarfareArmyManagementCalculationModel(GetModel<ArmyManagementCalculationModel>(starter)));
                 starter.AddModel(new WarfareTargetScoreCalculatingModel(GetModel<TargetScoreCalculatingModel>(starter)));
