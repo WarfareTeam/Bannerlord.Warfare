@@ -253,7 +253,27 @@ namespace Warfare.Models
             float num28 = 1f;
             if (mobileParty.MapFaction != null && mobileParty.MapFaction.IsKingdomFaction && mobileParty.MapFaction.Leader == Hero.MainHero && (missionType != Army.ArmyTypes.Defender || (targetSettlement.LastAttackerParty != null && targetSettlement.LastAttackerParty.MapFaction != Hero.MainHero.MapFaction)))
             {
-                StanceLink stanceLink = ((missionType != Army.ArmyTypes.Defender) ? Hero.MainHero.MapFaction.GetStanceWith(targetSettlement.MapFaction) : Hero.MainHero.MapFaction.GetStanceWith(targetSettlement.LastAttackerParty.MapFaction));
+                StanceLink stanceLink = missionType != Army.ArmyTypes.Defender ? Hero.MainHero.MapFaction.GetStanceWith(targetSettlement.MapFaction) : Hero.MainHero.MapFaction.GetStanceWith(targetSettlement.LastAttackerParty.MapFaction);
+                if (stanceLink != null)
+                {
+                    if (stanceLink.BehaviorPriority == 1)
+                    {
+                        switch (missionType)
+                        {
+                            case Army.ArmyTypes.Besieger:
+                            case Army.ArmyTypes.Raider:
+                                num28 = 0.65f;
+                                break;
+                            case Army.ArmyTypes.Defender:
+                                num28 = 1.1f;
+                                break;
+                        }
+                    }
+                    else if (stanceLink.BehaviorPriority == 2 && (missionType == Army.ArmyTypes.Besieger || missionType == Army.ArmyTypes.Raider))
+                    {
+                        num28 *= 1.3f;
+                    }
+                }
                 Strategy strategy = SubModule.StrategyBehavior.FindStrategy(mobileParty.Owner);
                 if (strategy != null)
                 {
@@ -278,26 +298,6 @@ namespace Warfare.Models
                         {
                             num28 *= Settings.Current.DefensiveTendencyOffensiveStrategy;
                         }
-                    }
-                }
-                if (stanceLink != null)
-                {
-                    if (stanceLink.BehaviorPriority == 1)
-                    {
-                        switch (missionType)
-                        {
-                            case Army.ArmyTypes.Besieger:
-                            case Army.ArmyTypes.Raider:
-                                num28 = 0.65f;
-                                break;
-                            case Army.ArmyTypes.Defender:
-                                num28 = 1.1f;
-                                break;
-                        }
-                    }
-                    else if (stanceLink.BehaviorPriority == 2 && (missionType == Army.ArmyTypes.Besieger || missionType == Army.ArmyTypes.Raider))
-                    {
-                        num28 *= 1.3f;
                     }
                 }
             }
