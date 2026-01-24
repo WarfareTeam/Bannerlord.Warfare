@@ -15,6 +15,7 @@ namespace Warfare
 {
     public class SubModule : MBSubModuleBase
     {
+        internal static StrategyBehavior StrategyBehavior;
         public static bool Diplomacy = false;
         public static bool NavalDLC = false;
 
@@ -42,7 +43,7 @@ namespace Warfare
                 starter.AddBehavior(new CohesionBoostBehavior());
                 starter.AddBehavior(new MercenaryBehavior());
                 //starter.AddBehavior(new PrisonerBehavior());
-                starter.AddBehavior(new StrategyBehavior());
+                starter.AddBehavior(StrategyBehavior = new StrategyBehavior());
                 starter.AddModel(new WarfareArmyManagementCalculationModel(GetModel<ArmyManagementCalculationModel>(starter)));
                 starter.AddModel(new WarfareTargetScoreCalculatingModel(GetModel<TargetScoreCalculatingModel>(starter)));
             }
