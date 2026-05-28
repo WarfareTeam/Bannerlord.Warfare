@@ -45,9 +45,7 @@ namespace Bannerlord.Warfare.Models
 
         public override int GiftingCastleRelationshipBonus => _model.GiftingCastleRelationshipBonus;
 
-        public override float WarDeclarationScorePenaltyAgainstAllies => _model.WarDeclarationScorePenaltyAgainstAllies;
-
-        public override float WarDeclarationScoreBonusAgainstEnemiesOfAllies => _model.WarDeclarationScoreBonusAgainstEnemiesOfAllies;
+        public override float WarDeclarationScorePenaltyAgainstTradePartners => _model.WarDeclarationScorePenaltyAgainstTradePartners;
 
         public override bool CanSettlementBeGifted(Settlement settlement) => _model.CanSettlementBeGifted(settlement);
 

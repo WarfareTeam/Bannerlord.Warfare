@@ -36,7 +36,6 @@ namespace Warfare.Extensions
                 gatheringPoint = settlement;
             }
             GatherArmyAction.Apply(army.LeaderParty, gatheringPoint);
-            kingdom.GetType().GetProperty("LastArmyCreationDay", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(kingdom, (int)CampaignTime.Now.ToDays);
             CampaignEventDispatcher.Instance.OnArmyCreated(army);
             if (leader == Hero.MainHero)
             {

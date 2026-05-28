@@ -350,11 +350,15 @@ namespace Warfare.Models
             return (num34 < 0f) ? 0f : num34;
         }
 
-        public override float CalculatePatrollingScoreForSettlement(Settlement targetSettlement, bool isFromPort, MobileParty mobileParty) => _model.CalculatePatrollingScoreForSettlement(targetSettlement, isFromPort, mobileParty);
-
         public override float CurrentObjectiveValue(MobileParty mobileParty) => _model.CurrentObjectiveValue(mobileParty);
 
-        public override float GetPatrollingFactor(bool isNavalPatrolling) => _model.GetPatrollingFactor(isNavalPatrolling);
+        public override float GetDefensivePatrollingFactor(bool isNavalPatrolling) => _model.GetDefensivePatrollingFactor(isNavalPatrolling);
+
+        public override float GetOffensivePatrollingFactor(bool isNavalPatrolling) => _model.GetOffensivePatrollingFactor(isNavalPatrolling);
+
+        public override float CalculateDefensivePatrollingScoreForSettlement(Settlement settlement, bool isTargetingPort, MobileParty mobileParty) => _model.CalculateDefensivePatrollingScoreForSettlement(settlement, isTargetingPort, mobileParty);
+
+        public override float CalculateOffensivePatrollingScoreForSettlement(Settlement settlement, bool isTargetingPort, MobileParty mobileParty) => _model.CalculateOffensivePatrollingScoreForSettlement(settlement, isTargetingPort, mobileParty);
 
         public override float TravelingToAssignmentFactor => _model.TravelingToAssignmentFactor;
 
