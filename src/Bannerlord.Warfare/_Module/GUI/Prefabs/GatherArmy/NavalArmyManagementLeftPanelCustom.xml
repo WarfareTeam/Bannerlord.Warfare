@@ -108,7 +108,7 @@
             <Widget Id="PartyListClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
               <Children>
 
-                <NavigatableListPanel Id="PartyList" DataSource="{PartyList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop">
+                <NavigatableListPanel Id="PartyList" DataSource="{PartyList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom">
                   <ItemTemplate>
                     <GatherArmyTuple />
                   </ItemTemplate>

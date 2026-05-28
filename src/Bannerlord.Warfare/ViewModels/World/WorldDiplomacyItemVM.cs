@@ -109,7 +109,7 @@ namespace Warfare.ViewModels.World
             Faction2OtherTradeAgreements = new MBBindingList<KingdomDiplomacyFactionItemVM>();
             foreach (IFaction faction3 in Campaign.Current.Factions)
             {
-                if (faction3 != Faction1 && faction3 != Faction2 && faction3.IsKingdomFaction && Campaign.Current.GetCampaignBehavior<ITradeAgreementsCampaignBehavior>().HasTradeAgreement(faction3 as Kingdom, Faction2 as Kingdom))
+                if (faction3 != Faction1 && faction3 != Faction2 && faction3.IsKingdomFaction && Campaign.Current.GetCampaignBehavior<ITradeAgreementsCampaignBehavior>().HasTradeAgreement(faction3 as Kingdom, Faction2 as Kingdom, out var tradeAgreement))
                 {
                     Faction2OtherTradeAgreements.Add(new KingdomDiplomacyFactionItemVM(faction3));
                 }

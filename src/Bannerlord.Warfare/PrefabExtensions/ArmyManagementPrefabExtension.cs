@@ -50,7 +50,7 @@ namespace Warfare.PrefabExtensions
         {
             _document = new XmlDocument();
             _document.LoadXml(@"
-                <ListPanel WidthSizePolicy='CoverChildren' HeightSizePolicy='Fixed' SuggestedHeight='70' HorizontalAlignment='Center' VerticalAlignment='Bottom' MarginBottom='30' StackLayout.LayoutMethod='VerticalBottomToTop' >
+                <ListPanel WidthSizePolicy='CoverChildren' HeightSizePolicy='Fixed' SuggestedHeight='70' HorizontalAlignment='Center' VerticalAlignment='Bottom' MarginBottom='30' StackLayout.LayoutMethod='VerticalTopToBottom' >
                   <Children>
                     <!--Total Cost Text-->
                     <RichTextWidget WidthSizePolicy='CoverChildren' HeightSizePolicy='StretchToParent' Brush='ArmyManagement.Army.TotalCostAndStrength.Title' Text='@TotalCostText' />
@@ -82,7 +82,7 @@ namespace Warfare.PrefabExtensions
                     <!--Unaffordable Influence Cost-->
 				    <Widget WidthSizePolicy='CoverChildren' HeightSizePolicy='StretchToParent' HorizontalAlignment='Center' PositionXOffset='12' IsHidden='@CanAffordInfluenceCost'>
 				      <Children>
-					    <RichTextWidget WidthSizePolicy='CoverChildren' HeightSizePolicy='StretchToParent' HorizontalAlignment='Center' PositionXOffset='-24' Brush='WarfareArmyManagement.Army.TotalCostAndStrength.PositiveValue' Text='@TotalInfluenceCostNumbersText' />
+					    <RichTextWidget WidthSizePolicy='CoverChildren' HeightSizePolicy='StretchToParent' HorizontalAlignment='Center' PositionXOffset='-24' Brush='WarfareArmyManagement.Army.TotalCostAndStrength.NegativeValue' Text='@TotalInfluenceCostNumbersText' />
 				        <Widget WidthSizePolicy='Fixed' HeightSizePolicy='Fixed' SuggestedWidth='27' SuggestedHeight='27' HorizontalAlignment='Right' VerticalAlignment='Center' Sprite='General\Icons\Influence@2x'/>
 				      </Children>
 				    </Widget>

@@ -253,8 +253,28 @@ namespace Warfare.Models
             float num28 = 1f;
             if (mobileParty.MapFaction != null && mobileParty.MapFaction.IsKingdomFaction && mobileParty.MapFaction.Leader == Hero.MainHero && (missionType != Army.ArmyTypes.Defender || (targetSettlement.LastAttackerParty != null && targetSettlement.LastAttackerParty.MapFaction != Hero.MainHero.MapFaction)))
             {
-                StanceLink stanceLink = ((missionType != Army.ArmyTypes.Defender) ? Hero.MainHero.MapFaction.GetStanceWith(targetSettlement.MapFaction) : Hero.MainHero.MapFaction.GetStanceWith(targetSettlement.LastAttackerParty.MapFaction));
-                Strategy strategy = Campaign.Current.GetCampaignBehavior<StrategyBehavior>().FindStrategy(mobileParty.Owner);
+                StanceLink stanceLink = missionType != Army.ArmyTypes.Defender ? Hero.MainHero.MapFaction.GetStanceWith(targetSettlement.MapFaction) : Hero.MainHero.MapFaction.GetStanceWith(targetSettlement.LastAttackerParty.MapFaction);
+                if (stanceLink != null)
+                {
+                    if (stanceLink.BehaviorPriority == 1)
+                    {
+                        switch (missionType)
+                        {
+                            case Army.ArmyTypes.Besieger:
+                            case Army.ArmyTypes.Raider:
+                                num28 = 0.65f;
+                                break;
+                            case Army.ArmyTypes.Defender:
+                                num28 = 1.1f;
+                                break;
+                        }
+                    }
+                    else if (stanceLink.BehaviorPriority == 2 && (missionType == Army.ArmyTypes.Besieger || missionType == Army.ArmyTypes.Raider))
+                    {
+                        num28 *= 1.3f;
+                    }
+                }
+                Strategy strategy = SubModule.StrategyBehavior.FindStrategy(mobileParty.Owner);
                 if (strategy != null)
                 {
                     if (strategy.Priority == 1)
@@ -278,26 +298,6 @@ namespace Warfare.Models
                         {
                             num28 *= Settings.Current.DefensiveTendencyOffensiveStrategy;
                         }
-                    }
-                }
-                if (stanceLink != null)
-                {
-                    if (stanceLink.BehaviorPriority == 1)
-                    {
-                        switch (missionType)
-                        {
-                            case Army.ArmyTypes.Besieger:
-                            case Army.ArmyTypes.Raider:
-                                num28 = 0.65f;
-                                break;
-                            case Army.ArmyTypes.Defender:
-                                num28 = 1.1f;
-                                break;
-                        }
-                    }
-                    else if (stanceLink.BehaviorPriority == 2 && (missionType == Army.ArmyTypes.Besieger || missionType == Army.ArmyTypes.Raider))
-                    {
-                        num28 *= 1.3f;
                     }
                 }
             }
@@ -350,11 +350,15 @@ namespace Warfare.Models
             return (num34 < 0f) ? 0f : num34;
         }
 
-        public override float CalculatePatrollingScoreForSettlement(Settlement targetSettlement, bool isFromPort, MobileParty mobileParty) => _model.CalculatePatrollingScoreForSettlement(targetSettlement, isFromPort, mobileParty);
-
         public override float CurrentObjectiveValue(MobileParty mobileParty) => _model.CurrentObjectiveValue(mobileParty);
 
-        public override float GetPatrollingFactor(bool isNavalPatrolling) => _model.GetPatrollingFactor(isNavalPatrolling);
+        public override float GetDefensivePatrollingFactor(bool isNavalPatrolling) => _model.GetDefensivePatrollingFactor(isNavalPatrolling);
+
+        public override float GetOffensivePatrollingFactor(bool isNavalPatrolling) => _model.GetOffensivePatrollingFactor(isNavalPatrolling);
+
+        public override float CalculateDefensivePatrollingScoreForSettlement(Settlement settlement, bool isTargetingPort, MobileParty mobileParty) => _model.CalculateDefensivePatrollingScoreForSettlement(settlement, isTargetingPort, mobileParty);
+
+        public override float CalculateOffensivePatrollingScoreForSettlement(Settlement settlement, bool isTargetingPort, MobileParty mobileParty) => _model.CalculateOffensivePatrollingScoreForSettlement(settlement, isTargetingPort, mobileParty);
 
         public override float TravelingToAssignmentFactor => _model.TravelingToAssignmentFactor;
 

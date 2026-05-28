@@ -6,7 +6,7 @@ using Warfare;
 
 namespace Warfare.Patches
 {
-    [HarmonyPatch(typeof(MissionAgentSpawnLogic), "MaxNumberOfAgentsForMission", MethodType.Getter)]
+    [HarmonyPatch(typeof(DefaultBattleMissionAgentSpawnLogic), "MaxNumberOfAgentsForMission", MethodType.Getter)]
     public class MaxNumberOfAgentsForMissionPatch
     {
         private static void Postfix(ref int __result)
@@ -18,7 +18,7 @@ namespace Warfare.Patches
         }
     }
 
-    [HarmonyPatch(typeof(MissionAgentSpawnLogic), "MaxNumberOfTroopsForMission", MethodType.Getter)]
+    [HarmonyPatch(typeof(DefaultBattleMissionAgentSpawnLogic), "MaxNumberOfTroopsForMission", MethodType.Getter)]
     public class MaxNumberOfTroopsForMissionPatch
     {
         private static void Postfix(ref int __result)

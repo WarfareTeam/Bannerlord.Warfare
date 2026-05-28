@@ -139,6 +139,8 @@ namespace Warfare.ViewModels.ArmyManagement
 
         private bool _canDisbandArmy;
 
+        private bool _canConfirm;
+
         private bool _canAffordGoldCost;
 
         private bool _canAffordInfluenceCost;
@@ -202,6 +204,7 @@ namespace Warfare.ViewModels.ArmyManagement
             DisbandArmyHint = new();
             DoneHint = new();
             TutorialNotification = new();
+            CanConfirm = false;
             CanAffordGoldCost = true;
             CanAffordInfluenceCost = true;
             IsSplitArmy = newLeader != null;
@@ -411,6 +414,32 @@ namespace Warfare.ViewModels.ArmyManagement
             OnRefresh();
         }
 
+        private void UpdateCanConfirm()
+        {
+            if (!CanAffordInfluenceCost)
+            {
+                CanConfirm = false;
+                DoneHint.HintText = GameTexts.FindText("str_warning_you_dont_have_enough_influence").CopyTextObject();
+            }
+            else if (PartiesInCart.Count == 1 && PartiesInCart[0].IsMainHero)
+            {
+                CanConfirm = CanDisbandArmy;
+                if (!CanConfirm)
+                {
+                    DoneHint.HintText = new TextObject("{=aUq1M6Wa}You need more than 1 party to create an army");
+                }
+            }
+            else
+            {
+                CanConfirm = true;
+            }
+
+            if (CanConfirm)
+            {
+                DoneHint.HintText = TextObject.GetEmpty();
+            }
+        }
+
         private void ApplyCohesionChange()
         {
             if (Army == null)
@@ -483,7 +512,7 @@ namespace Warfare.ViewModels.ArmyManagement
             {
                 CohesionText = GameTexts.FindText("str_cohesion").ToString();
             }
-
+            UpdateCanConfirm();
             UpdateTooltips();
             PartiesInCart.Sort(new ManagementItemComparer());
             CanDisbandArmy = GetCanDisbandArmyWithReason(out var disabledReason);
@@ -1051,6 +1080,23 @@ namespace Warfare.ViewModels.ArmyManagement
                 {
                     _canDisbandArmy = value;
                     OnPropertyChangedWithValue(value, "CanDisbandArmy");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool CanConfirm
+        {
+            get
+            {
+                return _canConfirm;
+            }
+            set
+            {
+                if (value != _canConfirm)
+                {
+                    _canConfirm = value;
+                    OnPropertyChangedWithValue(value, "CanConfirm");
                 }
             }
         }

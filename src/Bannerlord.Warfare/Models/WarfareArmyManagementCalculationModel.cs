@@ -3,6 +3,7 @@
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ComponentInterfaces;
 using TaleWorlds.CampaignSystem.Party;
+using TaleWorlds.Library;
 using TaleWorlds.Localization;
 
 namespace Warfare.Models
@@ -64,12 +65,12 @@ namespace Warfare.Models
 
         public override int GetCohesionBoostInfluenceCost(Army army, int percentageToBoost = 100) => _model.GetCohesionBoostInfluenceCost(army, percentageToBoost);
 
-        public override List<MobileParty> GetMobilePartiesToCallToArmy(MobileParty leaderParty) => _model.GetMobilePartiesToCallToArmy(leaderParty);
-
         public override int GetPartyRelation(Hero hero) => _model.GetPartyRelation(hero);
 
         public override float GetPartySizeScore(MobileParty party) => _model.GetPartySizeScore(party);
 
         public override bool CanPlayerCreateArmy(out TextObject disabledReason) => _model.CanPlayerCreateArmy(out disabledReason);
+
+        public override bool CanLordCreateArmy(MobileParty leaderParty, out MBList<MobileParty> possibleArmyMembers) => _model.CanLordCreateArmy(leaderParty, out possibleArmyMembers);
     }
 }

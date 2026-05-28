@@ -23,7 +23,7 @@ namespace Warfare.Patches
             // Name mercenary clans according to our rules on creation, for immersion in case mods spawn new minor clans.
             if (Campaign.Current.GameStarted && __instance.IsMinorFaction && __instance != Clan.PlayerClan)
             {
-                Campaign.Current.GetCampaignBehavior<MercenaryBehavior>().ChangeClanName(__instance);
+                SubModule.MercenaryBehavior.ChangeClanName(__instance);
             }
         }
     }

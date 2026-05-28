@@ -45,7 +45,6 @@ namespace Warfare.ViewModels.Military
                 return x.Clan.GetMercenaryWage().CompareTo(y.Clan.GetMercenaryWage());
             }
         }
-        private ContractBehavior _behavior = Campaign.Current.GetCampaignBehavior<ContractBehavior>();
 
         private GauntletKingdomScreen _gauntlet;
 
@@ -358,7 +357,7 @@ namespace Warfare.ViewModels.Military
                 CanDisbandCurrentArmy = GetCanDisbandCurrentArmyWithReason(out disabledReason);
                 DisbandHint.HintText = disabledReason;
                 CanMaintainCohesion = Clan.PlayerClan.Influence >= Campaign.Current.Models.ArmyManagementCalculationModel.GetCohesionBoostInfluenceCost(CurrentSelectedArmy.Army, 10);
-                IsMaintainCohesionSelected = Campaign.Current.GetCampaignBehavior<CohesionBoostBehavior>().FindCohesionBoost(CurrentSelectedArmy.Army) != null;
+                IsMaintainCohesionSelected = SubModule.CohesionBoostBehavior.FindCohesionBoost(CurrentSelectedArmy.Army) != null;
                 MaintainCohesionHint.HintText = new TextObject("{=UxCTxfA9}Automatically maintains cohesion for this army using player influence");
                 if (CurrentSelectedArmy != null)
                 {
@@ -534,10 +533,10 @@ namespace Warfare.ViewModels.Military
                 TextObject remainingContractTime = TextObject.GetEmpty();
                 if (item.IsHired)
                 {
-                    Contract contract = _behavior.FindContract(item.Clan);
+                    Contract contract = SubModule.ContractBehavior.FindContract(item.Clan);
                     if (contract == null)
                     {
-                        contract = _behavior.SignContract(item.Clan);
+                        contract = SubModule.ContractBehavior.SignContract(item.Clan);
                     }
                     remainingContractTime = new TextObject("{=!}{YEARS} {SEASONS} {DAYS} {HOURS}");
                     CampaignTime expiration = contract.Expiration;
@@ -634,7 +633,7 @@ namespace Warfare.ViewModels.Military
                 return false;
             }
 
-            if (!_behavior.CanExtendContract(CurrentSelectedMercenary.Clan, _kingdom))
+            if (!SubModule.ContractBehavior.CanExtendContract(CurrentSelectedMercenary.Clan, _kingdom))
             {
                 int length = Settings.Current.MercenaryContractType.SelectedIndex;
                 disabledReason = new TextObject("{=t30VD50U}Can only extend contracts with less than one {LENGTH} remaining.");
@@ -670,7 +669,7 @@ namespace Warfare.ViewModels.Military
         private bool GetCanFireCurrentMercenaryWithReason(out TextObject disabledReason)
         {
 
-            Contract contract = _behavior.FindContract(CurrentSelectedMercenary.Clan);
+            Contract contract = SubModule.ContractBehavior.FindContract(CurrentSelectedMercenary.Clan);
             if (contract == null)
             {
                 disabledReason = new TextObject("{=mfKEPzhj}Mercenaries are not under contract.");
@@ -793,7 +792,7 @@ namespace Warfare.ViewModels.Military
             {
                 ChangeRelationAction.ApplyPlayerRelation(CurrentSelectedMercenary.Clan.Leader, 10, true, true);
                 GiveGoldAction.ApplyBetweenCharacters(Hero.MainHero, CurrentSelectedMercenary.Clan.Leader, HireCost, true);
-                _behavior.SignContract(CurrentSelectedMercenary.Clan, _kingdom);
+                SubModule.ContractBehavior.SignContract(CurrentSelectedMercenary.Clan, _kingdom);
                 RefreshMercenaryList();
             }
         }
@@ -812,7 +811,7 @@ namespace Warfare.ViewModels.Military
             if (Hero.MainHero.IsFactionLeader)
             {
                 ChangeRelationAction.ApplyPlayerRelation(CurrentSelectedMercenary.Clan.Leader, -10, true, true);
-                _behavior.RemoveContract(CurrentSelectedMercenary.Clan);
+                SubModule.ContractBehavior.RemoveContract(CurrentSelectedMercenary.Clan);
                 RefreshMercenaryList();
             }
         }
@@ -1017,7 +1016,7 @@ namespace Warfare.ViewModels.Military
         {
             if (Hero.MainHero.MapFaction.IsKingdomFaction && Hero.MainHero.MapFaction.Leader == Hero.MainHero && CurrentSelectedArmy != null)
             {
-                StrategySelection.SelectedIndex = Campaign.Current.GetCampaignBehavior<StrategyBehavior>().GetPriority(CurrentSelectedArmy.Army.ArmyOwner);
+                StrategySelection.SelectedIndex = SubModule.StrategyBehavior.GetPriority(CurrentSelectedArmy.Army.ArmyOwner);
             }
         }
 
@@ -1025,10 +1024,10 @@ namespace Warfare.ViewModels.Military
         {
             if (Hero.MainHero.MapFaction.IsKingdomFaction && Hero.MainHero.MapFaction.Leader == Hero.MainHero && CurrentSelectedArmy != null)
             {
-                int selectedIndex = Campaign.Current.GetCampaignBehavior<StrategyBehavior>().GetPriority(CurrentSelectedArmy.Army.ArmyOwner);
+                int selectedIndex = SubModule.StrategyBehavior.GetPriority(CurrentSelectedArmy.Army.ArmyOwner);
                 if (s.SelectedIndex > 0 || selectedIndex > 0)
                 {
-                    Campaign.Current.GetCampaignBehavior<StrategyBehavior>().SetPriority(CurrentSelectedArmy.Army.ArmyOwner, s.SelectedIndex);
+                    SubModule.StrategyBehavior.SetPriority(CurrentSelectedArmy.Army.ArmyOwner, s.SelectedIndex);
                 }
             }
         }
@@ -1037,7 +1036,7 @@ namespace Warfare.ViewModels.Military
         {
             if (CanMaintainCohesion)
             {
-                CohesionBoostBehavior behavior = Campaign.Current.GetCampaignBehavior<CohesionBoostBehavior>();
+                CohesionBoostBehavior behavior = SubModule.CohesionBoostBehavior;
                 if (behavior.FindCohesionBoost(CurrentSelectedArmy.Army) != null)
                 {
                     behavior.RemoveCohesionBoost(CurrentSelectedArmy.Army);
