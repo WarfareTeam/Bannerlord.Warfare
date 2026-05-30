@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using TaleWorlds.CampaignSystem;
@@ -15,6 +16,13 @@ namespace Warfare.ViewModels.World
 {
     public class KingdomWorldVM : KingdomCategoryVM
     {
+        public class WorldTruceNameComparer : IComparer<WorldTruceItemVM>
+        {
+            public int Compare(WorldTruceItemVM x, WorldTruceItemVM y)
+            {
+                return x.Faction1Name.CompareTo(y.Faction1Name);
+            }
+        }
         public class WorldWarNameComparer : IComparer<WorldWarItemVM>
         {
             public int Compare(WorldWarItemVM x, WorldWarItemVM y)
@@ -23,13 +31,16 @@ namespace Warfare.ViewModels.World
             }
         }
         private bool _isChangingDiplomacyItem;
+        private MBBindingList<WorldTruceItemVM> _truces;
         private MBBindingList<WorldWarItemVM> _wars;
         private WorldDiplomacyItemVM _currentSelectedItem;
         private SelectorVM<SelectorItemVM> _behaviorSelection;
         private HintViewModel _showStatBarsHint;
         private HintViewModel _showWarLogsHint;
         private HintViewModel _actionHint;
+        private string _trucesText;
         private string _warsText;
+        private string _numOfTrucesText;
         private string _numOfWarsText;
         private string _diplomacyText;
         private bool _isDisplayingWarLogs;
@@ -37,6 +48,7 @@ namespace Warfare.ViewModels.World
         private bool _isWar;
         public KingdomWorldVM()
         {
+            Truces = new MBBindingList<WorldTruceItemVM>();
             Wars = new MBBindingList<WorldWarItemVM>();
             ActionHint = new HintViewModel();
             ExecuteShowStatComparisons();
@@ -49,9 +61,14 @@ namespace Warfare.ViewModels.World
             RefreshWorldList();
             NoItemSelectedText = GameTexts.FindText("str_kingdom_no_war_selected", null).ToString();
             DiplomacyText = GameTexts.FindText("str_diplomatic_group", null).ToString();
-            WarsText = new TextObject("{=!!}External Wars").ToString();
+            TrucesText = GameTexts.FindText("str_kingdom_at_peace").ToString();
+            WarsText = GameTexts.FindText("str_kingdom_at_war").ToString();
             ShowStatBarsHint = new HintViewModel(GameTexts.FindText("str_kingdom_war_show_comparison_bars", null), null);
             ShowWarLogsHint = new HintViewModel(GameTexts.FindText("str_kingdom_war_show_war_logs", null), null);
+            Truces.ApplyActionOnAllItems(delegate (WorldTruceItemVM x)
+            {
+                x.RefreshValues();
+            });
             Wars.ApplyActionOnAllItems(delegate (WorldWarItemVM x)
             {
                 x.RefreshValues();
@@ -65,29 +82,46 @@ namespace Warfare.ViewModels.World
         }
         public void RefreshWorldList()
         {
+            Truces.Clear();
             Wars.Clear();
-            IEnumerable<Kingdom> kingdoms = Kingdom.All.WhereQ(k => Hero.MainHero.MapFaction as Kingdom != k);
+            IEnumerable<Kingdom> kingdoms = Kingdom.All.WhereQ(kingdom => Hero.MainHero.MapFaction as Kingdom != kingdom && !kingdom.IsEliminated);
             foreach (Kingdom kingdom in kingdoms)
             {
-                Kingdom playerKingdom = Hero.MainHero.MapFaction as Kingdom;
-                if (kingdom != playerKingdom)
+                foreach (Kingdom kingdom2 in kingdoms)
                 {
-                    foreach (Kingdom kingdom2 in kingdoms)
+                    if (kingdom == kingdom2 || ContainsTruce(kingdom, kingdom2) || ContainsWar(kingdom, kingdom2))
                     {
-                        if (kingdom != playerKingdom && kingdom != kingdom2 && !ContainsWar(kingdom, kingdom2))
-                        {
-                            if (FactionManager.IsAtWarAgainstFaction(kingdom, kingdom2))
-                            {
-                                Wars.Add(new WorldWarItemVM(kingdom.GetStanceWith(kingdom2), OnDiplomacyItemSelection));
-                            }
-                        }
+                        continue;
+                    }
+                    if (FactionManager.IsNeutralWithFaction(kingdom, kingdom2))
+                    {
+                        Truces.Add(new WorldTruceItemVM(kingdom, kingdom2, OnDiplomacyItemSelection));
+                    }
+                    if (FactionManager.IsAtWarAgainstFaction(kingdom, kingdom2))
+                    {
+                        Wars.Add(new WorldWarItemVM(kingdom.GetStanceWith(kingdom2), OnDiplomacyItemSelection));
                     }
                 }
             }
+            GameTexts.SetVariable("STR", Truces.Count);
+            NumOfTrucesText = GameTexts.FindText("str_STR_in_parentheses", null).ToString();
             GameTexts.SetVariable("STR", Wars.Count);
             NumOfWarsText = GameTexts.FindText("str_STR_in_parentheses", null).ToString();
+            Truces.Sort(new WorldTruceNameComparer());
             Wars.Sort(new WorldWarNameComparer());
             SetDefaultSelectedItem();
+        }
+
+        public bool ContainsTruce(IFaction faction, IFaction faction2)
+        {
+            foreach (WorldTruceItemVM truce in Truces)
+            {
+                if ((truce.Faction1 == faction || truce.Faction1 == faction2) && (truce.Faction2 == faction || truce.Faction2 == faction2))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool ContainsWar(IFaction faction, IFaction faction2)
@@ -101,10 +135,12 @@ namespace Warfare.ViewModels.World
             }
             return false;
         }
+
         public void OnSetCurrentDiplomacyItem(WorldDiplomacyItemVM item)
         {
             RefreshCurrentWarVisuals(item);
         }
+
         private void RefreshCurrentWarVisuals(WorldDiplomacyItemVM item)
         {
             if (item != null)
@@ -153,6 +189,19 @@ namespace Warfare.ViewModels.World
             if (!_isChangingDiplomacyItem && CurrentSelectedDiplomacyItem != null)
             {
                 CurrentSelectedDiplomacyItem.Faction1.GetStanceWith(CurrentSelectedDiplomacyItem.Faction2).BehaviorPriority = s.SelectedIndex;
+            }
+        }
+        [DataSourceProperty]
+        public MBBindingList<WorldTruceItemVM> Truces
+        {
+            get => _truces;
+            set
+            {
+                if (value != _truces)
+                {
+                    _truces = value;
+                    OnPropertyChangedWithValue(value, "Truces");
+                }
             }
         }
         [DataSourceProperty]
@@ -241,6 +290,19 @@ namespace Warfare.ViewModels.World
             }
         }
         [DataSourceProperty]
+        public string TrucesText
+        {
+            get => _trucesText;
+            set
+            {
+                if (value != _trucesText)
+                {
+                    _trucesText = value;
+                    OnPropertyChangedWithValue(value, "TrucesText");
+                }
+            }
+        }
+        [DataSourceProperty]
         public string WarsText
         {
             get => _warsText;
@@ -250,6 +312,19 @@ namespace Warfare.ViewModels.World
                 {
                     _warsText = value;
                     OnPropertyChangedWithValue(value, "WarsText");
+                }
+            }
+        }
+        [DataSourceProperty]
+        public string NumOfTrucesText
+        {
+            get => _numOfTrucesText;
+            set
+            {
+                if (value != _numOfTrucesText)
+                {
+                    _numOfTrucesText = value;
+                    OnPropertyChangedWithValue(value, "NumOfTrucesText");
                 }
             }
         }
