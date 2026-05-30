@@ -21,7 +21,6 @@ namespace Warfare.ViewModels.World
         public readonly IFaction Faction2;
         protected readonly string _faction1Color;
         protected readonly string _faction2Color;
-        protected readonly IFaction _playerKingdom;
         protected List<Settlement> _faction1Towns;
         protected List<Settlement> _faction2Towns;
         protected List<Settlement> _faction1Castles;
@@ -48,7 +47,6 @@ namespace Warfare.ViewModels.World
 
         protected WorldDiplomacyItemVM(IFaction faction1, IFaction faction2)
         {
-            _playerKingdom = Hero.MainHero.MapFaction;
             Faction1 = faction1;
             Faction2 = faction2;
             _faction1Color = Color.FromUint(Faction1.Color).ToString();
@@ -62,8 +60,8 @@ namespace Warfare.ViewModels.World
             Stats.Clear();
             Faction1Visual = new BannerImageIdentifierVM(Faction1.Banner, true);
             Faction2Visual = new BannerImageIdentifierVM(Faction2.Banner, true);
-            StanceLink stanceWith = _playerKingdom.GetStanceWith(Faction2);
-            int dailyTributeToPay = stanceWith.GetDailyTributeToPay(_playerKingdom);
+            StanceLink stanceWith = Faction1.GetStanceWith(Faction2);
+            int dailyTributeToPay = stanceWith.GetDailyTributeToPay(Faction1);
             int remainingTributePaymentCount = stanceWith.GetRemainingTributePaymentCount();
 			TextObject textObject = new TextObject("{=SDhQWonF}Paying {DENAR}{GOLD_ICON} as tribute per day, {TRIBUTE_PAYMENTS_REMAINING} days remaining.", null);
             textObject.SetTextVariable("DENAR", MathF.Abs(dailyTributeToPay));
